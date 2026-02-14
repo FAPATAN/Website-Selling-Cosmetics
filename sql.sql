@@ -1,0 +1,1 @@
+SELECT * FROM web_selling_cosmetics.member;
