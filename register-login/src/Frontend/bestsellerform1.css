@@ -1,14 +1,12 @@
-/* Best Seller Grid แนวนอน */
+﻿/* Best Seller Grid แนวนอน */
 .best-seller-grid {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 24px;
     width: 100%;
     min-height: 300px;
     margin: 0 auto;
     padding: 0;
-    justify-content: flex-start;
-    align-items: stretch;
 }
 .best-seller-card {
     background: #fff;
@@ -17,8 +15,8 @@
     padding: 18px 18px 12px 18px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    width: 220px;
+    align-items: stretch;
+    width: 100%;
     min-height: 340px;
     transition: box-shadow 0.2s;
     margin-bottom: 16px;
@@ -41,14 +39,14 @@ select, .filter-toggle {
 
 /* BEST SELLER Section Header */
 .section-header-best-seller {
-    padding: 40px 20px 10px;
+    padding: 4px 20px 10px;
     max-width: 1200px;
     margin: 0 auto;
 }
 .header-container {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
     border-bottom: 2px solid #333;
     padding-bottom: 5px;
 }
@@ -64,7 +62,7 @@ select, .filter-toggle {
 .category-grid {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: stretch;
     gap: 30px;
     text-align: center;
     max-width: 1200px;
@@ -75,7 +73,7 @@ select, .filter-toggle {
 .category-item {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     text-decoration: none;
     color: #333;
     transition: transform 0.3s;
@@ -100,6 +98,7 @@ select, .filter-toggle {
 /* Filter sidebar styles (global, not nested) */
 .filter-group {
     width: 100%;
+    margin-bottom: 24px;
 }
 .filter-toggle {
     width: 100%;
@@ -107,7 +106,7 @@ select, .filter-toggle {
     border: none;
     outline: none;
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: space-between;
     font-size: 15px;
     font-weight: 700;
@@ -116,20 +115,19 @@ select, .filter-toggle {
     padding: 0 0 2px 0;
     cursor: pointer;
     text-align: left;
+    transition: background 0.2s;
 }
+
 .filter-label {
-    font-size: 14px;
-    font-weight: 700;
-    color: #232628;
-    letter-spacing: 0.5px;
-    text-align: left;
+    font-size: 16px;
+    font-weight: bold;
+    transition: color 0.2s;
 }
 .filter-arrow {
-    font-size: 15px;
+    font-size: 18px;
     color: #232628;
     margin-left: 8px;
-    transition: transform 0.2s;
-    font-weight: 400;
+    transition: color 0.2s;
 }
 .filter-divider {
     width: 100%;
@@ -137,6 +135,8 @@ select, .filter-toggle {
     background: #232628;
     opacity: 0.4;
     margin-bottom: 16px;
+    border-bottom: 1px solid #eee;
+    margin: 4px 0 12px 0;
 }
 .category-image-wrapper img {
     position: absolute;
@@ -160,7 +160,7 @@ select, .filter-toggle {
 .search-form {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: flex-end;
     background: white;
     border-radius: 50px;
@@ -192,7 +192,7 @@ select, .filter-toggle {
     width: 45px;
     height: 45px;
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
     cursor: pointer;
     z-index: 10;
@@ -261,7 +261,7 @@ body {
 .menu-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
     padding: 15px 25px;
     cursor: pointer;
     font-weight: bold;
@@ -338,7 +338,7 @@ body {
 .main-header {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
     padding: 10px 30px;
     background-color: #fff;
@@ -371,7 +371,7 @@ body {
 .logo-container {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: stretch;
     flex: 0 1 auto;
     margin: 0 auto;
 }
@@ -388,13 +388,13 @@ body {
     top: 50%;
     transform: translateY(-50%);
     display: flex;
-    align-items: center;
+    align-items: stretch;
     gap: 8px;
 }
 .icon-link {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
     color: #333;
     text-decoration: none;
@@ -428,7 +428,7 @@ body {
     height: 15px;
     border-radius: 50%;
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
     padding: 1px;
     line-height: 1;
@@ -444,32 +444,106 @@ body {
     margin: 0 auto;
     margin-top: 24px;
 }
-.filter-sidebar {
-    width: 160px;
-    max-width: 180px;
-    min-width: 120px;
-    margin-top: 0;
-    margin-right: 32px;
-    margin-left: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    align-items: flex-start;
+.filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 0 4px 0;
 }
-.filter-group {
-    width: 100%;
-    max-width: 180px;
-    margin: 0;
-    margin-left: -130px;
+
+.filter-checkbox-label {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  color: #222;
+  font-family: inherit;
 }
-.filter-toggle {
-    width: 100%;
-    max-width: 180px;
-    min-width: 120px;
-    box-sizing: border-box;
+
+.filter-checkbox-label input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  border: 1.5px solid #999;
+  accent-color: #222;
+  cursor: pointer;
 }
-.filter-divider {
-    max-width: 180px;
-    margin-left: 0;
-    margin-right: 0;
+
+/* Price slider */
+.filter-price-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 0 4px 0;
+}
+
+.filter-price-slider {
+  width: 100%;
+  accent-color: #111;
+  cursor: pointer;
+  height: 4px;
+}
+
+.filter-price-inputs {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.filter-price-box {
+  display: flex;
+  align-items: stretch;
+  border: 1.5px solid #ccc;
+  border-radius: 2px;
+  padding: 4px 6px;
+  width: 64px;
+  background: #fff;
+}
+
+.filter-currency {
+  font-size: 12px;
+  color: #444;
+  margin-right: 2px;
+}
+
+.filter-price-box input[type="number"] {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 12px;
+  color: #222;
+  background: transparent;
+  -moz-appearance: textfield;
+  cursor: pointer;
+}
+
+.filter-price-box input[type="number"]::-webkit-inner-spin-button,
+.filter-price-box input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  
+}
+
+.filter-price-to {
+  font-size: 12px;
+  color: #444;
+}
+
+.filter-apply-btn {
+  width: 100%;
+  background: #111;
+  color: #fff;
+  border: none;
+  padding: 10px 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+
+.filter-apply-btn:hover {
+  background: #333;
 }

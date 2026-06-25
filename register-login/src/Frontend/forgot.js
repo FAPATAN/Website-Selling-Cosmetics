@@ -1,3 +1,4 @@
+﻿import API_URL from '../config';
 import React, { useState, useEffect, useRef } from 'react';
 import { Mail, ArrowLeft, Loader2, CheckCircle, Lock, KeyRound } from 'lucide-react';
 
@@ -330,7 +331,7 @@ export default function ForgotPasswordSystem() {
   
   const otpRefs = useRef([]);
 
-  const API_URL = 'http://localhost:5000/api';
+  const API_URL = `${API_URL}/api`;
 
   useEffect(() => {
     if (timer > 0) {

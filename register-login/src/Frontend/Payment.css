@@ -1,0 +1,482 @@
+/* ── Page Layout ── */
+.pay-page {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  min-height: calc(100vh - 105px);
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 24px 64px;
+  gap: 48px;
+  align-items: start;
+}
+
+/* ── LEFT ── */
+.pay-left {
+  max-width: 560px;
+  width: 100%;
+}
+
+/* ── Payment / Billing sections ── */
+.pay-section {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  background: #fff;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.pay-section-header {
+  padding: 18px 20px 0;
+}
+
+.pay-section-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #222;
+  margin: 0 0 4px 0;
+}
+
+.pay-section-sub {
+  font-size: 12px;
+  color: #888;
+  margin: 0 0 16px 0;
+}
+
+.pay-billing-section .pay-section-title {
+  padding: 18px 20px 0;
+  margin: 0;
+}
+
+.pay-billing-section .pay-section-sub {
+  padding: 4px 20px 0;
+  margin: 0 0 12px;
+}
+
+/* ── Payment option rows ── */
+.pay-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  border-top: 1px solid #e8e8e8;
+  background: #fafafa;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.pay-option:first-of-type {
+  border-top: none;
+}
+
+.pay-option.selected {
+  background: #fff8f7;
+}
+
+.pay-option:hover {
+  background: #f5f0ef;
+}
+
+/* ── Radio button ── */
+.pay-radio-wrap {
+  flex-shrink: 0;
+}
+
+.pay-radio {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s;
+}
+
+.pay-radio.active {
+  border-color: #c9847a;
+}
+
+.pay-radio-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #c9847a;
+  display: block;
+}
+
+/* ── Option label ── */
+.pay-option-label {
+  flex: 1;
+  font-size: 13.5px;
+  color: #222;
+}
+
+/* ── Payment logos ── */
+.pay-option-logos {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.pay-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 2px 6px;
+  border: 1px solid #ddd;
+  background: #fff;
+  letter-spacing: 0.3px;
+}
+
+.pay-logo-atome {
+  color: #00b8a9;
+  font-style: italic;
+}
+
+.pay-logo-visa {
+  color: #1a1f71;
+}
+
+.pay-logo-jcb {
+  color: #0e4c96;
+}
+
+/* Mastercard circles */
+.pay-logo-mc {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  background: none;
+  padding: 0;
+  width: 28px;
+  height: 18px;
+}
+
+.mc-circle {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  position: absolute;
+  opacity: 0.9;
+}
+
+.mc-red {
+  background: #eb001b;
+  left: 0;
+}
+
+.mc-orange {
+  background: #f79e1b;
+  left: 9px;
+}
+
+/* ── Expanded description ── */
+.pay-option-desc {
+  font-size: 12.5px;
+  color: #555;
+  background: #fff3f2;
+  padding: 12px 20px;
+  border-top: 1px solid #f0dbd9;
+  line-height: 1.6;
+}
+
+/* ── Pay now button ── */
+.pay-now-btn {
+  background: #c9847a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 13px 32px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.pay-now-btn:hover {
+  background: #b5716a;
+}
+
+/* ── Bank logo ── */
+.pay-bank-logo {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+/* ── Bank info text ── */
+.pay-bank-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.pay-bank-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #222;
+}
+
+.pay-bank-sub {
+  font-size: 12px;
+  color: #888;
+}
+
+/* ── Reuse from Shipping/Information ── */
+.ship-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #aaa;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.ship-breadcrumb span { cursor: default; }
+.ship-breadcrumb .bc-active { color: #222; font-weight: 600; }
+.ship-breadcrumb .bc-sep { color: #ccc; }
+
+.ship-summary-box {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  background: #fff;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.ship-summary-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+}
+
+.ship-summary-divider {
+  height: 1px;
+  background: #e0e0e0;
+  margin: 0;
+}
+
+.ship-summary-label {
+  font-size: 13px;
+  color: #888;
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.ship-summary-value {
+  flex: 1;
+  font-size: 13px;
+  color: #222;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ship-summary-change {
+  font-size: 12px;
+  color: #7a9ebf;
+  cursor: pointer;
+  text-decoration: underline;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.ship-summary-change:hover { color: #4a7ea0; }
+
+.ship-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.ship-back-btn {
+  background: none;
+  border: none;
+  color: #777;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+.ship-back-btn:hover { color: #333; }
+
+/* ── RIGHT: Cart Summary (reuse from Information) ── */
+.info-right {
+  position: sticky;
+  top: 16px;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 24px 20px;
+  min-width: 0;
+  align-self: start;
+  margin-top: 52px;
+}
+
+.info-cart-items {
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.info-cart-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.info-item-img-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.info-item-img-wrap img {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #fff;
+}
+
+.info-item-img-placeholder {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  background: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #aaa;
+}
+
+.info-item-qty {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  background: #888;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.info-item-detail { flex: 1; min-width: 0; }
+
+.info-item-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #222;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.info-item-model {
+  font-size: 12px;
+  color: #888;
+  margin-top: 2px;
+}
+
+.info-item-price {
+  font-size: 13px;
+  color: #222;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.info-discount {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 16px;
+}
+
+.info-discount-input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  font-size: 13px;
+  outline: none;
+  background: #fff;
+  color: #e89090;
+}
+.info-discount-input::placeholder { color: #e89090; }
+
+.info-discount-btn {
+  padding: 10px 18px;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 13px;
+  color: #444;
+  cursor: pointer;
+}
+.info-discount-btn:hover { background: #f0f0f0; }
+
+.info-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.info-summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #555;
+}
+
+.info-summary-total {
+  font-size: 15px;
+  color: #222;
+  margin-top: 4px;
+  padding-top: 10px;
+  border-top: 1px solid #e0e0e0;
+}
+.info-summary-total strong { font-weight: 700; }
+.info-summary-total small { font-size: 11px; color: #888; margin-right: 4px; }
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+  .pay-page {
+    grid-template-columns: 1fr;
+    padding-bottom: 40px;
+  }
+  .pay-left {
+    max-width: 100%;
+  }
+  .info-right {
+    order: -1;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .ship-actions { flex-direction: column-reverse; gap: 10px; }
+  .pay-now-btn { width: 100%; }
+  .ship-summary-value { font-size: 12px; }
+}

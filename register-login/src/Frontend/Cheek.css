@@ -1,0 +1,472 @@
+﻿.cheek-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    width: 100%;
+    min-height: 300px;
+    margin: 0 auto;
+    padding: 0;
+}
+.cheek-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    padding: 18px 18px 16px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    min-height: 340px;
+    transition: box-shadow 0.2s;
+    margin-bottom: 16px;
+}
+/* Remove default select styling if any, and enforce custom button look */
+select, .filter-toggle {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+}
+/* cheek Section Header */
+/* Category Grid & Circles (เหมือน Home.html) */
+/* SEARCH BAR STYLE เหมือน Home.css */
+
+/* cheek Section Header */
+.section-header-cheek {
+    padding: 4px 20px 10px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #333;
+    padding-bottom: 5px;
+}
+.section-title {
+    font-family: 'Helvetica Neue', 'Arial', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: #333;
+    letter-spacing: 1.5px;
+    margin: 0;
+}
+/* Category Grid & Circles (เหมือน Home.html) */
+.category-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    text-align: center;
+    max-width: 1200px;
+    margin: 32px auto 0 auto;
+    padding: 0 40px;
+    flex-wrap: nowrap;
+}
+.category-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    transition: transform 0.3s;
+    gap: 10px;
+}
+.category-item:hover {
+    transform: translateY(-8px);
+}
+.category-image-wrapper {
+    width: 150px;
+    height: 150px;
+    position: relative;
+    background-color: #f7f7f7;
+    flex-shrink: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 12px;
+    box-shadow: none;
+    display: block;
+}
+
+/* Filter sidebar styles (global, not nested) */
+.filter-group {
+    width: 100%;
+}
+.filter-toggle {
+    width: 100%;
+    background: none;
+    border: none;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 15px;
+    font-weight: 700;
+    color: #232628;
+    letter-spacing: 0.5px;
+    padding: 0 0 2px 0;
+    cursor: pointer;
+    text-align: left;
+}
+.filter-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #232628;
+    letter-spacing: 0.5px;
+    text-align: left;
+}
+.filter-arrow {
+    font-size: 15px;
+    color: #232628;
+    margin-left: 8px;
+    transition: transform 0.2s;
+    font-weight: 400;
+}
+.filter-divider {
+    width: 100%;
+    height: 1px;
+    background: #232628;
+    opacity: 0.4;
+    margin-bottom: 16px;
+}
+.category-image-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 50%;
+    transition: opacity 0.3s;
+}
+.category-name {
+    font-size: 13px;
+    font-weight: 500;
+    margin: 0;
+    text-align: center;
+    width: 100%;
+}
+/* SEARCH BAR STYLE เหมือน Home.css */
+.search-form {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background: white;
+    border-radius: 50px;
+    height: 55px;
+    width: 55px;
+    padding: 5px;
+    transition: all 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);
+    overflow: hidden;
+}
+.search-form.active-search {
+    width: 320px;
+}
+.search-input {
+    border: none;
+    outline: none;
+    width: 100%;
+    height: 100%;
+    padding: 0 60px 0 20px;
+    font-size: 16px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.search-form.active-search .search-input {
+    opacity: 1;
+}
+.search-button {
+    position: absolute;
+    right: 5px;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    background: none;
+    border: none;
+}
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #ffffff;
+}
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: -350px;
+    width: 350px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+    transition: left 0.3s ease;
+    z-index: 1000;
+    overflow-y: auto;
+}
+.side-menu.active {
+    left: 0;
+}
+
+.login-section {
+    display: flex;
+    gap: 15px;
+    padding: 20px 25px;
+    border-bottom: 1px solid #eee;
+    font-weight: 500;
+}
+.login-section span {
+    cursor: pointer;
+}
+.login-section span:hover {
+    text-decoration: underline;
+}
+.divider {
+    color: #ccc;
+}
+.side-menu ul {
+    list-style: none;
+    padding: 0;
+}
+.side-menu ul li {
+    padding: 15px 25px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid #f0f0f0;
+}
+.side-menu ul li:hover {
+    background-color: #f8f8f8;
+}
+.side-menu ul li.title {
+    font-weight: bold;
+    margin-top: 10px;
+    background-color: #f5f5f5;
+}
+.menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #f0f0f0;
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+    box-sizing: border-box;
+    list-style: none;
+}
+.menu-header:hover {
+    background-color: #efefef;
+}
+.toggle-icon {
+    font-size: 20px;
+    transition: transform 0.3s ease;
+}
+.toggle-icon.active {
+    transform: rotate(45deg);
+}
+.submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+.submenu.active {
+    max-height: 500px;
+}
+.submenu li {
+    padding-left: 40px;
+}
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: none;
+    z-index: 999;
+}
+.overlay.active {
+    display: block;
+}
+/* คัดลอกสไตล์จาก bestsellerform1.css ที่เคยอยู่ใน Frontend มาวางที่นี่ */
+.announcement-bar {
+    width: 100%;
+    position: relative; 
+    background-color: #f7d2cc;
+    color: #333333;
+    padding: 9px 0;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    height: 45px;
+    overflow: hidden;
+}
+.announcement-slide {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    line-height: 1.2;
+}
+.announcement-slide.active {
+    opacity: 1;
+}
+
+.main-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 30px;
+    background-color: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    width: 100%;
+    min-height: 60px;
+    box-sizing: border-box;
+}
+.menu-icon {
+    position: absolute;
+    left: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    z-index: 100;
+}
+.menu-icon .bar {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: #333;
+    border-radius: 1px;
+    transition: all 0.3s ease;
+}
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 0 1 auto;
+    margin: 0 auto;
+}
+.romand-logo {
+    font-size: 36px;
+    font-weight: 10;
+    color: #333333;
+    letter-spacing: 1.5px;
+    text-transform: lowercase;
+}
+.header-icons {
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.icon-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 8px;
+    border-radius: 50%;
+}
+.icon-link:hover {
+    background-color: #f5f5f5;
+    color: #ff6b9d;
+    transform: scale(1.1);
+}
+.icon-link svg {
+    transition: stroke 0.3s ease;
+}
+.icon-link:hover svg {
+    stroke: #ff6b9d;
+}
+.cart-icon {
+    position: relative;
+}
+.cart-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #ff6b9d;
+    color: white;
+    font-size: 9px;
+    font-weight: bold;
+    min-width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1px;
+    line-height: 1;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.cheek-content-layout {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    margin-top: 24px;
+}
+.filter-sidebar {
+    width: 160px;
+    max-width: 180px;
+    min-width: 120px;
+    margin-top: 0;
+    margin-right: 32px;
+    margin-left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: flex-start;
+}
+.filter-group {
+    width: 100%;
+    max-width: 180px;
+    margin: 0;
+    margin-left: -130px;
+}
+.filter-toggle {
+    width: 100%;
+    max-width: 180px;
+    min-width: 120px;
+    box-sizing: border-box;
+}
+.filter-divider {
+    max-width: 180px;
+    margin-left: 0;
+    margin-right: 0;
+}

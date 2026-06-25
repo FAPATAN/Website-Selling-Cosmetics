@@ -3,6 +3,9 @@ const Quote = require('inspirational-quotes');
 
 const app = express();
 
+const bestRouter = require('./Bestseller/bestrouter');
+app.use(bestRouter);
+
 app.get('/', (req, res) => {
     res.send(Quote.getQuote());
 })

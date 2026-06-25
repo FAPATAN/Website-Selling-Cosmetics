@@ -1,0 +1,27 @@
+﻿
+
+StatusCode        : 200
+StatusDescription : OK
+Content           : {"count":33,"data":[{"Product_id":33,"Type_id":7,"Type_name
+                    ":"CHEEK","Price_range_id":null,"Product_name":"See-Through
+                     Veilighter","Product_model":null,"Product_detail":null,"Im
+                    age":"cheek_4.1.jpg","P...
+RawContent        : HTTP/1.1 200 OK
+                    Access-Control-Allow-Origin: *
+                    Connection: keep-alive
+                    Keep-Alive: timeout=5
+                    Content-Length: 6630
+                    Content-Type: application/json; charset=utf-8
+                    Date: Mon, 23 Feb 2026 17:48:50 GMT...
+Forms             : {}
+Headers           : {[Access-Control-Allow-Origin, *], [Connection, 
+                    keep-alive], [Keep-Alive, timeout=5], [Content-Length, 
+                    6630]...}
+Images            : {}
+InputFields       : {}
+Links             : {}
+ParsedHtml        : mshtml.HTMLDocumentClass
+RawContentLength  : 6630
+
+
+

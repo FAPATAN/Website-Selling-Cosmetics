@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Bestsellerform1 from './Bestsellerform1';
+﻿import React, { useState } from 'react';
 import { Mail, Lock, User, Phone, MapPin, Loader2, LogIn, UserPlus } from 'lucide-react';
 import './App.css';
-import ForgotPasswordSystem from './forgot';
 
 const MessageBox = ({ title, body, isError, onClose }) => {
     if (!body) return null;
@@ -54,6 +51,13 @@ const RegisterForm = ({ onRegisterSuccess, showMessage }) => {
     const [address, setAddress] = useState('');
     const [message, setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [pwFocused, setPwFocused] = useState(false);
+
+    const pwRules = {
+        length: password.length >= 8,
+        upper:  /[A-Z]/.test(password),
+        lower:  /[a-z]/.test(password),
+    };
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -81,10 +85,14 @@ const RegisterForm = ({ onRegisterSuccess, showMessage }) => {
             return;
         }
 
-        // Validate password length
-        if (password.length < 6) {
-            setMessage('❌ รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร');
-            showMessage('รหัสผ่านสั้นเกินไป', 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร', true);
+        // Validate password rules
+        if (!pwRules.length || !pwRules.upper || !pwRules.lower) {
+            const missing = [];
+            if (!pwRules.length) missing.push('อย่างน้อย 8 ตัวอักษร');
+            if (!pwRules.upper)  missing.push('ตัวพิมพ์ใหญ่ (A-Z)');
+            if (!pwRules.lower)  missing.push('ตัวพิมพ์เล็ก (a-z)');
+            setMessage('❌ รหัสผ่านไม่ตรงตามเงื่อนไขที่กำหนด');
+            showMessage('รหัสผ่านไม่ตรงเงื่อนไข', `ขาดเงื่อนไข: ${missing.join(', ')}`, true);
             return;
         }
 
@@ -162,15 +170,34 @@ const RegisterForm = ({ onRegisterSuccess, showMessage }) => {
                 />
             </div>
 
-            <div className="grid-2-cols">
-                <InputField label="ชื่อผู้ใช้งาน" id="username" value={username} onChange={(e) => setUsername(e.target.value)} required icon={User} />
-                <InputField label="รหัสผ่านอย่างน้อย6ตัว" id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required icon={Lock} />
+            <InputField label="ชื่อผู้ใช้งาน" id="username" value={username} onChange={(e) => setUsername(e.target.value)} required icon={User} />
+
+            <div
+                className="pw-field-wrapper"
+                onFocus={() => setPwFocused(true)}
+                onBlur={() => setPwFocused(false)}
+            >
+                <InputField label="รหัสผ่าน" id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required icon={Lock} />
+                {pwFocused && (
+                    <div className="pw-rules-popover">
+                        <span className={pwRules.length ? 'pw-rule ok' : 'pw-rule'}>
+                            {pwRules.length ? '✓' : '✗'} อย่างน้อย 8 ตัวอักษร
+                        </span>
+                        <span className={pwRules.upper ? 'pw-rule ok' : 'pw-rule'}>
+                            {pwRules.upper ? '✓' : '✗'} ตัวพิมพ์ใหญ่ (A-Z)
+                        </span>
+                        <span className={pwRules.lower ? 'pw-rule ok' : 'pw-rule'}>
+                            {pwRules.lower ? '✓' : '✗'} ตัวพิมพ์เล็ก (a-z)
+                        </span>
+                    </div>
+                )}
             </div>
 
             <InputField label="ยืนยันรหัสผ่าน" id="confirm-password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required icon={Lock} />
 
             <button
                 type="submit"
+                disabled={isLoading}
                 className="btn-primary"
             >
                 {isLoading ? (
@@ -183,17 +210,7 @@ const RegisterForm = ({ onRegisterSuccess, showMessage }) => {
                 )}
             </button>
 
-            <div className="divider-text">
-                or use your account
-            </div>
-            
-            <div className="social-buttons">
-                {['F', 'G', 'T'].map((letter, i) => (
-                    <button key={i} type="button" className="social-btn">
-                        {letter}
-                    </button>
-                ))}
-            </div>
+
         </form>
     );
 };
@@ -239,12 +256,22 @@ const LoginForm = ({ onLoginSuccess, showMessage }) => {
             const data = await response.json();
 
             if (response.ok) {
-                showMessage('สำเร็จ', `เข้าสู่ระบบสำเร็จ! ยินดีต้อนรับ ${data.username || data.userRole || email}`, false);
+                if (data.userRole === "A") {
+                    sessionStorage.setItem("admin_Member_id", data.Member_id ? data.Member_id : "");
+                    sessionStorage.setItem("admin_userEmail", email);
+                    sessionStorage.setItem("admin_username", data.username || "");
+                } else {
+                    sessionStorage.setItem("userEmail", email);
+                    sessionStorage.setItem("Member_id", data.Member_id ? data.Member_id : "");
+                    sessionStorage.setItem("username",  data.username  || "");
+                    sessionStorage.setItem("userRole",  data.userRole  || "U");
+                }
+                showMessage('สำเร็จ', `เข้าสู่ระบบสำเร็จ! ยินดีต้อนรับ ${data.username || email}`, false);
                 if (onLoginSuccess) {
                     onLoginSuccess({ email, role: data.userRole });
                 }
                 setTimeout(() => {
-                    window.location.href = '/Home/home.html';
+                    window.location.href = data.userRole === "A" ? "/admin" : "/";
                 }, 1000);
             } else {
                 const errorMessage = data.message || 'อีเมลหรือรหัสผ่านไม่ถูกต้อง';
@@ -293,19 +320,12 @@ const LoginForm = ({ onLoginSuccess, showMessage }) => {
                     icon={Lock} 
                     placeholder="รหัสผ่าน" 
                 />
-                <div className="login-options">
-                    <label className="remember-me">
-                        <input type="checkbox" />
-                        <span>Remember Me</span>
-                    </label>
-                    <a href="/forgot" className="forgot-password">
-                        Forgot your password?
-                    </a>
-                </div>
+
             </div>
 
             <button
                 type="submit"
+                disabled={isLoading}
                 className="btn-primary login"
             >
                 {isLoading ? (
@@ -318,24 +338,13 @@ const LoginForm = ({ onLoginSuccess, showMessage }) => {
                 )}
             </button>
 
-            <div className="divider-text login">
-                or use your account
-            </div>
-            
-            <div className="social-buttons login">
-                {['F', 'G', 'T'].map((letter, i) => (
-                    <button key={i} type="button" className="social-btn login">
-                        {letter}
-                    </button>
-                ))}
-            </div>
+
         </form>
     );
 };
 
 export default function App() {
     const [isRegisterView, setIsRegisterView] = useState(true);
-    const [currentPage, setCurrentPage] = useState('auth'); // 'auth' or 'forgot'
     const [messageBox, setMessageBox] = useState({ visible: false, title: '', body: '', isError: false });
 
     const showMessage = (title, body, isError = false) => {
@@ -349,80 +358,78 @@ export default function App() {
     const handleLoginSuccess = (userData) => {
         console.log('Login successful for user:', userData.email);
     };
-
     return (
-        <Routes>
-            <Route path="/forgot" element={<ForgotPasswordSystem />} />
-            <Route path="/bestseller1" element={<Bestsellerform1 setIsRegisterView={setIsRegisterView} />} />
-            <Route path="/" element={
-                <div className="app-container">
-                    <div className="auth-card">
-                        {/* Form Panel - slides left/right */}
-                        <div className={`form-panel ${isRegisterView ? 'register-view' : 'login-view'}`}> 
-                            {isRegisterView ? (
-                                <RegisterForm 
-                                    onRegisterSuccess={handleRegisterSuccess} 
-                                    showMessage={showMessage} 
-                                />
-                            ) : (
-                                <LoginForm 
-                                    onLoginSuccess={handleLoginSuccess} 
-                                    showMessage={showMessage}
-                                />
-                            )}
-                        </div>
-                        {/* Overlay Panel with Video Background */}
-                        <div className={`overlay-panel ${isRegisterView ? 'register-view' : 'login-view'}`}> 
-                            {/* Video Background */}
-                            <video
-                                className="video-background"
-                                autoPlay
-                                loop
-                                muted
-                                playsInline
-                            >
-                                <source src="/0fee2a39369b.mp4" type="video/mp4" />
-                            </video>
-                            {/* Content */}
-                            <div className="overlay-content">
-                                <div className="overlay-header">
-                                    <h2>
-                                        Welcome<br />ROM&ND
-                                    </h2>
-                                    <p>
-                                        {isRegisterView 
-                                            ? 'To keep connected with us please login with your personal info.'
-                                            : 'Step into ROM&ND enter your details and shine beautifully!'
-                                        }
-                                    </p>
-                                </div>
-                                <button
-                                    onClick={() => setIsRegisterView(!isRegisterView)}
-                                    className="btn-toggle"
-                                >
-                                    {isRegisterView ? (
-                                        <>
-                                            <LogIn size={18} /> Log In
-                                        </>
-                                    ) : (
-                                        <>
-                                            Sign Up <UserPlus size={18} />
-                                        </>
-                                    )}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    {messageBox.visible && (
-                        <MessageBox
-                            title={messageBox.title}
-                            body={messageBox.body}
-                            isError={messageBox.isError}
-                            onClose={() => setMessageBox({ ...messageBox, visible: false, body: '' })}
+        <div className="app-container">
+            <div className="auth-card">
+                
+                {/* Form Panel - slides left/right */}
+                <div className={`form-panel ${isRegisterView ? 'register-view' : 'login-view'}`}>
+                    {isRegisterView ? (
+                        <RegisterForm 
+                            onRegisterSuccess={handleRegisterSuccess} 
+                            showMessage={showMessage} 
+                        />
+                    ) : (
+                        <LoginForm 
+                            onLoginSuccess={handleLoginSuccess} 
+                            showMessage={showMessage}
                         />
                     )}
                 </div>
-            } />
-        </Routes>
+                
+                {/* Overlay Panel with Video Background */}
+                <div className={`overlay-panel ${isRegisterView ? 'register-view' : 'login-view'}`}>
+                    {/* Video Background */}
+                    <video
+                        className="video-background"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                    >
+                        <source src="/0fee2a39369b.mp4" type="video/mp4" />
+                    </video>
+                    
+                    {/* Content */}
+                    <div className="overlay-content">
+                        <div className="overlay-header">
+                            <h2>
+                                Welcome<br />ROM&ND
+                            </h2>
+                            <p>
+                                {isRegisterView 
+                                    ? 'To keep connected with us please login with your personal info.'
+                                    : 'Step into ROM&ND enter your details and shine beautifully!'
+                                }
+                            </p>
+                        </div>
+                        
+                        <button
+                            onClick={() => setIsRegisterView(!isRegisterView)}
+                            className="btn-toggle"
+                        >
+                            {isRegisterView ? (
+                                <>
+                                    <LogIn size={18} /> Log In
+                                </>
+                            ) : (
+                                <>
+                                    Sign Up <UserPlus size={18} />
+                                </>
+                            )}
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            {messageBox.visible && (
+                <MessageBox
+                    title={messageBox.title}
+                    body={messageBox.body}
+                    isError={messageBox.isError}
+                    onClose={() => setMessageBox({ ...messageBox, visible: false, body: '' })}
+                />
+            )}
+        </div>
     );
 }

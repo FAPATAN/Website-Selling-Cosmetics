@@ -1,11 +1,14 @@
 const mysql = require('mysql2');
 
-// สร้าง connection
-const connection = mysql.createConnection({
+// ใช้ Pool แทน createConnection เพื่อ auto-reconnect เมื่อ MySQL ตัด connection
+const connection = mysql.createPool({
     host: "localhost",
     user: "fah",
     password: "Fapatan11",
-    database: "web_selling_cosmetics"
+    database: "web_selling_cosmetics",
+    dateStrings: ['DATE'],
+    waitForConnections: true,
+    connectionLimit: 10,
 });
 
 exports.read = (req, res) => {
@@ -16,15 +19,25 @@ exports.read = (req, res) => {
             SELECT 
                 p.Product_id,
                 t.Type_id,
+                t.Type_name,
                 pr.Price_range_id,
                 p.Product_name,
                 p.Product_model,
                 p.Product_detail,
                 p.Image,
-                p.Product_price
+                p.Product_price,
+                p.Color,
+                p.Stock,
+                p.Sale_date,
+                p.Description,
+                pp.Promotion_id,
+                prom.Discount_value,
+                prom.DiscountType
             FROM product p
             LEFT JOIN type t ON p.Type_id = t.Type_id
             LEFT JOIN price_range pr ON p.Price_range_id = pr.Price_range_id
+            LEFT JOIN pro_product pp ON p.Product_id = pp.Product_id
+            LEFT JOIN promotion prom ON prom.Promotion_id = pp.Promotion_id
             WHERE p.Product_id = ?
         `;
 
@@ -38,7 +51,15 @@ exports.read = (req, res) => {
                 return res.status(404).json({ msg: 'ไม่พบสินค้า' });
             }
 
-            res.json(rows[0]);
+            const product = rows[0];
+            connection.query(
+                'SELECT product_images_id AS id, Image FROM product_images WHERE Product_id = ? ORDER BY sort_order, product_images_id',
+                [id],
+                (err2, imgs) => {
+                    product.gallery_images = err2 ? [] : imgs;
+                    res.json(product);
+                }
+            );
         });
     } catch (err) {
         console.log(err);
@@ -75,7 +96,7 @@ exports.read = (req, res) => {
 
 exports.bestseller = (req, res) => {
     try {
-        // Return a deterministic set of bestseller products (ids 1,2,3,4)
+        // ดึง bestseller จาก sold_total column (sync ตรงกับหน้า admin)
         const query = `
             SELECT 
                 p.Product_id,
@@ -85,11 +106,14 @@ exports.bestseller = (req, res) => {
                 p.Product_model,
                 p.Product_detail,
                 p.Image,
-                p.Product_price
+                p.Product_price,
+                p.Stock,
+                p.sold_total AS total_sold
             FROM product p
             LEFT JOIN type t ON p.Type_id = t.Type_id
-            WHERE p.Product_id IN (1,2,3,4)
-            ORDER BY FIELD(p.Product_id, 1,2,3,4)
+            WHERE p.sold_total > 0
+            ORDER BY p.sold_total DESC, p.Product_id ASC
+            LIMIT 4
         `;
 
         connection.query(query, (err, rows) => {
@@ -114,6 +138,23 @@ exports.bestseller = (req, res) => {
     }
 };
 
+exports.productColors = (req, res) => {
+    try {
+        const query = `
+            SELECT Product_id, Product_name, Color, Image
+            FROM product
+            WHERE Color IS NOT NULL AND Color != ''
+            ORDER BY Product_name ASC
+        `;
+        connection.query(query, (err, rows) => {
+            if (err) return res.status(500).json({ error: err.sqlMessage });
+            res.json({ data: rows });
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
 exports.list = (req, res) => {
     try {
         const query = `
@@ -126,11 +167,16 @@ exports.list = (req, res) => {
                 p.Product_model,
                 p.Product_detail,
                 p.Image,
-                p.Product_price
+                p.Product_price,
+                p.Color,
+                p.Stock,
+                p.sold_total AS total_sold
             FROM product p
             LEFT JOIN type t ON p.Type_id = t.Type_id
             LEFT JOIN price_range pr ON p.Price_range_id = pr.Price_range_id
-            ORDER BY p.Product_id DESC
+            WHERE p.sold_total > 0
+            ORDER BY p.sold_total DESC, p.Product_id ASC
+            LIMIT 8
         `;
 
         connection.query(query, (err, rows) => {
