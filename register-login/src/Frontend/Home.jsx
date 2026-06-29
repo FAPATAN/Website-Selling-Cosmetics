@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import "../Home.css";
 const API = process.env.REACT_APP_API_URL;
+const PUBLIC_URL = process.env.PUBLIC_URL || '';
 
 
 function Home() {
@@ -67,27 +68,27 @@ function Home() {
 
   const girlSlides = [
     {
-      video: "Home/girl_1.mp4",
+      video: `${PUBLIC_URL}/Home/girl_1.mp4`,
       productIds: [7, 127]
     },
     {
-      video: "Home/girl_2.mp4",
+      video: `${PUBLIC_URL}/Home/girl_2.mp4`,
       productIds: [105, 8, 82]
     },
     {
-      video: "Home/girl_3.mp4",
+      video: `${PUBLIC_URL}/Home/girl_3.mp4`,
       productIds: [31]
     },
     {
-      video: "Home/girl_4.mp4",
+      video: `${PUBLIC_URL}/Home/girl_4.mp4`,
       productIds: [97]
     },
     {
-      video: "Home/girl_5.mp4",
+      video: `${PUBLIC_URL}/Home/girl_5.mp4`,
       productIds: [100, 101, 102, 103, 104, 105]
     },
     {
-      video: "Home/girl_6.mp4",
+      video: `${PUBLIC_URL}/Home/girl_6.mp4`,
       productIds: [61]
     },
   ];
@@ -99,33 +100,33 @@ function Home() {
       subtitle: "TteokGloss🍡",
       title: <>Glasting Color Gloss<br />#Tteok edition !</>,
       desc: "เฉดสีนุ่มหนึบ หวานละมุนดุจขนมต๊อกเกาหลี จับคู่มาอย่างลงตัว เตรียมพร้อมให้ rommates ช้อปแล้ว",
-      video: "Home/new_1.mp4"
+      video: `${PUBLIC_URL}/Home/new_1.mp4`
     },
     {
       subtitle: "4 in 1 UP DOWN LEFT RIGHT",
       title: <>Han All Eye<br />Pot Liner</>,
       desc: "คอมพลีทลุคดวงตาดูกว้าง สวยโดดเด่นใน 4 ขั้นตอนง่าย ๆ ลงสี ตามทิศของลูกศรได้เลย",
-      video: "Home/new_2.mp4"
+      video: `${PUBLIC_URL}/Home/new_2.mp4`
     },
     {
       subtitle: "Rolling Rooling",
       title: <>Juicy Roll<br />Cheek</>,
       desc: "บลัชผลไม้เสกแก้มใสยิ่งทายิ่ง POP!",
-      video: "Home/new_3.mp4"
+      video: `${PUBLIC_URL}/Home/new_3.mp4`
     },
     {
       subtitle: "♥️🧡💛💚💙💜💗",
       title: <>SLIDE IN COLOR<br />SHADOW</>,
       desc: "สไลด์ปุ๊บ! เปิดโลกแห่งสีสันปั้บ! ในสไลด์เดียวเปิดโลกแห่งสีสัน ครบคอลเลคชั่นถึง 49 เฉดสี",
-      video: "Home/new_4.mp4"
+      video: `${PUBLIC_URL}/Home/new_4.mp4`
     }
   ];
 
   const personalSlides = [
-    { bigImg: "Home/per_1.jpg", productIds: [119, 53, 124, 125] },
-    { bigImg: "Home/per_2.jpg", productIds: [131, 134, 139, 55] },
-    { bigImg: "Home/per_3.jpg", productIds: [129, 4, 137, 12] },
-    { bigImg: "Home/per_4.jpg", productIds: [120, 136, 138, 57] },
+    { bigImg: `${PUBLIC_URL}/Home/per_1.jpg`, productIds: [119, 53, 124, 125] },
+    { bigImg: `${PUBLIC_URL}/Home/per_2.jpg`, productIds: [131, 134, 139, 55] },
+    { bigImg: `${PUBLIC_URL}/Home/per_3.jpg`, productIds: [129, 4, 137, 12] },
+    { bigImg: `${PUBLIC_URL}/Home/per_4.jpg`, productIds: [120, 136, 138, 57] },
   ];
 
   // ดึงจำนวนสินค้าใน cart จาก backend
@@ -161,9 +162,9 @@ function Home() {
   }, []);
   // --- Video Slider State ---
   const videoList = [
-    `${API}/Home/slide_1.mp4`,
-    `${API}/Home/slide_2.mp4`,
-    `${API}/Home/slide_3.mp4`
+    `${PUBLIC_URL}/Home/slide_1.mp4`,
+    `${PUBLIC_URL}/Home/slide_2.mp4`,
+    `${PUBLIC_URL}/Home/slide_3.mp4`
   ];
   const [currentVideo, setCurrentVideo] = useState(0);
   const sliderRef = useRef(null);
@@ -914,7 +915,7 @@ function Home() {
           {/* About Us */}
           <div className="flip-card" onClick={() => navigate('/about')} style={{cursor:'pointer'}}>
             <div className="flip-card-inner">
-              <div className="flip-card-front" style={{ backgroundImage: "url('Home/aboutme.webp')" }}>
+              <div className="flip-card-front" style={{ backgroundImage: `url('${PUBLIC_URL}/Home/aboutme.webp')` }}>
                 <div className="flip-card-overlay">
                   <h3 className="flip-card-title">ABOUT US</h3>
                 </div>
@@ -930,7 +931,7 @@ function Home() {
           {/* Catalog */}
           <div className="flip-card" onClick={() => navigate('/bestsellerform')} style={{cursor:'pointer'}}>
             <div className="flip-card-inner">
-              <div className="flip-card-front" style={{ backgroundImage: "url('Home/product_catalog.jpg')" }}>
+              <div className="flip-card-front" style={{ backgroundImage: `url('${PUBLIC_URL}/Home/product_catalog.jpg')` }}>
                 <div className="flip-card-overlay">
                   <h3 className="flip-card-title">ROM&amp;ND CATALOG</h3>
                 </div>
@@ -946,7 +947,7 @@ function Home() {
           {/* Instagram */}
           <div className="flip-card" onClick={() => window.open('https://www.instagram.com/romandofficial_th', '_blank')} style={{cursor:'pointer'}}>
             <div className="flip-card-inner">
-              <div className="flip-card-front" style={{ backgroundImage: "url('Home/instagram.jpg')" }}>
+              <div className="flip-card-front" style={{ backgroundImage: `url('${PUBLIC_URL}/Home/instagram.jpg')` }}>
                 <div className="flip-card-overlay">
                   <h3 className="flip-card-title">INSTAGRAM</h3>
                 </div>
