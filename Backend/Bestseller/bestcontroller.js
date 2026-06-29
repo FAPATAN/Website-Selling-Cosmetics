@@ -2,10 +2,11 @@ const mysql = require('mysql2');
 
 // ใช้ Pool แทน createConnection เพื่อ auto-reconnect เมื่อ MySQL ตัด connection
 const connection = mysql.createPool({
-    host: "localhost",
-    user: "fah",
-    password: "Fapatan11",
-    database: "web_selling_cosmetics",
+   host: process.env.DB_HOST,         // แทน localhostเดิม
+    user: process.env.DB_USER,         // แทน user เดิม
+    password: process.env.DB_PASSWORD, // แทน password เดิม
+    database: process.env.DB_NAME,     // แทน database เดิม
+    port: process.env.DB_PORT || 3306, // พอร์ต MySQL ปกติ
     dateStrings: ['DATE'],
     waitForConnections: true,
     connectionLimit: 10,
