@@ -113,15 +113,16 @@ exports.getProProducts = async () => {
         });
     });
 };
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 
 // ใช้ Pool แทน createConnection เพื่อ auto-reconnect เมื่อ MySQL ตัด connection
 const connection = mysql.createPool({
-    host: "localhost",
-    user: "fah",
-    password: "Fapatan11",
-    database: "web_selling_cosmetics",
-    dateStrings: ['DATE'], // Return DATE columns as "YYYY-MM-DD" string to avoid timezone offset
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT || 3306,
+    dateStrings: ['DATE'],
     waitForConnections: true,
     connectionLimit: 10,
 });
