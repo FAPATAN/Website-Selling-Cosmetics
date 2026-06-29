@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import "./Account.css";
 import { fetchUserProfile, updateUserProfile, changePassword } from "./api";
+const API = process.env.REACT_APP_API_URL;
 
 /* ───────────── PasswordField ───────────── */
 function PasswordField({ label, value, onChange, placeholder }) {
@@ -85,7 +86,7 @@ export default function ProfileSettings() {
     useEffect(() => {
         const memberId = sessionStorage.getItem('Member_id');
         if (!memberId) return;
-        fetch(`http://localhost:5000/api/cart/${memberId}`)
+        fetch(`${API}/api/cart/${memberId}`)
             .then(res => res.json())
             .then(data => {
                 if (data.cart) {

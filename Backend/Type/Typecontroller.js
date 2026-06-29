@@ -1,4 +1,5 @@
 const db = require('./config/db');
+const BASE_URL = process.env.BASE_URL;
 
 exports.getCategories = (req, res) => {
     const sql = `SELECT Type_id, Type_name, Type_pic FROM type`;
@@ -12,7 +13,7 @@ exports.getCategories = (req, res) => {
         // ปรับรูปให้เป็น URL จริง (ใช้ uploads)
         const newData = results.map(item => ({
             ...item,
-            Type_pic: item.Type_pic ? `http://localhost:5000/uploads/${item.Type_pic}` : null
+            Type_pic: item.Type_pic ? `${BASE_URL}/uploads/${item.Type_pic}` : null
         }));
 
         res.json(newData);

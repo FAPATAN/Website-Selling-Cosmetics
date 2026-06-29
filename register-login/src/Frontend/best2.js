@@ -15,12 +15,13 @@ const Best2 = () => {
   const [descOpen, setDescOpen] = useState(false);
   const [selectedMainImg, setSelectedMainImg] = useState(null);
   const [allProducts, setAllProducts] = useState([]);
+  const API = process.env.REACT_APP_API_URL;
 
   // โหลดจำนวนสินค้าใน cart
   React.useEffect(() => {
     const memberId = sessionStorage.getItem('Member_id');
     if (!memberId) return;
-    fetch(`http://localhost:5000/api/cart/${memberId}`)
+    fetch(`${API}/api/cart/${memberId}`)
       .then(res => res.json())
       .then(data => {
         if (data.cart) {
@@ -34,7 +35,7 @@ const Best2 = () => {
   // ดึงข้อมูลสินค้า ตาม id
   React.useEffect(() => {
     if (!id) return;
-    fetch(`http://localhost:5000/api/best/${id}`)
+    fetch(`${API}/api/best/${id}`)
       .then(res => {
         if (!res.ok) throw new Error('ไม่พบข้อมูลสินค้า');
         return res.json();
@@ -53,7 +54,7 @@ const Best2 = () => {
   // ดึงสินค้าทุกตัวที่มี Color เพื่อหา variant และ color swatches
   React.useEffect(() => {
     if (!product?.Image) return;
-    fetch(`http://localhost:5000/api/product-colors`)
+    fetch(`${API}/api/product-colors`)
       .then(r => r.json())
       .then(d => setAllProducts(d.data || []))
       .catch(() => setAllProducts([]));
@@ -103,7 +104,7 @@ const Best2 = () => {
       // โหลด cart เดิมก่อน เพื่อ merge
       let oldCart = [];
       try {
-        const res = await fetch(`http://localhost:5000/api/cart/${memberId}`);
+        const res = await fetch(`${API}/api/cart/${memberId}`);
         const data = await res.json();
         if (data.cart) {
           oldCart = data.cart.filter(item => item.Product_id).map(item => ({
@@ -143,7 +144,7 @@ const Best2 = () => {
         }
       }
 
-      await fetch('http://localhost:5000/api/cart', {
+      await fetch(`${API}/api/cart`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ Member_id: memberId, cart_items: newCart })
@@ -246,9 +247,9 @@ const Best2 = () => {
             {/* Thumbnail strip on left */}
             {(() => {
               const galleryImgs = product?.gallery_images || [];
-              const mainUrl = product ? `http://localhost:5000/uploads/${product.Image.replace(/^uploads[\\/]/, '')}` : null;
+              const mainUrl = product ? `${API}/uploads/${product.Image.replace(/^uploads[\\/]/, '')}` : null;
               const thumbList = galleryImgs.length > 0
-                ? [{ key: 'main', url: mainUrl }, ...galleryImgs.map(g => ({ key: g.id, url: `http://localhost:5000/uploads/${g.Image.replace(/^uploads[\\/]/, '')}` }))]
+                ? [{ key: 'main', url: mainUrl }, ...galleryImgs.map(g => ({ key: g.id, url: `${API}/uploads/${g.Image.replace(/^uploads[\\/]/, '')}` }))]
                 : [];
               const currentMain = selectedMainImg || mainUrl;
               return thumbList.length > 1 ? (
@@ -274,7 +275,7 @@ const Best2 = () => {
                 <div style={{position:'relative',display:'inline-block'}}>
                   <img
                     className="main-image"
-                    src={selectedMainImg || `http://localhost:5000/uploads/${product.Image.replace(/^uploads[\\/]/, '')}`}
+                    src={selectedMainImg || `${API}/uploads/${product.Image.replace(/^uploads[\\/]/, '')}`}
                     alt={product.Product_name}
                     style={product.Stock != null && Number(product.Stock) === 0 ? {opacity:0.55} : {}}
                   />
@@ -366,7 +367,7 @@ const Best2 = () => {
                 })()}
                 {product?.Product_detail ? (
                   <img
-                    src={`http://localhost:5000/uploads/${product.Product_detail}`}
+                    src={`${API}/uploads/${product.Product_detail}`}
                     alt="product detail"
                     style={{width:'100%',borderRadius:8,display:'block'}}
                   />

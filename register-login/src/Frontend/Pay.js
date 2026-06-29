@@ -1,6 +1,7 @@
 ﻿import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Pay.css";
+const API = process.env.REACT_APP_API_URL;
 
 export default function Pay() {
   const navigate = useNavigate();
@@ -64,7 +65,7 @@ export default function Pay() {
         const formData = new FormData();
         formData.append("Order_id", orderId);
         formData.append("slip", slipFile);
-        const resp = await fetch("http://localhost:5000/api/orders/submit-slip", {
+        const resp = await fetch(`${API}/api/orders/submit-slip`, {
           method: "POST",
           body: formData,
         });
@@ -98,7 +99,7 @@ export default function Pay() {
 
   // โหลด dbOrderId จาก localStorage เมื่อมาจาก Orders2 (cart ถูกเคลียร์แล้ว)
   useEffect(() => {
-    fetch('http://localhost:5000/api/promotion')
+    fetch(`${API}/api/promotion`)
       .then(r => r.json())
       .then(d => {
         const map = {};
@@ -125,7 +126,7 @@ export default function Pay() {
   // เมื่อมาจาก Orders2 (targetOrderId มีค่า) → โหลด items จาก order DB แทน cart
   useEffect(() => {
     if (!targetOrderId || !memberId) return;
-    fetch(`http://localhost:5000/api/orders/${memberId}`)
+    fetch(`${API}/api/orders/${memberId}`)
       .then(r => r.json())
       .then(d => {
         const found = (d.orders || []).find(o => String(o.Order_id) === String(targetOrderId));
@@ -151,7 +152,7 @@ export default function Pay() {
   useEffect(() => {
     if (!memberId) return;
     if (targetOrderId) return; // มาจาก Orders2 — ใช้ useEffect ด้านบนแทน
-    fetch(`http://localhost:5000/api/cart/${memberId}`)
+    fetch(`${API}/api/cart/${memberId}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.cart) {
@@ -169,7 +170,7 @@ export default function Pay() {
 
           // ล้าง backend cart ทันที ทุกครั้งที่มาถึงหน้า Pay (ก่อน logic อื่น)
           // cart state ถูก set ไปแล้วด้านบน Pay page ยังแสดงสินค้าได้ปกติ
-          fetch("http://localhost:5000/api/cart", {
+          fetch(`${API}/api/cart`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ Member_id: memberId, cart_items: [] }),
@@ -215,7 +216,7 @@ export default function Pay() {
 
               localStorage.setItem("pendingOrders", JSON.stringify([...existing, newOrder]));
 
-              fetch("http://localhost:5000/api/orders/create", {
+              fetch(`${API}/api/orders/create`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -520,7 +521,7 @@ export default function Pay() {
                 <div className="info-item-img-wrap">
                   {item.image ? (
                     <img
-                      src={`http://localhost:5000/uploads/${item.image.replace(/^uploads[\/]/, "")}`}
+                      src={`${API}/uploads/${item.image.replace(/^uploads[\/]/, "")}`}
                       alt={item.name}
                     />
                   ) : (

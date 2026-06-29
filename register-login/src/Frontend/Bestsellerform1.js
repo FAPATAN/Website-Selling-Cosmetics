@@ -18,10 +18,11 @@ const Bestsellerform1 = ({ setIsRegisterView }) => {
 	const [proProducts, setProProducts] = useState([]);
 	const [selectedImages, setSelectedImages] = useState({});
 	const [allColors, setAllColors] = useState([]);
+	const API = process.env.REACT_APP_API_URL;
 
 	// ดึง Color ของสินค้าทั้งหมด (สำหรับ sibling color swatches)
 	useEffect(() => {
-		fetch('http://localhost:5000/api/product-colors')
+		fetch(`${API}/api/product-colors`)
 			.then(r => r.json())
 			.then(data => setAllColors(Array.isArray(data.data) ? data.data : []))
 			.catch(() => setAllColors([]));
@@ -29,7 +30,7 @@ const Bestsellerform1 = ({ setIsRegisterView }) => {
 
 	// ดึงข้อมูลโปรโมชั่น (สำหรับแสดง badge + ราคาลด)
 	useEffect(() => {
-		fetch('http://localhost:5000/api/promotion')
+		fetch(`${API}/api/promotion`)
 			.then(r => r.json())
 			.then(data => setProProducts(Array.isArray(data.proProducts) ? data.proProducts : []))
 			.catch(() => setProProducts([]));
@@ -39,7 +40,7 @@ const Bestsellerform1 = ({ setIsRegisterView }) => {
 	useEffect(() => {
 		const fetchAllProducts = async () => {
 			try {
-				const res = await fetch("http://localhost:5000/api/best");
+				const res = await fetch(`${API}/api/best`);
 				const result = await res.json();
 				console.log('API /api/best result.data:', result.data);
 				const products = Array.isArray(result.data) ? result.data : [];
@@ -57,7 +58,7 @@ const Bestsellerform1 = ({ setIsRegisterView }) => {
 		// Fetch categories from backend
 		const fetchCategories = async () => {
 			try {
-				const res = await fetch("http://localhost:5000/api/categories");
+				const res = await fetch(`${API}/api/categories`);
 				const data = await res.json();
 				setCategories(Array.isArray(data) ? data : []);
 			} catch (err) {
@@ -107,7 +108,7 @@ const Bestsellerform1 = ({ setIsRegisterView }) => {
 
 	// ดึง min/max price จาก backend (price_range table, BEST = id 1)
 	useEffect(() => {
-		fetch("http://localhost:5000/api/price-range/1")
+		fetch(`${API}/api/price-range/1`)
 			.then(res => res.json())
 			.then(({ min, max }) => {
 				setMinPrice(min);
@@ -319,7 +320,7 @@ const Bestsellerform1 = ({ setIsRegisterView }) => {
 												allProducts.find(p => p.Image && new RegExp('^best_' + num + '\\.', 'i').test(p.Image.split('/').pop()));
 											if (!groupProduct || Number(groupProduct.Product_price) > priceRange[1]) return;
 
-											const imgSrc = groupProduct.Image.startsWith('http') ? groupProduct.Image : 'http://localhost:5000/uploads/' + groupProduct.Image;
+											const imgSrc = groupProduct.Image.startsWith('http') ? groupProduct.Image : `${API}/uploads/${groupProduct.Image}`;
 											const variants = allProducts
 												.filter(p => p.Image && new RegExp('^best_' + num + '\\.', 'i').test(p.Image.split('/').pop()))
 												.sort((a, b) => {
@@ -397,7 +398,7 @@ const Bestsellerform1 = ({ setIsRegisterView }) => {
 											);
 										} else {
 											// สินค้า type อื่น — แสดงเป็น card เดี่ยว
-											const imgSrc = product.Image.startsWith('http') ? product.Image : 'http://localhost:5000/uploads/' + product.Image;
+											const imgSrc = product.Image.startsWith('http') ? product.Image : `${API}/uploads/${product.Image}`;
 											const promo = proProducts.find(pp => pp.Product_id === product.Product_id);
 											const discount = promo ? Number(promo.Discount_value) || 0 : 0;
 											const originalPrice = Number(product.Product_price);

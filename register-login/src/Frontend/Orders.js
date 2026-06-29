@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import "./Account.css";
 import "./Orders.css";
+const API = process.env.REACT_APP_API_URL;
 
 const STATUS_STEPS = [
     { key: "placed",    label: "Order List",        icon: "/status-placed.png" },
@@ -79,7 +80,7 @@ export default function Orders() {
     useEffect(() => {
         if (!memberId) return;
         setLoadingOrders(true);
-        fetch(`http://localhost:5000/api/orders/${memberId}`)
+        fetch(`${API}/api/orders/${memberId}`)
             .then(r => r.json())
             .then(d => { setPendingOrders(d.orders || []); setLoadingOrders(false); })
             .catch(() => setLoadingOrders(false));

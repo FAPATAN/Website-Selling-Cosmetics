@@ -1,6 +1,7 @@
 ﻿import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Shipping.css";
+const API = process.env.REACT_APP_API_URL;
 
 export default function Shipping() {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ export default function Shipping() {
 
   // โหลด promotion map
   useEffect(() => {
-    fetch('http://localhost:5000/api/promotion')
+    fetch(`${API}/api/promotion`)
       .then(r => r.json())
       .then(d => {
         const map = {};
@@ -49,7 +50,7 @@ export default function Shipping() {
   // โหลด cart จาก backend
   useEffect(() => {
     if (!memberId) return;
-    fetch(`http://localhost:5000/api/cart/${memberId}`)
+    fetch(`${API}/api/cart/${memberId}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.cart) {
@@ -251,7 +252,7 @@ export default function Shipping() {
                 <div className="info-item-img-wrap">
                   {item.image ? (
                     <img
-                      src={`http://localhost:5000/uploads/${item.image.replace(/^uploads[\/]/, "")}`}
+                      src={`${API}/uploads/${item.image.replace(/^uploads[\/]/, "")}`}
                       alt={item.name}
                     />
                   ) : (

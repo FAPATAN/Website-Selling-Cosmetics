@@ -3,6 +3,7 @@
 	import { useNavigate } from "react-router-dom";
 	import "./Eye.css";
 	import SearchBar from "./SearchBar";
+	const API = process.env.REACT_APP_API_URL;
 
 const EyeSection = ({ setIsRegisterView }) => {
 	const navigate = useNavigate();
@@ -21,7 +22,7 @@ const EyeSection = ({ setIsRegisterView }) => {
 	useEffect(() => {
 		const memberId = sessionStorage.getItem('Member_id');
 		if (!memberId) return;
-		fetch(`http://localhost:5000/api/cart/${memberId}`)
+		fetch(`${API}/api/cart/${memberId}`)
 			.then(res => res.json())
 			.then(data => {
 				if (data.cart) {
@@ -36,7 +37,7 @@ const EyeSection = ({ setIsRegisterView }) => {
 	useEffect(() => {
 		const fetchAllProducts = async () => {
 			try {
-				const res = await fetch("http://localhost:5000/api/eye");
+				const res = await fetch(`${API}/api/eye`);
 				const result = await res.json();
 				setAllProducts(Array.isArray(result.data) ? result.data : []);
 				// ปรับให้ eye เป็น 4 ตัวแรกของสินค้าทั้งหมด (รองรับชื่อไฟล์ eye_1.1.jpg, eye_1.2.jpg ฯลฯ)
@@ -53,7 +54,7 @@ const EyeSection = ({ setIsRegisterView }) => {
 		// Fetch categories from backend
 		const fetchCategories = async () => {
 			try {
-				const res = await fetch("http://localhost:5000/api/categories");
+				const res = await fetch(`${API}/api/categories`);
 				const data = await res.json();
 				setCategories(Array.isArray(data) ? data : []);
 			} catch (err) {
@@ -102,7 +103,7 @@ const EyeSection = ({ setIsRegisterView }) => {
 
 	// ดึง min/max price จาก backend (price_range)
 	useEffect(() => {
-		fetch("http://localhost:5000/api/price-range/5")
+		fetch(`${API}/api/price-range/5`)
 			.then(res => res.json())
 			.then(({ min, max }) => {
 				setMinPrice(min);
@@ -289,7 +290,7 @@ const EyeSection = ({ setIsRegisterView }) => {
 										const variantKey = selectedImages[num] || `eye_${num}.1`;
 										const product = allProducts.find(p => p.Image && imgMatch(p.Image, variantKey));
 										if (!product || Number(product.Product_price) > priceRange[1]) return null;
-										const imgSrc = product.Image.startsWith('http') ? product.Image : `http://localhost:5000/uploads/${product.Image}`;
+										const imgSrc = product.Image.startsWith('http') ? product.Image : `${API}/uploads/${product.Image}`;
 										const name = product.Product_name;
 										const price = product.Product_price;
 										const detail = product.Product_detail;
@@ -348,7 +349,7 @@ const EyeSection = ({ setIsRegisterView }) => {
 									const standaloneCards = standaloneProducts.map(product => {
 										if (Number(product.Product_price) > priceRange[1]) return null;
 										const imgSrc = product.Image
-											? (product.Image.startsWith('http') ? product.Image : `http://localhost:5000/uploads/${product.Image}`)
+											? (product.Image.startsWith('http') ? product.Image : `${API}/uploads/${product.Image}`)
 											: 'https://via.placeholder.com/180x180?text=No+Image';
 										const colors = product.Color ? [{ color: product.Color, img: null }] : [];
 										return (

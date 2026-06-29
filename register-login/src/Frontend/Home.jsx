@@ -1,6 +1,7 @@
 ﻿import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Home.css";
+const API = process.env.REACT_APP_API_URL;
 
 
 function Home() {
@@ -32,7 +33,7 @@ function Home() {
     if (!memberId) { return; }
     try {
       let oldCart = [];
-      const res = await fetch(`http://localhost:5000/api/cart/${memberId}`);
+      const res = await fetch(`${API}/api/cart/${memberId}`);
       const data = await res.json();
       if (data.cart) {
         oldCart = data.cart.filter(i => i.Product_id).map(i => ({
@@ -53,7 +54,7 @@ function Home() {
       if (!found) {
         newCart.push({ Product_id: product.Product_id, Quantity: 1, Price: Number(product.Product_price) || 0, Total: Number(product.Product_price) || 0 });
       }
-      await fetch('http://localhost:5000/api/cart', {
+      await fetch(`${API}/api/cart`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ Member_id: memberId, cart_items: newCart })
@@ -131,7 +132,7 @@ function Home() {
   useEffect(() => {
     const memberId = sessionStorage.getItem('Member_id');
     if (!memberId) return;
-    fetch(`http://localhost:5000/api/cart/${memberId}`)
+    fetch(`${API}/api/cart/${memberId}`)
       .then(res => res.json())
       .then(data => {
         if (data.cart) {
@@ -146,7 +147,7 @@ function Home() {
   useEffect(() => {
     if (!searchQuery.trim()) { setSearchResults([]); return; }
     setSearchLoading(true);
-    fetch(`http://localhost:5000/api/products/search?q=${encodeURIComponent(searchQuery)}`)
+    fetch(`${API}/api/products/search?q=${encodeURIComponent(searchQuery)}`)
       .then(r => r.json())
       .then(d => { setSearchResults(Array.isArray(d) ? d : (d.products || [])); setSearchLoading(false); })
       .catch(() => { setSearchResults([]); setSearchLoading(false); });
@@ -160,9 +161,9 @@ function Home() {
   }, []);
   // --- Video Slider State ---
   const videoList = [
-    "Home/slide_1.mp4",
-    "Home/slide_2.mp4",
-    "Home/slide_3.mp4"
+    `${API}/Home/slide_1.mp4`,
+    `${API}/Home/slide_2.mp4`,
+    `${API}/Home/slide_3.mp4`
   ];
   const [currentVideo, setCurrentVideo] = useState(0);
   const sliderRef = useRef(null);
@@ -377,11 +378,11 @@ function Home() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/categories")
+    fetch(`${API}/api/categories`)
       .then(res => res.json())
       .then(data => setCategories(Array.isArray(data) ? data : []))
       .catch(() => setCategories([]));
-    fetch("http://localhost:5000/api/bestseller")
+    fetch(`${API}/api/bestseller`)
       .then(res => res.json())
       .then(result => setBestsellers(Array.isArray(result.data) ? result.data : []))
       .catch(() => setBestsellers([]));
@@ -390,7 +391,7 @@ function Home() {
     const allPersonalIds = [...new Set(personalSlides.flatMap(s => s.productIds))];
     Promise.all(
       allPersonalIds.map(id =>
-        fetch(`http://localhost:5000/api/best/${id}`)
+        fetch(`${API}/api/best/${id}`)
           .then(r => r.json())
           .catch(() => null)
       )
@@ -404,7 +405,7 @@ function Home() {
     const allIds = [...new Set(girlSlides.flatMap(s => s.productIds))];
     Promise.all(
       allIds.map(id =>
-        fetch(`http://localhost:5000/api/best/${id}`)
+        fetch(`${API}/api/best/${id}`)
           .then(r => r.json())
           .catch(() => null)
       )
@@ -519,7 +520,7 @@ function Home() {
                     onMouseEnter={e => e.currentTarget.style.background='#fafafa'}
                     onMouseLeave={e => e.currentTarget.style.background='transparent'}
                   >
-                    <img src={p.Product_image ? `http://localhost:5000/uploads/${p.Product_image}` : '/placeholder.png'} alt={p.Product_name} style={{ width: 44, height: 44, objectFit: 'cover', borderRadius: 8, flexShrink: 0, border: '1px solid #eee' }} />
+                    <img src={p.Product_image ? `${API}/uploads/${p.Product_image}` : '/placeholder.png'} alt={p.Product_name} style={{ width: 44, height: 44, objectFit: 'cover', borderRadius: 8, flexShrink: 0, border: '1px solid #eee' }} />
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 13.5, fontWeight: 500, color: '#222', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.Product_name}</div>
                       <div style={{ fontSize: 12.5, color: '#e05c8a', marginTop: 2 }}>฿{Number(p.Product_price).toLocaleString()}</div>
@@ -688,7 +689,7 @@ function Home() {
                 <div className="best-seller-slide" key={product.Product_id} style={{ minWidth: '100%' }}>
                   <div className="best-slide-left">
                     <img
-                      src={product.Image ? (product.Image.startsWith('http') ? product.Image : `http://localhost:5000/uploads/${product.Image}`) : 'https://via.placeholder.com/600x600?text=No+Image'}
+                      src={product.Image ? (product.Image.startsWith('http') ? product.Image : `${API}/uploads/${product.Image}`) : 'https://via.placeholder.com/600x600?text=No+Image'}
                       alt={product.Product_name}
                     />
                   </div>
@@ -795,7 +796,7 @@ function Home() {
                     return (
                       <div className="personal-product-card" key={pid} style={{cursor:'pointer'}} onClick={() => { window.scrollTo(0,0); navigate('/best1/' + pid); }}>
                         <div className="personal-product-card-img-wrap">
-                          <img src={`http://localhost:5000/uploads/${p.Image}`} alt={p.Product_name} />
+                          <img src={`${API}/uploads/${p.Image}`} alt={p.Product_name} />
                           <div className="personal-product-card-overlay" />
                         </div>
                         <div className="personal-product-card-info">
@@ -862,7 +863,7 @@ function Home() {
                   return (
                     <div className="romand-girl-mini-carousel">
                       <div className="romand-girl-product-card" onClick={() => navigate(`/best1/${pid}`)} style={{cursor:'pointer'}}>
-                        <img src={p.Image ? `http://localhost:5000/uploads/${p.Image.replace(/^uploads[\/]/, '')}` : '/placeholder.png'} alt={p.Product_name} className="romand-girl-product-img" />
+                        <img src={p.Image ? `${API}/uploads/${p.Image.replace(/^uploads[\/]/, '')}` : '/placeholder.png'} alt={p.Product_name} className="romand-girl-product-img" />
                         <div className="romand-girl-product-info">
                           <span className="romand-girl-product-name">{p.Product_name}</span>
                           <div className="romand-girl-product-price">

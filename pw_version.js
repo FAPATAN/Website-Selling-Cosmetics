@@ -1,7 +1,7 @@
 ﻿import React, { useState } from 'react';
 import { Mail, Lock, User, Phone, MapPin, Loader2, LogIn, UserPlus } from 'lucide-react';
 import './App.css';
-
+const API = process.env.REACT_APP_API_URL;
 
 // Helper function to conditionally join classes
 const cx = (...classes) => classes.filter(Boolean).join(' ');
@@ -79,7 +79,7 @@ const RegisterForm = ({ onRegisterSuccess, showMessage }) => {
         };
 
         try {
-            const response = await fetch('http://localhost:5000/api/insert', {
+            const response = await fetch(`${API}/api/insert`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(registrationData),
@@ -207,7 +207,7 @@ const LoginForm = ({ onLoginSuccess, showMessage }) => {
         const loginData = { Email: email, Password: password };
 
         try {
-            const response = await fetch('http://localhost:5000/api/login', {
+            const response = await fetch(`${API}/api/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(loginData),

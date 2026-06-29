@@ -2,7 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import "./Cart.css";
 import SearchBar from "./SearchBar";
-
+const API = process.env.REACT_APP_API_URL;
 
 
 
@@ -11,7 +11,7 @@ import SearchBar from "./SearchBar";
 const ProductImage = ({ image, name }) => (
   <div style={{ width: 72, height: 72, borderRadius: 12, overflow: 'hidden', background: '#f7f7f7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
     {image ? (
-      <img src={`http://localhost:5000/uploads/${image.replace(/^uploads[\\/]/, '')}`} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      <img src={`${API}/uploads/${image.replace(/^uploads[\\/]/, '')}`} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
     ) : (
       <span style={{ fontSize: 28, color: '#999' }}>{name ? name[0] : '?'}</span>
     )}
@@ -55,12 +55,12 @@ export default function Cart() {
   // --- Fetch ทุก category สำหรับ Edit Option ---
   useEffect(() => {
     Promise.all([
-      fetch('http://localhost:5000/api/face').then(r => r.json()).catch(() => ({})),
-      fetch('http://localhost:5000/api/lip').then(r => r.json()).catch(() => ({})),
-      fetch('http://localhost:5000/api/eye').then(r => r.json()).catch(() => ({})),
-      fetch('http://localhost:5000/api/new').then(r => r.json()).catch(() => ({})),
-      fetch('http://localhost:5000/api/cheek').then(r => r.json()).catch(() => ({})),
-      fetch('http://localhost:5000/api/promotion').then(r => r.json()).catch(() => ({}))
+      fetch(`${API}/api/face`).then(r => r.json()).catch(() => ({})),
+      fetch(`${API}/api/lip`).then(r => r.json()).catch(() => ({})),
+      fetch(`${API}/api/eye`).then(r => r.json()).catch(() => ({})),
+      fetch(`${API}/api/new`).then(r => r.json()).catch(() => ({})),
+      fetch(`${API}/api/cheek`).then(r => r.json()).catch(() => ({})),
+      fetch(`${API}/api/promotion`).then(r => r.json()).catch(() => ({}))
     ]).then(([faceData, lipData, eyeData, newData, cheekData, promoData]) => {
       const all = [
         ...(Array.isArray(faceData.data) ? faceData.data : []),
@@ -82,7 +82,7 @@ export default function Cart() {
 
   // --- สุ่มสินค้าแนะนำ ---
   useEffect(() => {
-    fetch('http://localhost:5000/api/products/random?limit=4')
+    fetch(`${API}/api/products/random?limit=4`)
       .then(res => res.json())
       .then(data => setRandomProducts(Array.isArray(data) ? data : []))
       .catch(() => setRandomProducts([]));
@@ -91,7 +91,7 @@ export default function Cart() {
   // --- โหลด cart จาก backend หลัง login ---
   useEffect(() => {
     if (!isLoggedIn) return;
-    fetch(`http://localhost:5000/api/cart/${memberId}`)
+    fetch(`${API}/api/cart/${memberId}`)
       .then(res => res.json())
       .then(data => {
         if (data.cart) {
@@ -115,7 +115,7 @@ export default function Cart() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/categories");
+        const res = await fetch(`${API}/api/categories`);
         const data = await res.json();
         setCategories(Array.isArray(data) ? data : []);
       } catch (err) {
@@ -145,7 +145,7 @@ export default function Cart() {
       Price: item.price,
       Total: item.price * item.qty
     }));
-    fetch('http://localhost:5000/api/cart', {
+    fetch(`${API}/api/cart`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ Member_id: memberId, cart_items })
@@ -192,7 +192,7 @@ export default function Cart() {
     setCheckingStock(true);
     setStockError(null);
     try {
-      const res = await fetch('http://localhost:5000/api/orders/check-stock', {
+      const res = await fetch(`${API}/api/orders/check-stock`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -405,7 +405,7 @@ export default function Cart() {
                                 <div key={opt.key} onClick={() => setPendingVariant(opt)}
                                   style={{ width: 52, height: 52, borderRadius: 6, overflow: 'hidden', border: isSel ? '2px solid #e0006b' : '1.5px solid #eee', cursor: 'pointer', flexShrink: 0 }}
                                 >
-                                  <img src={`http://localhost:5000/uploads/${opt.img.replace(/^uploads[\\/]/, '')}`} alt={opt.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                  <img src={`${API}/uploads/${opt.img.replace(/^uploads[\\/]/, '')}`} alt={opt.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                 </div>
                               );
                             })}
@@ -487,7 +487,7 @@ export default function Cart() {
                 <div className="rec-img">
                   {item.Image ? (
                     <img
-                      src={`http://localhost:5000/uploads/${item.Image.replace(/^uploads[\/]/, '')}`}
+                      src={`${API}/uploads/${item.Image.replace(/^uploads[\/]/, '')}`}
                       alt={item.Product_name}
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />

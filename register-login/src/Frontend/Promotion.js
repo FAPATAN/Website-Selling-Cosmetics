@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import "./Promotion.css";
 import SearchBar from "./SearchBar";
+const API = process.env.REACT_APP_API_URL;
 
 const Promotionform = ({ setIsRegisterView }) => {
     const navigate = useNavigate();
@@ -20,7 +21,7 @@ const Promotionform = ({ setIsRegisterView }) => {
     useEffect(() => {
         const memberId = sessionStorage.getItem('Member_id');
         if (!memberId) return;
-        fetch(`http://localhost:5000/api/cart/${memberId}`)
+        fetch(`${API}/api/cart/${memberId}`)
             .then(res => res.json())
             .then(data => {
                 if (data.cart) {
@@ -35,7 +36,7 @@ const Promotionform = ({ setIsRegisterView }) => {
     useEffect(() => {
         const fetchAllProducts = async () => {
             try {
-                const res = await fetch("http://localhost:5000/api/promotion");
+                const res = await fetch(`${API}/api/promotion`);
                 const result = await res.json();
                 setAllProducts(Array.isArray(result.proProducts) ? result.proProducts : []);
                 setPromotions(Array.isArray(result.promotions) ? result.promotions : []);
@@ -51,7 +52,7 @@ const Promotionform = ({ setIsRegisterView }) => {
         // Fetch categories from backend
         const fetchCategories = async () => {
             try {
-                const res = await fetch("http://localhost:5000/api/categories");
+                const res = await fetch(`${API}/api/categories`);
                 const data = await res.json();
                 setCategories(Array.isArray(data) ? data : []);
             } catch (err) {
@@ -100,7 +101,7 @@ const Promotionform = ({ setIsRegisterView }) => {
 
     // ดึง min/max price จาก backend (price_range id=2)
     useEffect(() => {
-        fetch("http://localhost:5000/api/price-range/3")
+        fetch(`${API}/api/price-range/3`)
             .then(res => res.json())
             .then(({ min, max }) => {
                 setMinPrice(min);
@@ -318,7 +319,7 @@ const Promotionform = ({ setIsRegisterView }) => {
                                                             .filter(p => Number(p.Product_price) <= priceRange[1])
                                                             .map(product => {
                                                             const imgSrc = product.Image
-                                                                ? (product.Image.startsWith('http') ? product.Image : `http://localhost:5000/uploads/${product.Image}`)
+                                                                ? (product.Image.startsWith('http') ? product.Image : `${API}/uploads/${product.Image.replace(/^uploads[\/]/, "")}`)
                                                                 : '';
                                                             return (
                                                                 <div className="promotion-card" key={product.Product_id}>
@@ -371,7 +372,7 @@ const Promotionform = ({ setIsRegisterView }) => {
                                                                 const selectedId = selectedVariants[prefix] || baseProduct.Product_id;
                                                                 const product = variants.find(v => v.Product_id === selectedId) || baseProduct;
                                                                 const imgSrc = product.Image
-                                                                    ? (product.Image.startsWith('http') ? product.Image : `http://localhost:5000/uploads/${product.Image}`)
+                                                                    ? (product.Image.startsWith('http') ? product.Image : `${API}/uploads/${product.Image.replace(/^uploads[\/]/, "")}`)
                                                                     : '';
                                                                 return (
                                                                     <div className="promotion-card" key={prefix}>

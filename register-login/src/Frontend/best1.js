@@ -1,6 +1,7 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './best1.css';
+const API = process.env.REACT_APP_API_URL;
 
 const Best1 = () => {
   const { id } = useParams();
@@ -24,7 +25,7 @@ const Best1 = () => {
       return;
     }
     try {
-      const res = await fetch(`http://localhost:5000/api/cart/${memberId}`);
+      const res = await fetch(`${API}/api/cart/${memberId}`);
       const data = await res.json();
       if (data.cart) {
         // นับจำนวนรวมของ Quantity
@@ -46,7 +47,7 @@ const Best1 = () => {
   // ดึงข้อมูลสินค้าตาม id ที่รับมาจาก URL
   React.useEffect(() => {
     if (!id) return;
-    fetch(`http://localhost:5000/api/best/${id}`)
+    fetch(`${API}/api/best/${id}`)
       .then(res => {
         if (!res.ok) throw new Error('ไม่พบข้อมูลสินค้า');
         return res.json();
@@ -72,7 +73,7 @@ const Best1 = () => {
     else if (fname.startsWith('lip_')) endpoint = '/api/lip';
     else if (fname.startsWith('cheek_')) endpoint = '/api/cheek';
     else if (fname.startsWith('new_')) endpoint = '/api/new';
-    fetch(`http://localhost:5000${endpoint}`)
+    fetch(`${API}${endpoint}`)
       .then(r => r.json())
       .then(d => setAllProducts(d.data || []))
       .catch(() => setAllProducts([]));
@@ -203,12 +204,12 @@ const Best1 = () => {
             {/* Thumbnail strip on left */}
             {(() => {
               const galleryImgs = product?.gallery_images || [];
-              const mainUrl = product ? `http://localhost:5000/uploads/${product.Image.replace(/^uploads[\/]/, '')}` : null;
+              const mainUrl = product ? `${API}/uploads/${product.Image.replace(/^uploads[\/]/, '')}` : null;
               // Use product gallery if any, else fall back to variants
               const thumbList = galleryImgs.length > 0
-                ? [{ key: 'main', url: mainUrl }, ...galleryImgs.map(g => ({ key: g.id, url: `http://localhost:5000/uploads/${g.Image.replace(/^uploads[\/]/, '')}` }))]
+                ? [{ key: 'main', url: mainUrl }, ...galleryImgs.map(g => ({ key: g.id, url: `${API}/uploads/${g.Image.replace(/^uploads[\/]/, '')}` }))]
                 : variants.length > 1
-                  ? variants.map(v => ({ key: v.Product_id, url: `http://localhost:5000/uploads/${v.Image.replace(/^uploads[\/]/, '')}` }))
+                  ? variants.map(v => ({ key: v.Product_id, url: `${API}/uploads/${v.Image.replace(/^uploads[\/]/, '')}` }))
                   : [];
               const currentMain = selectedMainImg || mainUrl;
               return thumbList.length > 1 ? (
@@ -234,7 +235,7 @@ const Best1 = () => {
                 <div style={{position:'relative',display:'inline-block'}}>
                   <img
                     className="main-image"
-                    src={selectedMainImg || `http://localhost:5000/uploads/${product.Image.replace(/^uploads[\/]/, '')}`}
+                    src={selectedMainImg || `${API}/uploads/${product.Image.replace(/^uploads[\/]/, '')}`}
                     alt={product.Product_name}
                     style={product.Stock != null && Number(product.Stock) === 0 ? {opacity:0.55} : {}}
                   />
@@ -304,7 +305,7 @@ const Best1 = () => {
                 let oldCart = [];
                 try {
                   console.log('Fetching old cart...');
-                  const res = await fetch(`http://localhost:5000/api/cart/${memberId}`);
+                  const res = await fetch(`${API}/api/cart/${memberId}`);
                   const data = await res.json();
                   console.log('Fetched cart data:', data);
                   if (data.cart) {
@@ -337,7 +338,7 @@ const Best1 = () => {
                 }
                 console.log('newCart', newCart);
                 // sync ไป backend
-                await fetch('http://localhost:5000/api/cart', {
+                await fetch(`${API}/api/cart`, {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ Member_id: memberId, cart_items: newCart })
@@ -387,7 +388,7 @@ const Best1 = () => {
                 })()}
                 {product?.Product_detail ? (
                   <img
-                    src={`http://localhost:5000/uploads/${product.Product_detail}`}
+                    src={`${API}/uploads/${product.Product_detail}`}
                     alt="product detail"
                     style={{width:'100%',borderRadius:8,display:'block'}}
                   />

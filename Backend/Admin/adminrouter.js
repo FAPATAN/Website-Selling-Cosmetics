@@ -4,6 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const db = require('../db'); // mysql2/promise pool
+const BASE_URL = process.env.BASE_URL;
 
 // ─── Multer (product images) ─────────────────────────────────────────────────
 const storage = multer.diskStorage({
@@ -602,7 +603,7 @@ router.get('/promotions/:id/products', async (req, res) => {
     );
     const products = rows.map(p => ({
       ...p,
-      image_url: p.Image ? `http://localhost:5000/uploads/${p.Image}` : null,
+      image_url: p.Image ? `${BASE_URL}/uploads/${p.Image}` : null,
     }));
     res.json({ products });
   } catch (err) {

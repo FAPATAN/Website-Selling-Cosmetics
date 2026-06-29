@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import "./Lip.css";
 import SearchBar from "./SearchBar";
+const API = process.env.REACT_APP_API_URL;
 
 const LipSection = ({ setIsRegisterView }) => {
     const navigate = useNavigate();
@@ -20,7 +21,7 @@ const LipSection = ({ setIsRegisterView }) => {
     useEffect(() => {
         const memberId = sessionStorage.getItem('Member_id');
         if (!memberId) return;
-        fetch(`http://localhost:5000/api/cart/${memberId}`)
+        fetch(`${API}/api/cart/${memberId}`)
             .then(res => res.json())
             .then(data => {
                 if (data.cart) {
@@ -35,7 +36,7 @@ const LipSection = ({ setIsRegisterView }) => {
     useEffect(() => {
         const fetchAllProducts = async () => {
             try {
-                const res = await fetch("http://localhost:5000/api/lip");
+                const res = await fetch(`${API}/api/lip`);
                 const result = await res.json();
                 setAllProducts(Array.isArray(result.data) ? result.data : []);
             } catch (err) {
@@ -49,7 +50,7 @@ const LipSection = ({ setIsRegisterView }) => {
         // Fetch categories from backend
         const fetchCategories = async () => {
             try {
-                const res = await fetch("http://localhost:5000/api/categories");
+                const res = await fetch(`${API}/api/categories`);
                 const data = await res.json();
                 setCategories(Array.isArray(data) ? data : []);
             } catch (err) {
@@ -98,7 +99,7 @@ const LipSection = ({ setIsRegisterView }) => {
 
     // ดึง min/max price จาก backend (price_range)
     useEffect(() => {
-        fetch("http://localhost:5000/api/price-range/6")
+        fetch(`${API}/api/price-range/6`)
             .then(res => res.json())
             .then(({ min, max }) => {
                 setMinPrice(min);
@@ -283,7 +284,7 @@ const LipSection = ({ setIsRegisterView }) => {
                                             const variantKey = selectedImages[num] || `lip_${num}.1`;
                                             const product = allProducts.find(p => p.Image && imgMatch(p.Image, variantKey));
                                             if (!product || Number(product.Product_price) > priceRange[1]) return null;
-                                            const imgSrc = product.Image.startsWith('http') ? product.Image : `http://localhost:5000/uploads/${product.Image}`;
+                                            const imgSrc = product.Image.startsWith('http') ? product.Image : `${API}/uploads/${product.Image}`;
                                             const name = product.Product_name;
                                             const price = product.Product_price;
                                             const detail = product.Product_detail;
@@ -360,7 +361,7 @@ const LipSection = ({ setIsRegisterView }) => {
                                         const standaloneCards = standaloneProducts.map(product => {
                                             if (Number(product.Product_price) > priceRange[1]) return null;
                                             const imgSrc = product.Image
-                                                ? (product.Image.startsWith('http') ? product.Image : `http://localhost:5000/uploads/${product.Image}`)
+                                                ? (product.Image.startsWith('http') ? product.Image : `${API}/uploads/${product.Image}`)
                                                 : 'https://via.placeholder.com/180x180?text=No+Image';
                                             const colors = product.Color ? [{ color: product.Color, img: null }] : [];
                                             return (

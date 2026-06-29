@@ -2,6 +2,7 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Account.css";
 import "./Orders.css";
+const API = process.env.REACT_APP_API_URL;
 
 const STATUS_STEPS = [
     { key: "placed",    label: "Order List",        icon: "/status-placed.png" },
@@ -78,7 +79,7 @@ export default function Orders2() {
     }, []);
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/promotion')
+        fetch(`${API}/api/promotion`)
             .then(r => r.json())
             .then(d => {
                 const map = {};
@@ -101,7 +102,7 @@ export default function Orders2() {
     useEffect(() => {
         if (!memberId || !orderId) { setLoadingOrder(false); return; }
         setLoadingOrder(true);
-        fetch(`http://localhost:5000/api/orders/${memberId}`)
+        fetch(`${API}/api/orders/${memberId}`)
             .then(r => r.json())
             .then(d => {
                 const found = (d.orders || []).find(o => String(o.Order_id) === String(orderId));
@@ -138,7 +139,7 @@ export default function Orders2() {
                 if (!cancelCalled) {
                     cancelCalled = true;
                     // ยิง API เบื้องหลัง ไม่ await ไม่ block UI
-                    fetch("http://localhost:5000/api/orders/cancel", {
+                    fetch(`${API}/api/orders/cancel`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ Order_id: orderId }),
@@ -187,7 +188,7 @@ export default function Orders2() {
                 setCountdown("00:00:00");
                 setExpired(true);
                 setOrder(prev => prev ? { ...prev, Status: 'Ca' } : prev);
-                fetch("http://localhost:5000/api/orders/cancel", {
+                fetch(`${API}/api/orders/cancel`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ Order_id: orderId }),
@@ -232,7 +233,7 @@ export default function Orders2() {
         }
         setAddressSaving(true);
         try {
-            const res = await fetch(`http://localhost:5000/api/orders/${order.Order_id}/address`, {
+            const res = await fetch(`${API}/api/orders/${order.Order_id}/address`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ...addressForm, member_id: memberId }),
@@ -252,7 +253,7 @@ export default function Orders2() {
         if (!order?.items || order.items.length === 0) return;
         try {
             // ดึง cart ปัจจุบันจาก backend ก่อน เพื่อ merge
-            const res = await fetch(`http://localhost:5000/api/cart/${memberId}`);
+            const res = await fetch(`${API}/api/cart/${memberId}`);
             const data = await res.json();
             const existing = (data.cart || []).filter(i => i.Product_id);
 
@@ -273,7 +274,7 @@ export default function Orders2() {
                 }
             });
 
-            await fetch("http://localhost:5000/api/cart", {
+            await fetch(`${API}/api/cart`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -300,7 +301,7 @@ export default function Orders2() {
 
     const confirmCancel = async () => {
         try {
-            await fetch("http://localhost:5000/api/orders/cancel", {
+            await fetch(`${API}/api/orders/cancel`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ Order_id: orderId }),
@@ -573,7 +574,7 @@ export default function Orders2() {
                                                 <div className="pending-order-item-img">
                                                     {image ? (
                                                         <img
-                                                            src={`http://localhost:5000/uploads/${image.replace(/^uploads[\/\\]/, "")}`}
+                                                            src={`${API}/uploads/${item.image.replace(/^uploads[\/]/, "")}`}
                                                             alt={name}
                                                             style={{ width: "100%", height: "100%", objectFit: "cover" }}
                                                         />
