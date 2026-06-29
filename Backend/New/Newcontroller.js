@@ -231,16 +231,12 @@ exports.newproduct = (req, res) => {
             WHERE p.Product_id IN (1,2,3,4)
             ORDER BY FIELD(p.Product_id, 1,2,3,4)
         `;
-        connection.query(query, (err, rows) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).json({ error: err.sqlMessage });
-            }
-            if (rows.length === 0) {
-                return res.status(404).json({ msg: 'ไม่พบสินค้า' });
-            }
-            res.json({ count: rows.length, data: rows });
-        });
+       const [rows] = await connection.query(query);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ msg: 'ไม่พบสินค้า' });
+        }
+        res.json({ count: rows.length, data: rows });
     } catch (err) {
         console.log(err);
         res.status(500).json({ error: err.message });
@@ -269,15 +265,10 @@ exports.list = (req, res) => {
             WHERE p.Image LIKE 'new_%'
             ORDER BY p.Product_id DESC
         `;
-        connection.query(query, (err, rows) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).json({ error: err.sqlMessage });
-            }
-            res.json({
-                count: rows.length,
-                data: rows
-            });
+        const [rows] = await connection.query(query);
+        res.json({
+            count: rows.length,
+            data: rows
         });
     } catch (err) {
         console.log(err);
