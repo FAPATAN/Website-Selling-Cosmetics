@@ -13,6 +13,9 @@ function Home() {
   const [shopAllOpen, setShopAllOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [currentArrival, setCurrentArrival] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
+  const [userEmail, setUserEmail] = useState('');
   const [currentPersonal, setCurrentPersonal] = useState(0);
   const [currentBest, setCurrentBest] = useState(0);
   const [currentGirl, setCurrentGirl] = useState(6); // starts at middle copy of tripled array
@@ -27,6 +30,17 @@ function Home() {
   const [searchResults, setSearchResults] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
   const searchRef = useRef(null);
+
+  useEffect(() => {
+    const memberId = sessionStorage.getItem('Member_id');
+    const email = sessionStorage.getItem('userEmail') || sessionStorage.getItem('admin_userEmail');
+    const storedUsername = sessionStorage.getItem('username') || sessionStorage.getItem('admin_username') || '';
+    if (memberId && email) {
+      setIsLoggedIn(true);
+      setUserEmail(email);
+      setUsername(storedUsername);
+    }
+  }, []);
 
   const addToGirlCart = async (e, product) => {
     e.stopPropagation();
@@ -451,9 +465,19 @@ function Home() {
           <i className="fa-solid fa-xmark"></i>
         </div>
         <div className="login-section">
-          <span style={{cursor:'pointer'}} onClick={() => window.location.href='/auth'}>REGISTER</span>
-          <span className="divider">|</span>
-          <span style={{cursor:'pointer'}} onClick={() => window.location.href='/auth'}>LOGIN</span>
+          {isLoggedIn ? (
+            <>
+              <span>สวัสดี, {username || userEmail.split('@')[0] || 'User'}</span>
+              <span className="divider">|</span>
+              <span style={{cursor:'pointer'}} onClick={() => { sessionStorage.clear(); window.location.href = '/auth'; }}>LOGOUT</span>
+            </>
+          ) : (
+            <>
+              <span style={{cursor:'pointer'}} onClick={() => window.location.href='/auth'}>REGISTER</span>
+              <span className="divider">|</span>
+              <span style={{cursor:'pointer'}} onClick={() => window.location.href='/auth'}>LOGIN</span>
+            </>
+          )}
         </div>
         <ul>
           <li style={{cursor:'pointer'}} onClick={() => navigate('/')}>MYPAGE</li>
@@ -486,6 +510,11 @@ function Home() {
         <div className="logo-container" style={{cursor: 'pointer'}} onClick={() => navigate('/')}>
           <h1 className="romand-logo">rom&amp;nd</h1>
         </div>
+        {isLoggedIn && (
+          <div className="header-user" style={{ marginLeft: '16px', color: '#fff', fontWeight: '600' }}>
+            สวัสดี, {username || userEmail.split('@')[0] || 'User'}
+          </div>
+        )}
         <div className="header-icons">
           {/* แถบค้นหา */}
           <div ref={searchRef} style={{ position: 'relative' }}>

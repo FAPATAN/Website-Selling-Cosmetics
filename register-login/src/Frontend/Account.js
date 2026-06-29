@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Account.css";
 import { fetchUserProfile, updateUserProfile, changePassword } from "./api";
@@ -322,35 +322,38 @@ export default function ProfileSettings() {
             <div className={`toast-msg${toast ? " show" : ""}`}>? Changes saved successfully!</div>
 
             {/* -- Footer -- */}
-            <footer className="footer">
-                <div className="footer-container">
-                    <div className="footer-column">
-                        <h3>Contact Us</h3>
-                        <p>romand202208@gmail.com</p>
-                    </div>
-                    <div className="footer-column">
-                        <h3>Customer Service</h3>
-                        <ul>
-                            <li><a href="#">?????????????????????</a></li>
-                            <li><a href="#">?????? / ????????????</a></li>
-                            <li><a href="#">????????????????????</a></li>
-                            <li><a href="#">???????????????</a></li>
-                            <li><a href="#">California Proposition 65</a></li>
-                            <li><a href="#">CCPA &amp; US Privacy Laws</a></li>
-                            <li><a href="#">Accessibility Statement</a></li>
-                        </ul>
-                    </div>
-                    <div className="footer-column">
-                        <h3>Newsletter</h3>
-                        <p>??????????????? ???????????? ???????????????</p><br />
-                        <p className="highlight">?? ????????????????? 20% ?????!</p><br />
-                        <form onSubmit={e => e.preventDefault()}>
-                            <input type="email" placeholder="Enter email" className="email-input" />
-                            <button className="signup-btn" type="submit">Sign up</button>
-                        </form>
-                    </div>
-                </div>
-            </footer>
-        </>
-    );
+           <footer className="footer">
+        <div className="footer-container">
+          <div className="footer-column">
+            <h3>Contact Us</h3>
+            <p>romand202208@gmail.com</p>
+          </div>
+          <div className="footer-column">
+            <h3>Customer Service</h3>
+            <ul>
+              <li><a href="#">นโยบายความเป็นส่วนตัว</a></li>
+              <li><a href="#">การคืน / การขอเงินคืน</a></li>
+              <li><a href="#">เงื่อนไขการให้บริการ</a></li>
+              <li><a href="#">ข้อมูลการจัดส่ง</a></li>
+              <li><a href="#">California Proposition 65</a></li>
+              <li><a href="#">CCPA & US Privacy Laws</a></li>
+              <li><a href="#">Accessibility Statement</a></li>
+            </ul>
+          </div>
+          <div className="footer-column">
+            <h3>Newsletter</h3>
+            <p>สมัครรับข่าวสาร ข้อเสนอพิเศษ และอัปเดตจากเรา</p><br />
+            <form>
+              <input type="email" placeholder="Enter email" className="email-input" />
+              <button className="signup-btn">Sign up</button>
+            </form>
+            <div className="footer-icons">
+              <a href="#"></a>
+              <a href="#"></a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </>
+  );
 }

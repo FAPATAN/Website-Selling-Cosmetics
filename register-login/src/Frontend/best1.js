@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './best1.css';
 const API = process.env.REACT_APP_API_URL;
@@ -405,30 +405,25 @@ const Best1 = () => {
       {/* Footer */}
       <footer className="footer">
         <div className="footer-container">
-          {/* Contact Us */}
           <div className="footer-column">
             <h3>Contact Us</h3>
             <p>romand202208@gmail.com</p>
           </div>
-          {/* Customer Service */}
           <div className="footer-column">
             <h3>Customer Service</h3>
             <ul>
-              <li><a href="#">?????????????????????</a></li>
-              <li><a href="#">?????? / ????????????</a></li>
-              <li><a href="#">????????????????????</a></li>
-              <li><a href="#">???????????????</a></li>
+              <li><a href="#">นโยบายความเป็นส่วนตัว</a></li>
+              <li><a href="#">การคืน / การขอเงินคืน</a></li>
+              <li><a href="#">เงื่อนไขการให้บริการ</a></li>
+              <li><a href="#">ข้อมูลการจัดส่ง</a></li>
               <li><a href="#">California Proposition 65</a></li>
               <li><a href="#">CCPA & US Privacy Laws</a></li>
               <li><a href="#">Accessibility Statement</a></li>
             </ul>
           </div>
-          {/* Newsletter */}
           <div className="footer-column">
             <h3>Newsletter</h3>
-            <p>??????????????? ???????????? ???????????????</p><br />
-            <p className="highlight">?? ????????????????? 20% ?????!</p>
-            <br />
+            <p>สมัครรับข่าวสาร ข้อเสนอพิเศษ และอัปเดตจากเรา</p><br />
             <form>
               <input type="email" placeholder="Enter email" className="email-input" />
               <button className="signup-btn">Sign up</button>
