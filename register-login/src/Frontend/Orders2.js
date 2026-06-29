@@ -574,7 +574,7 @@ export default function Orders2() {
                                                 <div className="pending-order-item-img">
                                                     {image ? (
                                                         <img
-                                                            src={`${API}/uploads/${item.image.replace(/^uploads[\/]/, "")}`}
+                                                            src={`${API}/uploads/${(image || "").replace(/^uploads[\\/]/, "")}`}
                                                             alt={name}
                                                             style={{ width: "100%", height: "100%", objectFit: "cover" }}
                                                         />
