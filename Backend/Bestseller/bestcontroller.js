@@ -7,6 +7,7 @@ const connection = mysql.createPool({
     password: process.env.DB_PASSWORD, // แทน password เดิม
     database: process.env.DB_NAME,     // แทน database เดิม
     port: process.env.DB_PORT || 3306, // พอร์ต MySQL ปกติ
+    charset: 'utf8mb4',
     dateStrings: ['DATE'],
     waitForConnections: true,
     connectionLimit: 10,

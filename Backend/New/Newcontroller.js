@@ -102,6 +102,7 @@ const connection = mysql.createPool({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     port: process.env.DB_PORT || 3306,
+    charset: 'utf8mb4',
     dateStrings: ['DATE'],
     waitForConnections: true,
     connectionLimit: 10,

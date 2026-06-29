@@ -1,5 +1,5 @@
 const express = require("express");
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 const nodemailer = require("nodemailer");
 const cors = require("cors");
 const path = require('path');
@@ -74,22 +74,29 @@ app.use((req, res, next) => {
 
 // MySQL Connection Setup — ใช้ Pool แทน createConnection เพื่อ auto-reconnect
 const connection = mysql.createPool({
-    host: "localhost",
-    user: "fah",
-    password: "Fapatan11",
-    database: "web_selling_cosmetics",
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT || 3306,
+    charset: 'utf8mb4',
+    dateStrings: ['DATE'],
     waitForConnections: true,
     connectionLimit: 10,
 });
 
 // auto-add TrackingNo column if not exists
-connection.query(
-    "ALTER TABLE `order` ADD COLUMN `TrackingNo` VARCHAR(100) DEFAULT NULL",
-    (e) => {
-        if (e && e.code !== 'ER_DUP_FIELDNAME') console.error("TrackingNo column:", e.message);
-        else console.log("✅ connected to MySQL Successfully!");
+connection.query("ALTER TABLE `order` ADD COLUMN `TrackingNo` VARCHAR(100) DEFAULT NULL")
+  .then(() => {
+    console.log("✅ connected to MySQL Successfully!");
+  })
+  .catch((e) => {
+    if (e && e.code !== 'ER_DUP_FIELDNAME') {
+      console.error("TrackingNo column:", e.message);
+    } else {
+      console.log("✅ connected to MySQL Successfully!");
     }
-);
+  });
 
 // ✉️ Send Email Function
 function sendEmail({ recipient_email, OTP }) {
@@ -164,16 +171,12 @@ app.post('/api/insert', (req, res) => {
 });
 
 // 2. 🔑 LOGIN Endpoint
-app.post('/api/login', (req, res) => {
-    const { Email, Password } = req.body; 
+app.post('/api/login', async (req, res) => {
+    try {
+        const { Email, Password } = req.body;
 
-    const query = "SELECT MemberID AS Member_id, Username, Password, Member_role FROM member WHERE Email = ? ORDER BY MemberID DESC LIMIT 1";
-    
-    connection.query(query, [Email], (err, results) => {
-        if (err) {
-            console.error("Login Query Error: ", err);
-            return res.status(500).json({ error: "Internal Server Error" });
-        }
+        const query = "SELECT MemberID AS Member_id, Username, Password, Member_role FROM member WHERE Email = ? ORDER BY MemberID DESC LIMIT 1";
+        const [results] = await connection.query(query, [Email]);
 
         if (results.length === 0) {
             return res.status(401).json({ message: "Invalid email or password." });
@@ -182,16 +185,19 @@ app.post('/api/login', (req, res) => {
         const user = results[0];
 
         if (Password === user.Password) {
-            res.json({
+            return res.json({
                 message: "Login successful",
                 username: user.Username,
                 userRole: user.Member_role,
                 Member_id: user.Member_id
             });
-        } else {
-            return res.status(401).json({ message: "Invalid email or password." });
         }
-    });
+
+        return res.status(401).json({ message: "Invalid email or password." });
+    } catch (err) {
+        console.error("Login Query Error: ", err);
+        return res.status(500).json({ error: "Internal Server Error", details: err.message });
+    }
 });
 
 // 3. ✅ CHECK EMAIL & SEND OTP Endpoint

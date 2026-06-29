@@ -7,6 +7,7 @@ const db = mysql.createPool({
     password: process.env.DB_PASSWORD || "Fapatan11",
     database: process.env.DB_NAME || "web_selling_cosmetics",
     port: process.env.DB_PORT || 3306,
+    charset: 'utf8mb4',
     waitForConnections: true,
     connectionLimit: 10,
 });
