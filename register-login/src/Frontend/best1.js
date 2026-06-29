@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './best1.css';
 const API = process.env.REACT_APP_API_URL;
@@ -17,7 +17,7 @@ const Best1 = () => {
   const [selectedMainImg, setSelectedMainImg] = useState(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
 
-  // ฟังก์ชันโหลดจำนวนสินค้าใน cart
+  // ????????????????????????? cart
   const fetchCartCount = async () => {
     const memberId = sessionStorage.getItem('Member_id');
     if (!memberId) {
@@ -28,7 +28,7 @@ const Best1 = () => {
       const res = await fetch(`${API}/api/cart/${memberId}`);
       const data = await res.json();
       if (data.cart) {
-        // นับจำนวนรวมของ Quantity
+        // ?????????????? Quantity
         const count = data.cart.filter(item => item.Product_id).reduce((sum, item) => sum + (Number(item.Quantity) || 0), 0);
         setCartCount(count);
       } else {
@@ -39,17 +39,17 @@ const Best1 = () => {
     }
   };
 
-  // โหลดจำนวน cart ตอน mount
+  // ????????? cart ??? mount
   useEffect(() => {
     fetchCartCount();
   }, []);
 
-  // ดึงข้อมูลสินค้าตาม id ที่รับมาจาก URL
+  // ?????????????????? id ??????????? URL
   React.useEffect(() => {
     if (!id) return;
     fetch(`${API}/api/best/${id}`)
       .then(res => {
-        if (!res.ok) throw new Error('ไม่พบข้อมูลสินค้า');
+        if (!res.ok) throw new Error('?????????????????');
         return res.json();
       })
       .then(data => {
@@ -59,11 +59,11 @@ const Best1 = () => {
       })
       .catch(err => {
         setProduct(null);
-        setError('ไม่พบข้อมูลสินค้า หรือ server ไม่ตอบสนอง');
+        setError('????????????????? ???? server ??????????');
       });
   }, [id]);
 
-  // ดึงสินค้าทั้งหมดในหมวดเดียวกัน เพื่อหา variant และ color swatches
+  // ?????????????????????????????? ??????? variant ??? color swatches
   React.useEffect(() => {
     if (!product?.Image) return;
     const fname = product.Image.split('/').pop().toLowerCase();
@@ -114,20 +114,20 @@ const Best1 = () => {
 
   return (
     <>
-      {/* แถบประกาศสีชมพู */}
+      {/* ??????????????? */}
       <div className="announcement-bar">
         <div className="announcement-slide active">
-          <span>[NEW!] Rom&ndXZO&FRIENDS "มากกว่าความน่ารักและเสน่ห์เหลือล้น เราหวังว่าคอลเลคชั่นนี้จะมอบความอบอุ่นและกล้าหาญให้กับทุกคน"</span>
+          <span>[NEW!] Rom&ndXZO&FRIENDS "?????????????????????????????????? ???????????????????????????????????????????????????????????"</span>
         </div>
         <div className="announcement-slide">
-          <span>[NEW!] 4in1 Han All Eyepot Liner จะเป็นยังไงถ้ารวมอายแชโดว์ อายไลน์เนอร์ เข้าด้วยกัน </span>
+          <span>[NEW!] 4in1 Han All Eyepot Liner ?????????????????????????? ???????????? ??????????? </span>
         </div>
         <div className="announcement-slide">
           <span>Best Tint Edition Set Lip Tints 01&amp;02 Buy 1 Get 1 Free!!</span>
         </div>
       </div>
 
-      {/* Header: โลโก้ ขีดสามขีด ไอคอน */}
+      {/* Header: ????? ????????? ????? */}
       <header className="main-header">
         <div className="menu-icon" onClick={() => setSideMenuOpen(true)}>
           <div className="bar"></div>
@@ -138,9 +138,9 @@ const Best1 = () => {
           <h1 className="romand-logo">rom&amp;nd</h1>
         </div>
         <div className="header-icons">
-          {/* แถบค้นหา */}
+          {/* ???????? */}
           <form action="" className="search-form">
-            <input type="text" placeholder="พิมพ์เพื่อค้นหา..." className="search-input" />
+            <input type="text" placeholder="???????????????..." className="search-input" />
             <button className="search-button icon-link" type="button">
               <svg className="search-icon svg-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#333" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="11" cy="11" r="8"></circle>
@@ -149,14 +149,14 @@ const Best1 = () => {
               <i className="fa-solid fa-xmark search-close"></i>
             </button>
           </form>
-          {/* ไอคอน Account */}
+          {/* ????? Account */}
           <span className="icon-link" style={{cursor:'pointer'}} onClick={() => navigate('/account')}>
             			<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               			<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               			<circle cx="12" cy="7" r="4"></circle>
             			</svg>
           </span>
-          {/* ไอคอน Cart */}
+          {/* ????? Cart */}
           <span className="icon-link cart-icon" style={{cursor:'pointer'}} onClick={() => navigate('/cart')}>
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                         <circle cx="9" cy="21" r="1"></circle>
@@ -171,11 +171,11 @@ const Best1 = () => {
       {/* Overlay & Side Menu */}
       <div className={`overlay${sideMenuOpen ? ' active' : ''}`} onClick={() => setSideMenuOpen(false)}></div>
       <div className={`side-menu${sideMenuOpen ? ' active' : ''}`} id="sideMenu">
-        <div className="close-btn" id="closeMenu" onClick={() => setSideMenuOpen(false)}>✕</div>
+        <div className="close-btn" id="closeMenu" onClick={() => setSideMenuOpen(false)}>?</div>
         <div className="login-section">
-          <span style={{cursor:'pointer'}} onClick={() => { window.location.href = '/app'; }}>REGISTER</span>
+          <span style={{cursor:'pointer'}} onClick={() => { window.location.href = '/auth'; }}>REGISTER</span>
           <span className="divider">|</span>
-          <span style={{cursor:'pointer'}} onClick={() => { window.location.href = '/app'; }}>LOGIN</span>
+          <span style={{cursor:'pointer'}} onClick={() => { window.location.href = '/auth'; }}>LOGIN</span>
         </div>
         <ul>
           <li style={{cursor:'pointer'}} onClick={() => navigate('/')}>MYPAGE</li>
@@ -240,7 +240,7 @@ const Best1 = () => {
                     style={product.Stock != null && Number(product.Stock) === 0 ? {opacity:0.55} : {}}
                   />
                   {product.Stock != null && Number(product.Stock) === 0 && (
-                    <div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',width:'110px',height:'110px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(30,30,30,0.85)',color:'#fff',fontSize:'16px',fontWeight:'bold',zIndex:2,textAlign:'center',lineHeight:'1.4',pointerEvents:'none'}}>สินค้าหมด</div>
+                    <div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',width:'110px',height:'110px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(30,30,30,0.85)',color:'#fff',fontSize:'16px',fontWeight:'bold',zIndex:2,textAlign:'center',lineHeight:'1.4',pointerEvents:'none'}}>?????????</div>
                   )}
                 </div>
               ) : (
@@ -283,7 +283,7 @@ const Best1 = () => {
             )}
             
             <div className="product-price-row" style={{marginTop: '12px'}}>
-              <span className="product-price" style={{color:'#1a1a1a'}}>{product ? `${product.Product_price} ฿` : error ? '' : ''}</span>
+              <span className="product-price" style={{color:'#1a1a1a'}}>{product ? `${product.Product_price} ?` : error ? '' : ''}</span>
             </div>
 
             <div className="product-qty-row" style={{marginTop: '-22px'}}>
@@ -301,7 +301,7 @@ const Best1 = () => {
                   setShowLoginModal(true);
                   return;
                 }
-                // โหลด cart เดิมจาก backend ก่อน (เพื่อ merge)
+                // ???? cart ??????? backend ???? (????? merge)
                 let oldCart = [];
                 try {
                   console.log('Fetching old cart...');
@@ -319,7 +319,7 @@ const Best1 = () => {
                 } catch (e) {
                   console.log('Error fetching old cart:', e);
                 }
-                // merge ถ้ามีสินค้าเดิมอยู่แล้ว ให้เพิ่มจำนวน
+                // merge ??????????????????????? ?????????????
                 let found = false;
                 const newCart = oldCart.map(i => {
                   if (i.Product_id === product.Product_id) {
@@ -337,14 +337,14 @@ const Best1 = () => {
                   });
                 }
                 console.log('newCart', newCart);
-                // sync ไป backend
+                // sync ?? backend
                 await fetch(`${API}/api/cart`, {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ Member_id: memberId, cart_items: newCart })
                 });
                 console.log('Navigate to cart');
-                // อัปเดต badge cart หลังเพิ่มสินค้า (navigate ไปหน้าตะกร้าทันที)
+                // ?????? badge cart ??????????????? (navigate ?????????????????)
                 console.log('before navigate');
                 try {
                   navigate('/cart');
@@ -353,7 +353,7 @@ const Best1 = () => {
                   console.log('navigate error', navErr);
                 }
               } catch (err) {
-                alert('เกิดข้อผิดพลาด: ' + err);
+                alert('??????????????: ' + err);
                 console.log('ERROR:', err);
               }
             }}>Add to Cart</button>
@@ -381,9 +381,9 @@ const Best1 = () => {
             {descOpen && (
               <div style={{padding:'16px 0 0 0'}}>
                 {product?.Sale_date && (() => {
-                  const THAI_MONTHS = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+                  const THAI_MONTHS = ['?.?.','?.?.','??.?.','??.?.','?.?.','??.?.','?.?.','?.?.','?.?.','?.?.','?.?.','?.?.'];
                   const d = new Date(product.Sale_date);
-                  const txt = `วางจำหน่าย ${d.getUTCDate()} ${THAI_MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()+543}`;
+                  const txt = `?????????? ${d.getUTCDate()} ${THAI_MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()+543}`;
                   return <div style={{fontSize:'16px',color:'#b06070',fontWeight:'500',marginBottom:'10px'}}>{txt}</div>;
                 })()}
                 {product?.Product_detail ? (
@@ -393,7 +393,7 @@ const Best1 = () => {
                     style={{width:'100%',borderRadius:8,display:'block'}}
                   />
                 ) : (
-                  <p style={{color:'#aaa',fontSize:13}}>ยังไม่มีรายละเอียด</p>
+                  <p style={{color:'#aaa',fontSize:13}}>??????????????????</p>
                 )}
               </div>
             )}
@@ -414,10 +414,10 @@ const Best1 = () => {
           <div className="footer-column">
             <h3>Customer Service</h3>
             <ul>
-              <li><a href="#">นโยบายความเป็นส่วนตัว</a></li>
-              <li><a href="#">การคืน / การขอเงินคืน</a></li>
-              <li><a href="#">เงื่อนไขการให้บริการ</a></li>
-              <li><a href="#">ข้อมูลการจัดส่ง</a></li>
+              <li><a href="#">?????????????????????</a></li>
+              <li><a href="#">?????? / ????????????</a></li>
+              <li><a href="#">????????????????????</a></li>
+              <li><a href="#">???????????????</a></li>
               <li><a href="#">California Proposition 65</a></li>
               <li><a href="#">CCPA & US Privacy Laws</a></li>
               <li><a href="#">Accessibility Statement</a></li>
@@ -426,8 +426,8 @@ const Best1 = () => {
           {/* Newsletter */}
           <div className="footer-column">
             <h3>Newsletter</h3>
-            <p>สมัครรับข่าวสาร ข้อเสนอพิเศษ และอัปเดตจากเรา</p><br />
-            <p className="highlight">❤️ รับส่วนลดเพิ่มอีก 20% ทันที!</p>
+            <p>??????????????? ???????????? ???????????????</p><br />
+            <p className="highlight">?? ????????????????? 20% ?????!</p>
             <br />
             <form>
               <input type="email" placeholder="Enter email" className="email-input" />
@@ -446,10 +446,10 @@ const Best1 = () => {
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.45)',zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center'}} onClick={() => setShowLoginModal(false)}>
           <div style={{background:'#fff',borderRadius:16,padding:'36px 40px',maxWidth:340,width:'90%',textAlign:'center',boxShadow:'0 8px 32px rgba(0,0,0,0.18)'}} onClick={e => e.stopPropagation()}>
             <div style={{fontSize:40,marginBottom:12}}><img src="/lock.png" alt="lock" style={{width:40,height:40}} /></div>
-            <div style={{fontWeight:700,fontSize:18,marginBottom:8,color:'#1a1a1a'}}>กรุณาเข้าสู่ระบบก่อน</div>
-            <div style={{color:'#888',fontSize:14,marginBottom:24}}>คุณต้อง login เพื่อเพิ่มสินค้าลงตะกร้า</div>
+            <div style={{fontWeight:700,fontSize:18,marginBottom:8,color:'#1a1a1a'}}>????????????????????</div>
+            <div style={{color:'#888',fontSize:14,marginBottom:24}}>??????? login ????????????????????????</div>
             <div style={{display:'flex',gap:10,justifyContent:'center'}}>
-              <button onClick={() => setShowLoginModal(false)} style={{padding:'10px 22px',borderRadius:8,border:'1px solid #ddd',background:'#f5f5f5',cursor:'pointer',fontWeight:600}}>ยกเลิก</button>
+              <button onClick={() => setShowLoginModal(false)} style={{padding:'10px 22px',borderRadius:8,border:'1px solid #ddd',background:'#f5f5f5',cursor:'pointer',fontWeight:600}}>??????</button>
               <button onClick={() => navigate('/auth')} style={{padding:'10px 22px',borderRadius:8,border:'none',background:'#1a1a1a',color:'#fff',cursor:'pointer',fontWeight:600}}>Login</button>
             </div>
           </div>

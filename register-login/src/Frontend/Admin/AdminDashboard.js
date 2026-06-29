@@ -1,9 +1,9 @@
-﻿import API_URL from '../../config';
+import API_URL from '../../config';
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const API = `${API_URL}/api/admin`;
-const STATUS_LABEL = { O: "สร้างรายการสั่งซื้อ", P: "รอตรวจสอบ", A: "ยืนยันคำสั่งซื้อ", S: "จัดส่งสินค้าแล้ว", R: "ถึงผู้รับแล้ว", C: "เสร็จเรียบร้อย", Ca: "ยกเลิกคำสั่งซื้อ" };
+const STATUS_LABEL = { O: "???????????????????", P: "?????????", A: "????????????????", S: "????????????????", R: "?????????????", C: "??????????????", Ca: "????????????????" };
 
 const navItems = [
   { iconSrc: "/Dashboard.png",   label: "Dashboard",   path: "/admin" },
@@ -131,9 +131,9 @@ const styles = `
 
 function MiniBarChart({ data, refLabel, color, onBarClick }) {
   const [tooltip, setTooltip] = React.useState(null);
-  if (!data || data.length === 0) return <div style={{height:110,display:'flex',alignItems:'center',justifyContent:'center',color:'#ccc',fontSize:12}}>ยังไม่มีข้อมูล</div>;
+  if (!data || data.length === 0) return <div style={{height:110,display:'flex',alignItems:'center',justifyContent:'center',color:'#ccc',fontSize:12}}>??????????????</div>;
   const hasAny = data.some(d => d.revenue > 0);
-  if (!hasAny) return <div style={{height:110,display:'flex',alignItems:'center',justifyContent:'center',color:'#ccc',fontSize:12}}>ยังไม่มีข้อมูล</div>;
+  if (!hasAny) return <div style={{height:110,display:'flex',alignItems:'center',justifyContent:'center',color:'#ccc',fontSize:12}}>??????????????</div>;
   const max = Math.max(...data.map(d => d.revenue), 1);
   const n = data.length;
   const VW = 300, BAR_H = 80, LABEL_H = 22, TOP_PAD = 20;
@@ -144,13 +144,13 @@ function MiniBarChart({ data, refLabel, color, onBarClick }) {
   const fmtLabel = (label) => {
     if (/^\d{4}-\d{2}-\d{2}$/.test(label)) {
       const d = new Date(label + 'T12:00:00');
-      const days = ['อา','จ','อ','พ','พฤ','ศ','ส'];
+      const days = ['??','?','?','?','??','?','?'];
       return days[d.getDay()] + '.' + d.getDate();
     }
     if (/^\d{4}-W\d{2}$/.test(label)) return 'W' + label.split('-W')[1];
     if (/^\d{4}-\d{2}$/.test(label)) {
       const [, m] = label.split('-');
-      return ['ม.ค','ก.พ','มี.ค','เม.ย','พ.ค','มิ.ย','ก.ค','ส.ค','ก.ย','ต.ค','พ.ย','ธ.ค'][parseInt(m)-1] || m;
+      return ['?.?','?.?','??.?','??.?','?.?','??.?','?.?','?.?','?.?','?.?','?.?','?.?'][parseInt(m)-1] || m;
     }
     return String(parseInt(label) + 543);
   };
@@ -159,7 +159,7 @@ function MiniBarChart({ data, refLabel, color, onBarClick }) {
     <div style={{ position: 'relative', width: '100%' }}>
       {tooltip && (
         <div className="sd-chart-tooltip" style={{ left: `${(tooltip.cx / VW) * 100}%`, top: tooltip.ty }}>
-          ฿{Number(tooltip.v).toLocaleString()}
+          ?{Number(tooltip.v).toLocaleString()}
         </div>
       )}
       <svg viewBox={`0 0 ${VW} ${TOTAL_H}`} width="100%" height={TOTAL_H} style={{ display: 'block', overflow: 'visible' }}>
@@ -379,7 +379,7 @@ export default function AdminDashboard() {
               className={`sd-nav-item ${location.pathname === item.path ? "active" : ""}`}
               onClick={() => navigate(item.path)}
             >
-              {item.iconSrc ? <img src={item.iconSrc} alt={item.label} className="sd-nav-icon" /> : <span style={{width:'20px',height:'20px',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'14px',flexShrink:0}}>🏷️</span>}
+              {item.iconSrc ? <img src={item.iconSrc} alt={item.label} className="sd-nav-icon" /> : <span style={{width:'20px',height:'20px',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'14px',flexShrink:0}}>???</span>}
               {item.label}
             </button>
           ))}
@@ -418,7 +418,7 @@ export default function AdminDashboard() {
                   <div className="sd-section-card">
                     <div className="sd-section-head">
                       <div className="sd-section-title"> Top Spenders</div>
-                      <button className="sd-see-all" onClick={() => navigate("/admin/users", { state: { filterRole: 'Top Spenders' } })}>View All →</button>
+                      <button className="sd-see-all" onClick={() => navigate("/admin/users", { state: { filterRole: 'Top Spenders' } })}>View All ?</button>
                     </div>
                     {!topSpenders.length ? (
                       <div className="sd-empty">No data available</div>
@@ -435,7 +435,7 @@ export default function AdminDashboard() {
                                 <td>{m.Name} {m.Surname}</td>
                                 <td style={{ color: 'var(--text-muted)', fontSize: 12 }}>{m.Email}</td>
                                 <td>{m.order_count}</td>
-                                <td style={{ fontWeight: 700 }}>฿{Number(m.total_spent).toLocaleString()}</td>
+                                <td style={{ fontWeight: 700 }}>?{Number(m.total_spent).toLocaleString()}</td>
                               </tr>
                             ))}
                           </tbody>
@@ -448,7 +448,7 @@ export default function AdminDashboard() {
                   <div className="sd-section-card">
                     <div className="sd-section-head">
                       <div className="sd-section-title"> Best Selling Products</div>
-                      <button className="sd-see-all" onClick={() => navigate("/admin/products", { state: { category: 'best' } })}>View All →</button>
+                      <button className="sd-see-all" onClick={() => navigate("/admin/products", { state: { category: 'best' } })}>View All ?</button>
                     </div>
                     {!topProducts.length ? (
                       <div className="sd-empty">No data available</div>
@@ -472,8 +472,8 @@ export default function AdminDashboard() {
                                   </div>
                                 </td>
                                 <td style={{ color: 'var(--text-muted)', fontSize: 12 }}>{p.Product_model}</td>
-                                <td>฿{Number(p.Product_price).toLocaleString()}</td>
-                                <td style={{ fontWeight: 700 }}>{p.sold_total} ชิ้น</td>
+                                <td>?{Number(p.Product_price).toLocaleString()}</td>
+                                <td style={{ fontWeight: 700 }}>{p.sold_total} ????</td>
                               </tr>
                             ))}
                           </tbody>
@@ -489,9 +489,9 @@ export default function AdminDashboard() {
                   <div className="sd-rev-card sd-rev-card-week">
                     <div className="sd-rev-top">
                       <div className="sd-rev-period" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                        รายสัปดาห์
+                        ??????????
                         {weekDrillDay && (
-                          <button onClick={() => setWeekDrillDay(null)} style={{ fontSize: 10, background: 'none', border: '1px solid #a29bfe', cursor: 'pointer', color: '#a29bfe', fontWeight: 700, padding: '1px 7px', borderRadius: 6, lineHeight: 1.6 }}>← กลับ</button>
+                          <button onClick={() => setWeekDrillDay(null)} style={{ fontSize: 10, background: 'none', border: '1px solid #a29bfe', cursor: 'pointer', color: '#a29bfe', fontWeight: 700, padding: '1px 7px', borderRadius: 6, lineHeight: 1.6 }}>? ????</button>
                         )}
                       </div>
                       {!weekDrillDay
@@ -502,10 +502,10 @@ export default function AdminDashboard() {
                       }
                     </div>
                     <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
-                      <div className="sd-rev-amount">฿{periodRevs.week.toLocaleString()}</div>
+                      <div className="sd-rev-amount">?{periodRevs.week.toLocaleString()}</div>
                       {!weekDrillDay && <Trend history={weekHistory} />}
                     </div>
-                    <div className="sd-rev-sub">{weekDrillDay ? `รายวัน ${weekDrillDay}` : 'Weekly Revenue'}</div>
+                    <div className="sd-rev-sub">{weekDrillDay ? `?????? ${weekDrillDay}` : 'Weekly Revenue'}</div>
                     <div className="sd-rev-chart">
                       {weekDrillDay
                         ? <MiniBarChart data={dayHistory} refLabel={todayDate} color="#a29bfe" />
@@ -518,7 +518,7 @@ export default function AdminDashboard() {
                   {/* Monthly */}
                   <div className="sd-rev-card sd-rev-card-month">
                     <div className="sd-rev-top">
-                      <div className="sd-rev-period">รายเดือน</div>
+                      <div className="sd-rev-period">????????</div>
                       <input
                         type="month"
                         className="sd-rev-picker"
@@ -528,7 +528,7 @@ export default function AdminDashboard() {
                       />
                     </div>
                     <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
-                      <div className="sd-rev-amount">฿{periodRevs.month.toLocaleString()}</div>
+                      <div className="sd-rev-amount">?{periodRevs.month.toLocaleString()}</div>
                       <Trend history={monthHistory} />
                     </div>
                     <div className="sd-rev-sub">Monthly Revenue</div>
@@ -537,7 +537,7 @@ export default function AdminDashboard() {
                   {/* Yearly */}
                   <div className="sd-rev-card sd-rev-card-year">
                     <div className="sd-rev-top">
-                      <div className="sd-rev-period">รายปี</div>
+                      <div className="sd-rev-period">?????</div>
                       <select
                         className="sd-rev-picker"
                         value={yearVal}
@@ -549,7 +549,7 @@ export default function AdminDashboard() {
                       </select>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
-                      <div className="sd-rev-amount">฿{periodRevs.year.toLocaleString()}</div>
+                      <div className="sd-rev-amount">?{periodRevs.year.toLocaleString()}</div>
                       <Trend history={yearHistory} />
                     </div>
                     <div className="sd-rev-sub">Yearly Revenue</div>
@@ -562,7 +562,7 @@ export default function AdminDashboard() {
                   <div className="sd-section-head">
                     <div className="sd-section-title">Pending Orders (Latest)</div>
                     <button className="sd-see-all" onClick={() => navigate("/admin/orders")}>
-                      View All →
+                      View All ?
                     </button>
                   </div>
 
@@ -586,7 +586,7 @@ export default function AdminDashboard() {
                             <tr key={o.Order_id}>
                               <td><span className="sd-td-id">#{o.Order_id}</span></td>
                               <td>{o.Name} {o.Surname}</td>
-                              <td style={{ fontWeight: 600 }}>฿{Number(o.Proprice).toLocaleString()}</td>
+                              <td style={{ fontWeight: 600 }}>?{Number(o.Proprice).toLocaleString()}</td>
                               <td>
                                 <span className={`sd-badge sd-badge-${o.Status}`}>
                                   {STATUS_LABEL[o.Status]}
@@ -598,7 +598,7 @@ export default function AdminDashboard() {
                                   <button className="sd-slip-btn" onClick={() => setLightbox(`${API_URL}/uploads/${o.Invoice_pic}`)}
                                   >
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                                    ดูสลิป
+                                    ??????
                                   </button>
                                 ) : (
                                   <span style={{ color: "#bbb", fontSize: "0.82rem" }}>-</span>

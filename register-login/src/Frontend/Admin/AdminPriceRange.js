@@ -1,4 +1,4 @@
-﻿import API_URL from '../../config';
+import API_URL from '../../config';
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -166,7 +166,7 @@ export default function AdminPriceRange() {
   };
 
   const openProdList = async (row) => {
-    setProdModalTitle(`${row.Type_name || 'Price Range #' + row.Price_range_id} — ${row.product_count} สินค้า`);
+    setProdModalTitle(`${row.Type_name || 'Price Range #' + row.Price_range_id} � ${row.product_count} ??????`);
     setProdModal(true);
     setProdLoading(true);
     try {
@@ -186,7 +186,7 @@ export default function AdminPriceRange() {
         body: JSON.stringify({ Min_price: Number(form.Min_price), Max_price: Number(form.Max_price) }),
       });
       const data = await res.json().catch(() => ({}));
-      if (!res.ok || data.error) throw new Error(data.error || `บันทึกไม่สำเร็จ (${res.status})`);
+      if (!res.ok || data.error) throw new Error(data.error || `??????????????? (${res.status})`);
       setSaving(false); setModal(false); load();
     } catch (err) {
       setSaveError(err.message);
@@ -213,7 +213,7 @@ export default function AdminPriceRange() {
             >
               {item.iconSrc
                 ? <img src={item.iconSrc} alt={item.label} className="apr-nav-icon" />
-                : <span className="apr-nav-emoji">🏷️</span>
+                : <span className="apr-nav-emoji">???</span>
               }
               {item.label}
             </button>
@@ -253,15 +253,15 @@ export default function AdminPriceRange() {
                 {loading ? (
                   <div style={{ padding: 40, textAlign: "center", color: "var(--text-muted)", fontSize: 14 }}>Loading...</div>
                 ) : priceRanges.length === 0 ? (
-                  <div style={{ padding: 40, textAlign: "center", color: "var(--text-muted)", fontSize: 14 }}>ไม่พบข้อมูล price_range ในฐานข้อมูล</div>
+                  <div style={{ padding: 40, textAlign: "center", color: "var(--text-muted)", fontSize: 14 }}>??????????? price_range ???????????</div>
                 ) : (
                   <table>
                     <thead>
                       <tr>
                         <th>ID</th>
                         <th>Category (Type)</th>
-                        <th>Min Price (฿)</th>
-                        <th>Max Price (฿)</th>
+                        <th>Min Price (?)</th>
+                        <th>Max Price (?)</th>
                         <th>Products</th>
                         <th>Action</th>
                       </tr>
@@ -273,13 +273,13 @@ export default function AdminPriceRange() {
                           <td>
                             {row.Type_name
                               ? <span className="apr-type-badge">{row.Type_name}</span>
-                              : <span style={{ color: "var(--text-muted)" }}>—</span>}
+                              : <span style={{ color: "var(--text-muted)" }}>�</span>}
                           </td>
-                          <td><span className="apr-price-val">฿{Number(row.Min_price).toLocaleString()}</span></td>
-                          <td><span className="apr-price-val">฿{Number(row.Max_price).toLocaleString()}</span></td>
+                          <td><span className="apr-price-val">?{Number(row.Min_price).toLocaleString()}</span></td>
+                          <td><span className="apr-price-val">?{Number(row.Max_price).toLocaleString()}</span></td>
                           <td>
-                            <button className="apr-count-badge-btn" onClick={() => openProdList(row)} title="ดูสินค้าทั้งหมด">
-                              <span className="apr-count-badge">{row.product_count} สินค้า</span>
+                            <button className="apr-count-badge-btn" onClick={() => openProdList(row)} title="???????????????">
+                              <span className="apr-count-badge">{row.product_count} ??????</span>
                             </button>
                           </td>
                           <td>
@@ -304,25 +304,25 @@ export default function AdminPriceRange() {
       {prodModal && (
         <div className="apr-modal-backdrop" onClick={() => setProdModal(false)}>
           <div className="apr-prod-modal" onClick={e => e.stopPropagation()}>
-            <button className="apr-modal-close" onClick={() => setProdModal(false)}>✕</button>
-            <h3>รายการสินค้า</h3>
+            <button className="apr-modal-close" onClick={() => setProdModal(false)}>?</button>
+            <h3>????????????</h3>
             <div className="apr-prod-modal-sub">{prodModalTitle}</div>
             <div className="apr-prod-list">
               {prodLoading ? (
                 <div style={{ padding: 30, textAlign: 'center', color: 'var(--text-muted)', fontSize: 14 }}>Loading...</div>
               ) : prodList.length === 0 ? (
-                <div style={{ padding: 30, textAlign: 'center', color: 'var(--text-muted)', fontSize: 14 }}>ไม่มีสินค้าในหมวดหมู่นี้</div>
+                <div style={{ padding: 30, textAlign: 'center', color: 'var(--text-muted)', fontSize: 14 }}>????????????????????????</div>
               ) : prodList.map(p => (
                 <div className="apr-prod-item" key={p.Product_id}>
                   {p.Image
                     ? <img src={`${API_URL}/uploads/${p.Image}`} alt={p.Product_name} className="apr-prod-thumb" />
-                    : <div className="apr-prod-thumb-ph">💄</div>}
+                    : <div className="apr-prod-thumb-ph">??</div>}
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div className="apr-prod-name">{p.Product_name}</div>
-                    <div className="apr-prod-model">{p.Product_model || '—'}</div>
+                    <div className="apr-prod-model">{p.Product_model || '�'}</div>
                   </div>
                   {p.Color && <span className="apr-prod-color" style={{ backgroundColor: p.Color }} title={p.Color} />}
-                  <div className="apr-prod-price">฿{Number(p.Product_price).toLocaleString()}</div>
+                  <div className="apr-prod-price">?{Number(p.Product_price).toLocaleString()}</div>
                 </div>
               ))}
             </div>
@@ -334,15 +334,15 @@ export default function AdminPriceRange() {
       {modal && editRow && (
         <div className="apr-modal-backdrop" onClick={() => setModal(false)}>
           <div className="apr-modal" onClick={e => e.stopPropagation()}>
-            <button className="apr-modal-close" onClick={() => setModal(false)}>✕</button>
+            <button className="apr-modal-close" onClick={() => setModal(false)}>?</button>
             <h3>Edit Price Range #{editRow.Price_range_id}</h3>
             <div className="apr-modal-sub">
-              {editRow.Type_name ? `หมวดหมู่: ${editRow.Type_name}` : `Price Range ID: ${editRow.Price_range_id}`}
-              {` · ${editRow.product_count} สินค้า`}
+              {editRow.Type_name ? `????????: ${editRow.Type_name}` : `Price Range ID: ${editRow.Price_range_id}`}
+              {` � ${editRow.product_count} ??????`}
             </div>
             <div className="apr-form-row">
               <div>
-                <label className="apr-form-label">Min Price (฿)</label>
+                <label className="apr-form-label">Min Price (?)</label>
                 <input
                   className="apr-form-input"
                   type="number"
@@ -352,7 +352,7 @@ export default function AdminPriceRange() {
                 />
               </div>
               <div>
-                <label className="apr-form-label">Max Price (฿)</label>
+                <label className="apr-form-label">Max Price (?)</label>
                 <input
                   className="apr-form-input"
                   type="number"

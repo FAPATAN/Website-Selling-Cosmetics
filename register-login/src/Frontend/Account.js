@@ -1,10 +1,10 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Account.css";
 import { fetchUserProfile, updateUserProfile, changePassword } from "./api";
 const API = process.env.REACT_APP_API_URL;
 
-/* ───────────── PasswordField ───────────── */
+/* ------------- PasswordField ------------- */
 function PasswordField({ label, value, onChange, placeholder }) {
     return (
         <div className="field-group">
@@ -20,7 +20,7 @@ function PasswordField({ label, value, onChange, placeholder }) {
     );
 }
 
-/* ───────────── InfoItem ───────────── */
+/* ------------- InfoItem ------------- */
 function InfoItem({ label, value, editMode, onChange }) {
     return (
         <div>
@@ -34,11 +34,11 @@ function InfoItem({ label, value, editMode, onChange }) {
     );
 }
 
-/* ───────────── Sidebar ───────────── */
+/* ------------- Sidebar ------------- */
 function AccountSidebar({ active, onSelect, username, onLogout }) {
     const menuItems = [
-        { id: "dashboard", label: "ข้อมูลส่วนตัว", icon: "/user.png", iconActive: "/user1.png" },
-        { id: "orders", label: "การซื้อของฉัน", icon: "/cart.png", iconActive: "/cart1.png" },
+        { id: "dashboard", label: "?????????????", icon: "/user.png", iconActive: "/user1.png" },
+        { id: "orders", label: "?????????????", icon: "/cart.png", iconActive: "/cart1.png" },
     ];
 
     return (
@@ -67,14 +67,14 @@ function AccountSidebar({ active, onSelect, username, onLogout }) {
                     <span className="sidebar-icon">
                         <img src="/logout.png" alt="logout" style={{ width: 24, height: 24, verticalAlign: "middle" }} />
                     </span>
-                    <span>ออกจากระบบ</span>
+                    <span>??????????</span>
                 </button>
             </nav>
         </div>
     );
 }
 
-/* ───────────── Main Component ───────────── */
+/* ------------- Main Component ------------- */
 export default function ProfileSettings() {
     const navigate = useNavigate();
     const [sideMenuOpen, setSideMenuOpen] = useState(false);
@@ -126,9 +126,9 @@ export default function ProfileSettings() {
     const [draft, setDraft] = useState({ ...profile });
 
     const announcements = [
-        "[NEW!] Glasting Color Gloss Mini เปิดตัวพร้อมโปรโมชั่นสุดพิเศษ",
-        "[NEW!] 4in1 Han All Eyepot Liner จะเป็นยังไงถ้ารวมอายแชโดว์ อายไลน์เนอร์ เข้าด้วยกัน",
-        "Free Shipping! สั่งซื้อครบ 500 บาท จัดส่งฟรีทั่วประเทศ",
+        "[NEW!] Glasting Color Gloss Mini ?????????????????????????????",
+        "[NEW!] 4in1 Han All Eyepot Liner ?????????????????????????? ???????????? ???????????",
+        "Free Shipping! ??????????? 500 ??? ???????????????????",
     ];
 
     useEffect(() => {
@@ -151,7 +151,7 @@ export default function ProfileSettings() {
             });
             if (passwords.current && passwords.newPw && passwords.confirm) {
                 if (passwords.newPw !== passwords.confirm) {
-                    alert("รหัสผ่านใหม่และยืนยันรหัสผ่านไม่ตรงกัน"); return;
+                    alert("??????????????????????????????????????"); return;
                 }
                 await changePassword({ email: draft.email, currentPassword: passwords.current, newPassword: passwords.newPw });
                 setPasswords({ current: "", newPw: "", confirm: "" });
@@ -161,7 +161,7 @@ export default function ProfileSettings() {
             setToast(true);
             setTimeout(() => setToast(false), 2500);
         } catch {
-            alert("เกิดข้อผิดพลาดในการอัปเดตข้อมูลหรือเปลี่ยนรหัสผ่าน");
+            alert("??????????????????????????????????????????????????");
         }
     };
 
@@ -173,7 +173,7 @@ export default function ProfileSettings() {
 
     return (
         <>
-            {/* ── Announcement Bar ── */}
+            {/* -- Announcement Bar -- */}
             <div className="announcement-bar">
                 {announcements.map((text, i) => (
                     <div key={i} className={`announcement-slide${i === announcementIdx ? " active" : ""}`}>
@@ -182,16 +182,16 @@ export default function ProfileSettings() {
                 ))}
             </div>
 
-            {/* ── Overlay ── */}
+            {/* -- Overlay -- */}
             <div className={`overlay${sideMenuOpen ? " active" : ""}`} onClick={() => setSideMenuOpen(false)} />
 
-            {/* ── Side Menu ── */}
+            {/* -- Side Menu -- */}
             <div className={`side-menu${sideMenuOpen ? " active" : ""}`}>
-                <div className="close-btn" onClick={() => setSideMenuOpen(false)}>✕</div>
+                <div className="close-btn" onClick={() => setSideMenuOpen(false)}>?</div>
                 <div className="login-section">
-                    <span onClick={() => { window.location.href = "/app"; }}>REGISTER</span>
+                    <span onClick={() => { window.location.href = "/auth"; }}>REGISTER</span>
                     <span className="divider">|</span>
-                    <span onClick={() => { window.location.href = "/app"; }}>LOGIN</span>
+                    <span onClick={() => { window.location.href = "/auth"; }}>LOGIN</span>
                 </div>
                 <ul>
                     <li onClick={() => { window.location.href = "/Home/home.html"; }}>MYPAGE</li>
@@ -213,7 +213,7 @@ export default function ProfileSettings() {
                 </ul>
             </div>
 
-            {/* ── Header ── */}
+            {/* -- Header -- */}
             <header className="main-header">
                 <div className="menu-icon" onClick={() => setSideMenuOpen(true)}>
                     <div className="bar" /><div className="bar" /><div className="bar" />
@@ -239,7 +239,7 @@ export default function ProfileSettings() {
                 </div>
             </header>
 
-            {/* ── Account Layout ── */}
+            {/* -- Account Layout -- */}
             <div className="account-layout">
 
                 {/* LEFT: Sidebar */}
@@ -319,9 +319,9 @@ export default function ProfileSettings() {
             </div>
 
             {/* Toast */}
-            <div className={`toast-msg${toast ? " show" : ""}`}>✓ Changes saved successfully!</div>
+            <div className={`toast-msg${toast ? " show" : ""}`}>? Changes saved successfully!</div>
 
-            {/* ── Footer ── */}
+            {/* -- Footer -- */}
             <footer className="footer">
                 <div className="footer-container">
                     <div className="footer-column">
@@ -331,10 +331,10 @@ export default function ProfileSettings() {
                     <div className="footer-column">
                         <h3>Customer Service</h3>
                         <ul>
-                            <li><a href="#">นโยบายความเป็นส่วนตัว</a></li>
-                            <li><a href="#">การคืน / การขอเงินคืน</a></li>
-                            <li><a href="#">เงื่อนไขการให้บริการ</a></li>
-                            <li><a href="#">ข้อมูลการจัดส่ง</a></li>
+                            <li><a href="#">?????????????????????</a></li>
+                            <li><a href="#">?????? / ????????????</a></li>
+                            <li><a href="#">????????????????????</a></li>
+                            <li><a href="#">???????????????</a></li>
                             <li><a href="#">California Proposition 65</a></li>
                             <li><a href="#">CCPA &amp; US Privacy Laws</a></li>
                             <li><a href="#">Accessibility Statement</a></li>
@@ -342,8 +342,8 @@ export default function ProfileSettings() {
                     </div>
                     <div className="footer-column">
                         <h3>Newsletter</h3>
-                        <p>สมัครรับข่าวสาร ข้อเสนอพิเศษ และอัปเดตจากเรา</p><br />
-                        <p className="highlight">❤️ รับส่วนลดเพิ่มอีก 20% ทันที!</p><br />
+                        <p>??????????????? ???????????? ???????????????</p><br />
+                        <p className="highlight">?? ????????????????? 20% ?????!</p><br />
                         <form onSubmit={e => e.preventDefault()}>
                             <input type="email" placeholder="Enter email" className="email-input" />
                             <button className="signup-btn" type="submit">Sign up</button>

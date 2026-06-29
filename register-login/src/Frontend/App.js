@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Mail, Lock, User, Phone, MapPin, Loader2, LogIn, UserPlus } from 'lucide-react';
 import './App.css';
 const API = process.env.REACT_APP_API_URL;
@@ -17,7 +17,7 @@ const MessageBox = ({ title, body, isError, onClose }) => {
                     onClick={onClose}
                     className={`message-box-button ${isError ? 'error' : 'success'}`}
                 >
-                    ตกลง
+                    ????
                 </button>
             </div>
         </div>
@@ -66,34 +66,34 @@ const RegisterForm = ({ onRegisterSuccess, showMessage }) => {
 
         // Validate required fields
         if (!name || !surname || !email || !phone || !username || !password || !confirmPassword) {
-            setMessage('❌ กรุณากรอกข้อมูลให้ครบทุกช่อง');
-            showMessage('ข้อมูลไม่ครบ', 'กรุณากรอกข้อมูลให้ครบทุกช่องที่จำเป็น', true);
+            setMessage('? ????????????????????????????');
+            showMessage('????????????', '?????????????????????????????????????', true);
             return;
         }
 
         // Validate email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            setMessage('❌ รูปแบบอีเมลไม่ถูกต้อง');
-            showMessage('อีเมลไม่ถูกต้อง', 'กรุณากรอกอีเมลในรูปแบบที่ถูกต้อง', true);
+            setMessage('? ?????????????????????');
+            showMessage('???????????????', '????????????????????????????????', true);
             return;
         }
 
         // Validate password match
         if (password !== confirmPassword) {
-            setMessage('❌ รหัสผ่านในช่อง Password และ Confirm Password ไม่ตรงกัน');
-            showMessage('รหัสผ่านไม่ตรงกัน', 'กรุณาตรวจสอบรหัสผ่านให้ตรงกันทั้งสองช่อง', true);
+            setMessage('? ?????????????? Password ??? Confirm Password ?????????');
+            showMessage('?????????????????', '????????????????????????????????????????', true);
             return;
         }
 
         // Validate password rules
         if (!pwRules.length || !pwRules.upper || !pwRules.lower) {
             const missing = [];
-            if (!pwRules.length) missing.push('อย่างน้อย 8 ตัวอักษร');
-            if (!pwRules.upper)  missing.push('ตัวพิมพ์ใหญ่ (A-Z)');
-            if (!pwRules.lower)  missing.push('ตัวพิมพ์เล็ก (a-z)');
-            setMessage('❌ รหัสผ่านไม่ตรงตามเงื่อนไขที่กำหนด');
-            showMessage('รหัสผ่านไม่ตรงเงื่อนไข', `ขาดเงื่อนไข: ${missing.join(', ')}`, true);
+            if (!pwRules.length) missing.push('????????? 8 ????????');
+            if (!pwRules.upper)  missing.push('???????????? (A-Z)');
+            if (!pwRules.lower)  missing.push('???????????? (a-z)');
+            setMessage('? ?????????????????????????????????');
+            showMessage('??????????????????????', `???????????: ${missing.join(', ')}`, true);
             return;
         }
 
@@ -121,19 +121,19 @@ const RegisterForm = ({ onRegisterSuccess, showMessage }) => {
             const data = await response.json();
 
             if (response.ok) {
-                showMessage('ลงทะเบียนสำเร็จ!', 'คุณลงทะเบียนสำเร็จแล้ว! ระบบจะนำไปหน้าเข้าสู่ระบบทันที', false);
+                showMessage('???????????????!', '??????????????????????! ??????????????????????????????', false);
                 setUsername(''); setEmail(''); setPassword(''); setConfirmPassword('');
                 setName(''); setSurname(''); setPhone(''); setAddress('');
                 setTimeout(onRegisterSuccess, 1000);
             } else {
-                const errorMsg = data.error || data.msg || 'เกิดข้อผิดพลาดจากเซิร์ฟเวอร์';
-                setMessage(`❌ ลงทะเบียนไม่สำเร็จ: ${errorMsg}`);
-                showMessage('ลงทะเบียนไม่สำเร็จ', errorMsg, true);
+                const errorMsg = data.error || data.msg || '????????????????????????????';
+                setMessage(`? ??????????????????: ${errorMsg}`);
+                showMessage('??????????????????', errorMsg, true);
             }
         } catch (error) {
             console.error('Registration failed:', error);
-            setMessage('❌ ข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์');
-            showMessage('ข้อผิดพลาด', 'ข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์ กรุณาตรวจสอบว่า Backend ทำงานอยู่', true);
+            setMessage('? ???????????????????????????????????');
+            showMessage('??????????', '??????????????????????????????????? ??????????????? Backend ?????????', true);
         } finally {
             setIsLoading(false);
         }
@@ -144,19 +144,19 @@ const RegisterForm = ({ onRegisterSuccess, showMessage }) => {
             <h2 className="form-title">Sign Up Here</h2>
             
             {message && (
-                <p className={`alert-message ${message.startsWith('❌') ? 'error' : 'success'}`}>
+                <p className={`alert-message ${message.startsWith('?') ? 'error' : 'success'}`}>
                     {message}
                 </p>
             )}
 
             <div className="grid-2-cols">
-                <InputField label="ชื่อ" id="name" value={name} onChange={(e) => setName(e.target.value)} required icon={User} />
-                <InputField label="นามสกุล" id="surname" value={surname} onChange={(e) => setSurname(e.target.value)} required icon={User} />
+                <InputField label="????" id="name" value={name} onChange={(e) => setName(e.target.value)} required icon={User} />
+                <InputField label="???????" id="surname" value={surname} onChange={(e) => setSurname(e.target.value)} required icon={User} />
             </div>
             
             <div className="grid-2-cols">
-                <InputField label="อีเมล" id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required icon={Mail} />
-                <InputField label="เบอร์โทรศัพท์" id="phone" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required icon={Phone} />
+                <InputField label="?????" id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required icon={Mail} />
+                <InputField label="?????????????" id="phone" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required icon={Phone} />
             </div>
 
             <div className="textarea-wrapper">
@@ -166,35 +166,35 @@ const RegisterForm = ({ onRegisterSuccess, showMessage }) => {
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     rows="2"
-                    placeholder="ที่อยู่"
+                    placeholder="???????"
                     className="textarea-field"
                 />
             </div>
 
-            <InputField label="ชื่อผู้ใช้งาน" id="username" value={username} onChange={(e) => setUsername(e.target.value)} required icon={User} />
+            <InputField label="?????????????" id="username" value={username} onChange={(e) => setUsername(e.target.value)} required icon={User} />
 
             <div
                 className="pw-field-wrapper"
                 onFocus={() => setPwFocused(true)}
                 onBlur={() => setPwFocused(false)}
             >
-                <InputField label="รหัสผ่าน" id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required icon={Lock} />
+                <InputField label="????????" id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required icon={Lock} />
                 {pwFocused && (
                     <div className="pw-rules-popover">
                         <span className={pwRules.length ? 'pw-rule ok' : 'pw-rule'}>
-                            {pwRules.length ? '✓' : '✗'} อย่างน้อย 8 ตัวอักษร
+                            {pwRules.length ? '?' : '?'} ????????? 8 ????????
                         </span>
                         <span className={pwRules.upper ? 'pw-rule ok' : 'pw-rule'}>
-                            {pwRules.upper ? '✓' : '✗'} ตัวพิมพ์ใหญ่ (A-Z)
+                            {pwRules.upper ? '?' : '?'} ???????????? (A-Z)
                         </span>
                         <span className={pwRules.lower ? 'pw-rule ok' : 'pw-rule'}>
-                            {pwRules.lower ? '✓' : '✗'} ตัวพิมพ์เล็ก (a-z)
+                            {pwRules.lower ? '?' : '?'} ???????????? (a-z)
                         </span>
                     </div>
                 )}
             </div>
 
-            <InputField label="ยืนยันรหัสผ่าน" id="confirm-password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required icon={Lock} />
+            <InputField label="??????????????" id="confirm-password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required icon={Lock} />
 
             <button
                 type="submit"
@@ -228,18 +228,18 @@ const LoginForm = ({ onLoginSuccess, showMessage }) => {
 
         // Validate required fields
         if (!email || !password) {
-            const errorMessage = 'กรุณากรอกอีเมลและรหัสผ่าน';
-            setError(`❌ ${errorMessage}`);
-            showMessage('ข้อมูลไม่ครบ', errorMessage, true);
+            const errorMessage = '?????????????????????????';
+            setError(`? ${errorMessage}`);
+            showMessage('????????????', errorMessage, true);
             return;
         }
 
         // Validate email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            const errorMessage = 'รูปแบบอีเมลไม่ถูกต้อง';
-            setError(`❌ ${errorMessage}`);
-            showMessage('อีเมลไม่ถูกต้อง', 'กรุณากรอกอีเมลในรูปแบบที่ถูกต้อง', true);
+            const errorMessage = '?????????????????????';
+            setError(`? ${errorMessage}`);
+            showMessage('???????????????', '????????????????????????????????', true);
             return;
         }
 
@@ -267,7 +267,7 @@ const LoginForm = ({ onLoginSuccess, showMessage }) => {
                     sessionStorage.setItem("username",  data.username  || "");
                     sessionStorage.setItem("userRole",  data.userRole  || "U");
                 }
-                showMessage('สำเร็จ', `เข้าสู่ระบบสำเร็จ! ยินดีต้อนรับ ${data.username || email}`, false);
+                showMessage('??????', `?????????????????! ???????????? ${data.username || email}`, false);
                 if (onLoginSuccess) {
                     onLoginSuccess({ email, role: data.userRole });
                 }
@@ -275,15 +275,15 @@ const LoginForm = ({ onLoginSuccess, showMessage }) => {
                     window.location.href = data.userRole === "A" ? "/admin" : "/";
                 }, 1000);
             } else {
-                const errorMessage = data.message || 'อีเมลหรือรหัสผ่านไม่ถูกต้อง';
-                setError(`❌ ${errorMessage}`);
-                showMessage('เข้าสู่ระบบไม่สำเร็จ', errorMessage, true);
+                const errorMessage = data.message || '???????????????????????????';
+                setError(`? ${errorMessage}`);
+                showMessage('????????????????????', errorMessage, true);
             }
         } catch (error) {
             console.error('Login failed:', error);
-            const connectionError = 'ข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์';
-            setError(`❌ ${connectionError}`);
-            showMessage('ข้อผิดพลาด', connectionError, true);
+            const connectionError = '???????????????????????????????????';
+            setError(`? ${connectionError}`);
+            showMessage('??????????', connectionError, true);
         } finally {
             setIsLoading(false);
         }
@@ -300,7 +300,7 @@ const LoginForm = ({ onLoginSuccess, showMessage }) => {
             )}
             
             <InputField 
-                label="อีเมล" 
+                label="?????" 
                 id="login-email" 
                 type="email" 
                 value={email} 
@@ -312,14 +312,14 @@ const LoginForm = ({ onLoginSuccess, showMessage }) => {
 
             <div style={{ marginBottom: '20px' }}>
                 <InputField 
-                    label="รหัสผ่าน" 
+                    label="????????" 
                     id="login-password" 
                     type="password" 
                     value={password} 
                     onChange={(e) => setPassword(e.target.value)} 
                     required 
                     icon={Lock} 
-                    placeholder="รหัสผ่าน" 
+                    placeholder="????????" 
                 />
 
             </div>

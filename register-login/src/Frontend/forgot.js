@@ -1,4 +1,4 @@
-﻿import API_URL from '../config';
+import API_URL from '../config';
 import React, { useState, useEffect, useRef } from 'react';
 import { Mail, ArrowLeft, Loader2, CheckCircle, Lock, KeyRound } from 'lucide-react';
 
@@ -347,13 +347,13 @@ export default function ForgotPasswordSystem() {
     setSuccess('');
 
     if (!email) {
-      setError('กรุณากรอกอีเมล');
+      setError('??????????????');
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      setError('รูปแบบอีเมลไม่ถูกต้อง');
+      setError('?????????????????????');
       return;
     }
 
@@ -369,11 +369,11 @@ export default function ForgotPasswordSystem() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'เกิดข้อผิดพลาด');
+        throw new Error(data.error || '??????????????');
       }
 
       setResetToken(data.token);
-      setSuccess('ส่งรหัส OTP ไปยังอีเมลของคุณแล้ว กรุณาตรวจสอบอีเมล');
+      setSuccess('??????? OTP ???????????????????? ?????????????????');
       setStep(2);
       setTimer(300);
     } catch (err) {
@@ -406,7 +406,7 @@ export default function ForgotPasswordSystem() {
 
     const otpCode = otp.join('');
     if (otpCode.length !== 6) {
-      setError('กรุณากรอกรหัส OTP ให้ครบ 6 หลัก');
+      setError('????????????? OTP ?????? 6 ????');
       return;
     }
 
@@ -422,10 +422,10 @@ export default function ForgotPasswordSystem() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'รหัส OTP ไม่ถูกต้อง');
+        throw new Error(data.error || '???? OTP ??????????');
       }
 
-      setSuccess('ยืนยัน OTP สำเร็จ');
+      setSuccess('?????? OTP ??????');
       setStep(3);
     } catch (err) {
       setError(err.message);
@@ -450,10 +450,10 @@ export default function ForgotPasswordSystem() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'เกิดข้อผิดพลาด');
+        throw new Error(data.error || '??????????????');
       }
 
-      setSuccess('ส่งรหัส OTP ใหม่แล้ว กรุณาตรวจสอบอีเมล');
+      setSuccess('??????? OTP ???????? ?????????????????');
       setTimer(300);
       setOtp(['', '', '', '', '', '']);
     } catch (err) {
@@ -467,17 +467,17 @@ export default function ForgotPasswordSystem() {
     setError('');
 
     if (!newPassword || !confirmPassword) {
-      setError('กรุณากรอกรหัสผ่านให้ครบ');
+      setError('???????????????????????');
       return;
     }
 
     if (newPassword.length < 6) {
-      setError('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร');
+      setError('??????????????????????? 6 ????????');
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setError('รหัสผ่านไม่ตรงกัน');
+      setError('?????????????????');
       return;
     }
 
@@ -493,10 +493,10 @@ export default function ForgotPasswordSystem() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'เกิดข้อผิดพลาด');
+        throw new Error(data.error || '??????????????');
       }
 
-      setSuccess('เปลี่ยนรหัสผ่านสำเร็จ');
+      setSuccess('?????????????????????');
       setStep(4);
     } catch (err) {
       setError(err.message);
@@ -512,14 +512,14 @@ export default function ForgotPasswordSystem() {
   const renderEmailStep = () => (
     <div>
       <div className="description">
-        กรอกอีเมลที่คุณใช้ลงทะเบียน เราจะส่งรหัส OTP เพื่อยืนยันตัวตนของคุณ
+        ??????????????????????????? ???????????? OTP ??????????????????????
       </div>
 
       {error && <div className="alert-message error">{error}</div>}
       {success && <div className="alert-message success">{success}</div>}
 
       <div className="input-wrapper">
-        <label className="input-label">อีเมล</label>
+        <label className="input-label">?????</label>
         <div className="input-container">
           <Mail className="input-icon" size={20} />
           <input
@@ -538,23 +538,23 @@ export default function ForgotPasswordSystem() {
         {loading ? (
           <>
             <Loader2 className="spinning" size={20} />
-            กำลังส่ง...
+            ????????...
           </>
         ) : (
           <>
             <Mail size={20} />
-            ส่งรหัส OTP
+            ??????? OTP
           </>
         )}
       </button>
 
       <button className="btn-secondary" onClick={handleBackToLogin}>
         <ArrowLeft size={20} />
-        กลับไปหน้าเข้าสู่ระบบ
+        ?????????????????????
       </button>
 
       <div className="info-box">
-        💡 คุณจะได้รับรหัส OTP 6 หลักทางอีเมล (อาจใช้เวลา 1-2 นาที)
+        ?? ??????????????? OTP 6 ???????????? (?????????? 1-2 ????)
       </div>
     </div>
   );
@@ -562,7 +562,7 @@ export default function ForgotPasswordSystem() {
   const renderOtpStep = () => (
     <div>
       <div className="description">
-        เราได้ส่งรหัส OTP 6 หลักไปที่<br />
+        ????????????? OTP 6 ?????????<br />
         <strong>{email}</strong>
       </div>
 
@@ -590,28 +590,28 @@ export default function ForgotPasswordSystem() {
         {loading ? (
           <>
             <Loader2 className="spinning" size={20} />
-            กำลังตรวจสอบ...
+            ????????????...
           </>
         ) : (
           <>
             <CheckCircle size={20} />
-            ยืนยัน OTP
+            ?????? OTP
           </>
         )}
       </button>
 
       <div className="timer-text">
         {timer > 0 ? (
-          <>ส่งรหัสใหม่ได้ใน {Math.floor(timer / 60)}:{String(timer % 60).padStart(2, '0')}</>
+          <>???????????????? {Math.floor(timer / 60)}:{String(timer % 60).padStart(2, '0')}</>
         ) : (
           <>
-            ไม่ได้รับรหัส?{' '}
+            ??????????????{' '}
             <button
               className="resend-btn"
               onClick={handleResendOTP}
               disabled={loading}
             >
-              ส่งอีกครั้ง
+              ???????????
             </button>
           </>
         )}
@@ -626,11 +626,11 @@ export default function ForgotPasswordSystem() {
         }}
       >
         <ArrowLeft size={20} />
-        เปลี่ยนอีเมล
+        ????????????
       </button>
 
       <div className="info-box">
-        📧 ตรวจสอบทั้ง Inbox และ Spam folder
+        ?? ??????????? Inbox ??? Spam folder
       </div>
     </div>
   );
@@ -638,19 +638,19 @@ export default function ForgotPasswordSystem() {
   const renderPasswordStep = () => (
     <div>
       <div className="description">
-        ตั้งรหัสผ่านใหม่สำหรับบัญชีของคุณ
+        ?????????????????????????????????
       </div>
 
       {error && <div className="alert-message error">{error}</div>}
 
       <div className="input-wrapper">
-        <label className="input-label">รหัสผ่านใหม่</label>
+        <label className="input-label">????????????</label>
         <div className="input-container">
           <Lock className="input-icon" size={20} />
           <input
             type="password"
             className="input-field"
-            placeholder="อย่างน้อย 6 ตัวอักษร"
+            placeholder="????????? 6 ????????"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             disabled={loading}
@@ -659,13 +659,13 @@ export default function ForgotPasswordSystem() {
       </div>
 
       <div className="input-wrapper">
-        <label className="input-label">ยืนยันรหัสผ่านใหม่</label>
+        <label className="input-label">??????????????????</label>
         <div className="input-container">
           <KeyRound className="input-icon" size={20} />
           <input
             type="password"
             className="input-field"
-            placeholder="กรอกรหัสผ่านอีกครั้ง"
+            placeholder="????????????????????"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleResetPassword()}
@@ -678,18 +678,18 @@ export default function ForgotPasswordSystem() {
         {loading ? (
           <>
             <Loader2 className="spinning" size={20} />
-            กำลังบันทึก...
+            ???????????...
           </>
         ) : (
           <>
             <CheckCircle size={20} />
-            ยืนยันรหัสผ่านใหม่
+            ??????????????????
           </>
         )}
       </button>
 
       <div className="info-box">
-        🔒 รหัสผ่านจะถูกเข้ารหัสอย่างปลอดภัย
+        ?? ?????????????????????????????????
       </div>
     </div>
   );
@@ -697,12 +697,12 @@ export default function ForgotPasswordSystem() {
   const renderSuccessStep = () => (
     <div className="success-container">
       <CheckCircle className="success-icon" size={80} />
-      <h2 className="success-title">เปลี่ยนรหัสผ่านสำเร็จ!</h2>
+      <h2 className="success-title">?????????????????????!</h2>
       <p className="success-text">
-        คุณสามารถเข้าสู่ระบบด้วยรหัสผ่านใหม่ได้แล้ว
+        ???????????????????????????????????????????
       </p>
       <button className="btn-primary" onClick={handleBackToLogin}>
-        ไปหน้าเข้าสู่ระบบ
+        ?????????????????
       </button>
     </div>
   );

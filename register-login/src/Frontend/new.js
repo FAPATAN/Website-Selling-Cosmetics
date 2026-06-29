@@ -1,4 +1,4 @@
-﻿
+
 import React, { useEffect, useState } from "react";
 	import { useNavigate } from "react-router-dom";
 	import "./new.css";
@@ -40,7 +40,7 @@ const NewSection = ({ setIsRegisterView }) => {
 				const res = await fetch(`${API}/api/new`);
 				const result = await res.json();
 				setAllProducts(Array.isArray(result.data) ? result.data : []);
-				// ปรับให้ newArrivals เป็น 4 ตัวแรกของสินค้าทั้งหมด (รองรับชื่อไฟล์ new_1.1.jpg, new_1.2.jpg ฯลฯ)
+				// ??????? newArrivals ???? 4 ?????????????????????? (?????????????? new_1.1.jpg, new_1.2.jpg ???)
 				setNewArrivals((Array.isArray(result.data) ? result.data : []).slice(0, 4));
 			} catch (err) {
 				setAllProducts([]);
@@ -64,7 +64,7 @@ const NewSection = ({ setIsRegisterView }) => {
 		fetchCategories();
 	}, []);
 	useEffect(() => {
-		// --- แถบประกาศ auto-slide ---
+		// --- ????????? auto-slide ---
 		const slides = document.querySelectorAll('.announcement-slide');
 		let idx = 0;
 		const interval = setInterval(() => {
@@ -86,7 +86,7 @@ const NewSection = ({ setIsRegisterView }) => {
 		if (shopAllHeader && submenu && toggleIcon) {
 			shopAllHeader.addEventListener('click', toggleSubmenu);
 		}
-		// --- แทบประกาศ auto-slide ---
+		// --- ????????? auto-slide ---
 		const slides = document.querySelectorAll('.announcement-slide');
 		let idx = 0;
 		const interval = setInterval(() => {
@@ -94,14 +94,14 @@ const NewSection = ({ setIsRegisterView }) => {
 			idx = (idx + 1) % slides.length;
 		}, 3500);
 
-		// --- เมนูขีดสามขีด (hamburger) ---
+		// --- ????????????? (hamburger) ---
 		return () => {
 			clearInterval(interval);
 			if (shopAllHeader) shopAllHeader.removeEventListener('click', toggleSubmenu);
 		};
 	}, []);
 
-	// ดึง min/max price จาก backend (price_range)
+	// ??? min/max price ??? backend (price_range)
 	useEffect(() => {
 		fetch(`${API}/api/price-range/2`)
 			.then(res => res.json())
@@ -112,18 +112,18 @@ const NewSection = ({ setIsRegisterView }) => {
 			});
 	}, []);
 
-	// helper: match image path ทั้ง "new_1.1.jpg" และ "products/new_1.1.jpg"
+	// helper: match image path ???? "new_1.1.jpg" ??? "products/new_1.1.jpg"
 	const imgMatch = (img, key) => img.startsWith(key) || img.split('/').pop().startsWith(key);
 
 	return (
 		<>
-			{/* แถบประกาศสีชมพู */}
+			{/* ??????????????? */}
 			<div className="announcement-bar">
 				<div className="announcement-slide active">
-					<span>[NEW!] Rom&ndXZO&FRIENDS "มากกว่าความน่ารักและเสน่ห์เหลือล้น เราหวังว่าคอลเลคชั่นนี้จะมอบความอบอุ่นและกล้าหาญให้กับทุกคน"</span>
+					<span>[NEW!] Rom&ndXZO&FRIENDS "?????????????????????????????????? ???????????????????????????????????????????????????????????"</span>
 				</div>
 				<div className="announcement-slide">
-					<span>[NEW!] 4in1 Han All Eyepot Liner จะเป็นยังไงถ้ารวมอายแชโดว์ อายไลน์เนอร์ เข้าด้วยกัน </span>
+					<span>[NEW!] 4in1 Han All Eyepot Liner ?????????????????????????? ???????????? ??????????? </span>
 				</div>
 				<div className="announcement-slide">
 					<span>Best Tint Edition Set Lip Tints 01&amp;02 Buy 1 Get 1 Free!!</span>
@@ -137,9 +137,9 @@ const NewSection = ({ setIsRegisterView }) => {
 					<i className="fa-solid fa-xmark"></i>
 				</div>
 				   <div className="login-section">
-					<span style={{cursor:'pointer'}} onClick={() => { window.location.href = '/app'; }}>REGISTER</span>
+					<span style={{cursor:'pointer'}} onClick={() => { window.location.href = '/auth'; }}>REGISTER</span>
 					<span className="divider">|</span>
-					<span style={{cursor:'pointer'}} onClick={() => { window.location.href = '/app'; }}>LOGIN</span>
+					<span style={{cursor:'pointer'}} onClick={() => { window.location.href = '/auth'; }}>LOGIN</span>
 				   </div>
 				   <ul>
 					<li style={{cursor:'pointer'}} onClick={() => navigate('/')}>MYPAGE</li>
@@ -161,7 +161,7 @@ const NewSection = ({ setIsRegisterView }) => {
 				</ul>
 			</div>
 
-			{/* Header: โลโก้ ขีดสามขีด ไอคอน */}
+			{/* Header: ????? ????????? ????? */}
 			<header className="main-header">
 				<div className="menu-icon" onClick={() => setSideMenuOpen(true)}>
 					<div className="bar"></div>
@@ -172,16 +172,16 @@ const NewSection = ({ setIsRegisterView }) => {
 					<h1 className="romand-logo">rom&amp;nd</h1>
 				</div>
 				<div className="header-icons">
-					{/* แถบค้นหา */}
+					{/* ???????? */}
 					<SearchBar />
-					{/* ไอคอน Account */}
+					{/* ????? Account */}
 					<span className="icon-link" style={{cursor:'pointer'}} onClick={() => navigate('/account')}>
             			<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               			<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               			<circle cx="12" cy="7" r="4"></circle>
             			</svg>
           			</span>
-					{/* ไอคอน Cart */}
+					{/* ????? Cart */}
 					<span className="icon-link cart-icon" style={{cursor:'pointer'}} onClick={() => navigate('/cart')}>
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                         <circle cx="9" cy="21" r="1"></circle>
@@ -193,7 +193,7 @@ const NewSection = ({ setIsRegisterView }) => {
 				</div>
 			</header>
 
-			{/* หมวดหมู่ 7 วงกลม (dynamic) ย้ายมาตรงนี้ */}
+			{/* ???????? 7 ????? (dynamic) ???????????? */}
 			{/* Product Categories Section */}
       	<section className="product-categories-section">
         	<div className="category-grid" id="categoryGrid">
@@ -223,7 +223,7 @@ const NewSection = ({ setIsRegisterView }) => {
               );
             })
           ) : (
-            <p>โหลดข้อมูลประเภทสินค้าไม่สำเร็จ</p>
+            <p>???????????????????????????????</p>
           )}
         	</div>
       	</section>
@@ -250,12 +250,12 @@ const NewSection = ({ setIsRegisterView }) => {
 								<input type="range" min={minPrice} max={maxPrice} value={priceRange[1]} className="filter-price-slider" onChange={e => setPriceRange([priceRange[0], Number(e.target.value)])} />
 								<div className="filter-price-inputs">
 									<div className="filter-price-box">
-										<span className="filter-currency">฿</span>
+										<span className="filter-currency">?</span>
 										<input type="number" value={priceRange[0]} min={minPrice} max={priceRange[1]} onChange={e => setPriceRange([Number(e.target.value), priceRange[1]])} />
 									</div>
 									<span className="filter-price-to">to</span>
 									<div className="filter-price-box">
-										<span className="filter-currency">฿</span>
+										<span className="filter-currency">?</span>
 										<input type="number" value={priceRange[1]} min={priceRange[0]} max={maxPrice} onChange={e => setPriceRange([priceRange[0], Number(e.target.value)])} />
 									</div>
 								</div>
@@ -263,7 +263,7 @@ const NewSection = ({ setIsRegisterView }) => {
 						)}
 					</div>
 				</aside>
-{/* แถวสินค้า dynamic: 4 สินค้าต่อแถว เพิ่มได้เรื่อยๆ */}
+{/* ????????? dynamic: 4 ???????????? ??????????????? */}
 							<div className="new-arrivals-grid" style={{ margin: '0 0 64px 0' }}>
 								{(() => {
 									const REGEX = /^new_(\d+)\./i;
@@ -314,7 +314,7 @@ const NewSection = ({ setIsRegisterView }) => {
 														borderRadius: '16px', border: '1px solid #eee', marginBottom: '12px'
 													}}></div>
 													{product.Stock != null && Number(product.Stock) === 0 && (
-														<div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',width:'86px',height:'86px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(30,30,30,0.85)',color:'#fff',fontSize:'13px',fontWeight:'bold',zIndex:2,textAlign:'center',lineHeight:'1.4'}}>สินค้าหมด</div>
+														<div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',width:'86px',height:'86px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(30,30,30,0.85)',color:'#fff',fontSize:'13px',fontWeight:'bold',zIndex:2,textAlign:'center',lineHeight:'1.4'}}>?????????</div>
 													)}
 													</div>
 												</a>
@@ -340,7 +340,7 @@ const NewSection = ({ setIsRegisterView }) => {
 													</div>
 													)}
 													{detail && !/\.(jpg|jpeg|png|gif|webp|jfif|avif)$/i.test(detail) && <div className="card-desc">{detail}</div>}
-													<div className="card-price">{price}฿</div>
+													<div className="card-price">{price}?</div>
 												</div>
 											</div>
 										);
@@ -363,7 +363,7 @@ const NewSection = ({ setIsRegisterView }) => {
 														borderRadius: '16px', border: '1px solid #eee', marginBottom: '12px'
 													}}></div>
 													{product.Stock != null && Number(product.Stock) === 0 && (
-														<div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',width:'86px',height:'86px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(30,30,30,0.85)',color:'#fff',fontSize:'13px',fontWeight:'bold',zIndex:2,textAlign:'center',lineHeight:'1.4'}}>สินค้าหมด</div>
+														<div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',width:'86px',height:'86px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(30,30,30,0.85)',color:'#fff',fontSize:'13px',fontWeight:'bold',zIndex:2,textAlign:'center',lineHeight:'1.4'}}>?????????</div>
 													)}
 													</div>
 												</a>
@@ -384,7 +384,7 @@ const NewSection = ({ setIsRegisterView }) => {
 													</div>
 													)}
 													{product.Product_detail && !/\.(jpg|jpeg|png|gif|webp|jfif|avif)$/i.test(product.Product_detail) && <div className="card-desc">{product.Product_detail}</div>}
-													<div className="card-price">{product.Product_price}฿</div>
+													<div className="card-price">{product.Product_price}?</div>
 												</div>
 											</div>
 										);
@@ -404,10 +404,10 @@ const NewSection = ({ setIsRegisterView }) => {
           <div className="footer-column">
             <h3>Customer Service</h3>
             <ul>
-              <li><a href="#">นโยบายความเป็นส่วนตัว</a></li>
-              <li><a href="#">การคืน / การขอเงินคืน</a></li>
-              <li><a href="#">เงื่อนไขการให้บริการ</a></li>
-              <li><a href="#">ข้อมูลการจัดส่ง</a></li>
+              <li><a href="#">?????????????????????</a></li>
+              <li><a href="#">?????? / ????????????</a></li>
+              <li><a href="#">????????????????????</a></li>
+              <li><a href="#">???????????????</a></li>
               <li><a href="#">California Proposition 65</a></li>
               <li><a href="#">CCPA & US Privacy Laws</a></li>
               <li><a href="#">Accessibility Statement</a></li>
@@ -415,8 +415,8 @@ const NewSection = ({ setIsRegisterView }) => {
           </div>
           <div className="footer-column">
             <h3>Newsletter</h3>
-            <p>สมัครรับข่าวสาร ข้อเสนอพิเศษ และอัปเดตจากเรา</p><br />
-            <p className="highlight">❤️ รับส่วนลดเพิ่มอีก 20% ทันที!</p>
+            <p>??????????????? ???????????? ???????????????</p><br />
+            <p className="highlight">?? ????????????????? 20% ?????!</p>
             <br />
             <form>
               <input type="email" placeholder="Enter email" className="email-input" />

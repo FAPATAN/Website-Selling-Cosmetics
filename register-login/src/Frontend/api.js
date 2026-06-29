@@ -1,4 +1,4 @@
-﻿import API_URL from '../config';
+import API_URL from '../config';
 // Simple API utility for ProfileSettings
 export async function fetchUserProfile(email) {
   const res = await fetch(`${API_URL}/api/member?email=${encodeURIComponent(email)}`);

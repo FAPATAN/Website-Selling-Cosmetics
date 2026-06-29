@@ -1,4 +1,4 @@
-﻿import API_URL from '../../config';
+import API_URL from '../../config';
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -14,7 +14,7 @@ const styles = `
   * { box-sizing:border-box; margin:0; padding:0; }
   .spr-app { display:flex; height:100vh; background:var(--bg); font-family:'Sora',sans-serif; color:var(--text-primary); }
 
-  /* ── Sidebar ── */
+  /* -- Sidebar -- */
   .spr-sidebar { width:200px; background:var(--sidebar-bg); display:flex; flex-direction:column; padding:24px 16px; gap:4px; flex-shrink:0; }
   .spr-logo { display:flex; flex-direction:column; padding:8px 12px 24px; }
   .spr-logo-romd { font-family:'Georgia','Times New Roman',serif; font-size:28px; font-weight:100; letter-spacing:1.5px; line-height:1; color:#333333; text-transform:lowercase; }
@@ -26,7 +26,7 @@ const styles = `
   .spr-nav-item:hover .spr-nav-icon { opacity:1; }
   .spr-nav-item.active .spr-nav-icon { opacity:1; filter:brightness(0) invert(1); }
 
-  /* ── Main layout ── */
+  /* -- Main layout -- */
   .spr-main { flex:1; display:flex; flex-direction:column; overflow:hidden; }
   .spr-topbar { display:flex; align-items:flex-start; justify-content:space-between; padding:24px 32px 20px; }
   .spr-topbar-title { font-size:26px; font-weight:700; letter-spacing:-.5px; }
@@ -40,7 +40,7 @@ const styles = `
   .spr-content { flex:1; padding:0 24px 24px; overflow:hidden; display:flex; flex-direction:column; }
   .spr-card { background:var(--card-bg); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; flex:1; display:flex; flex-direction:column; }
 
-  /* ── Table header / controls ── */
+  /* -- Table header / controls -- */
   .spr-table-header { display:flex; align-items:center; justify-content:space-between; padding:18px 24px; }
   .spr-table-title { font-size:16px; font-weight:700; letter-spacing:-.3px; }
   .spr-table-count { font-size:13px; color:var(--text-muted); background:var(--bg); padding:3px 10px; border-radius:20px; margin-left:8px; font-weight:500; }
@@ -54,7 +54,7 @@ const styles = `
   .spr-add-btn { display:flex; align-items:center; gap:6px; padding:8px 16px; border-radius:var(--radius-sm); border:none; background:var(--text-primary); color:#fff; font-size:13px; font-weight:600; font-family:'Sora',sans-serif; cursor:pointer; transition:all .15s; }
   .spr-add-btn:hover { background:#333; }
 
-  /* ── Table ── */
+  /* -- Table -- */
   .spr-table-wrap { flex:1; overflow-y:auto; padding:0 24px; }
   .spr-table-wrap table { width:100%; border-collapse:collapse; }
   .spr-table-wrap thead th { text-align:center; font-size:12px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; padding:10px 12px; background:var(--bg); position:sticky; top:0; }
@@ -69,13 +69,13 @@ const styles = `
   .spr-badge-percent { background:#e8f0fe; color:#1967d2; }
   .spr-badge-baht { background:#e6f4ea; color:#1e7e34; }
 
-  /* ── Action buttons (icon style like AdminProducts) ── */
+  /* -- Action buttons (icon style like AdminProducts) -- */
   .spr-action-btns { display:flex; gap:6px; justify-content:center; }
   .spr-action-btn { width:32px; height:32px; border-radius:8px; border:1px solid var(--border); background:none; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .15s; padding:0; font-size:15px; color:var(--text-secondary); }
   .spr-btn-edit:hover { background:#DDF2D1; border-color:#DDF2D1; }
   .spr-btn-del:hover  { background:#FFE5EC; border-color:#FFE5EC; color:#c0392b; }
 
-  /* ── Pagination ── */
+  /* -- Pagination -- */
   .spr-pagination { display:flex; align-items:center; justify-content:center; gap:6px; padding:16px 24px; border-top:1px solid var(--border); }
   .spr-page-btn { width:34px; height:34px; border-radius:50%; border:1px solid var(--border); background:none; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:13px; font-weight:500; color:var(--text-secondary); transition:all .15s; font-family:'Sora',sans-serif; }
   .spr-page-btn:hover { border-color:var(--text-primary); color:var(--text-primary); }
@@ -83,7 +83,7 @@ const styles = `
   .spr-page-arrow { width:34px; height:34px; border-radius:50%; border:1px solid var(--border); background:none; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text-secondary); transition:all .15s; font-size:16px; }
   .spr-page-arrow:hover { background:var(--bg); }
 
-  /* ── Modal ── */
+  /* -- Modal -- */
   .spr-modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.35); display:flex; align-items:center; justify-content:center; z-index:1000; backdrop-filter:blur(2px); }
   .spr-modal { background:#fff; border-radius:var(--radius); padding:32px; width:560px; max-width:95vw; position:relative; box-shadow:0 20px 60px rgba(0,0,0,0.15); }
   .spr-modal h3 { font-size:16px; font-weight:700; margin-bottom:20px; }
@@ -103,7 +103,7 @@ const styles = `
   .spr-modal-save:disabled { opacity:.5; cursor:not-allowed; }
   .spr-modal-del { background:#c0392b; } .spr-modal-del:hover { background:#a93226; }
 
-  /* ── Products Modal ── */
+  /* -- Products Modal -- */
   .spr-promo-modal { width:620px; max-height:82vh; display:flex; flex-direction:column; padding:28px; }
   .spr-promo-modal-title { font-size:16px; font-weight:700; margin-bottom:4px; }
   .spr-promo-modal-sub { font-size:12px; color:var(--text-muted); }
@@ -128,19 +128,19 @@ const styles = `
   .spr-product-price-new { font-size:14px; font-weight:700; color:#e75480; }
   .spr-empty-products { text-align:center; padding:40px 20px; color:var(--text-muted); font-size:14px; }
 
-  /* ── Products count badge in table ── */
+  /* -- Products count badge in table -- */
   .spr-prod-btn { display:inline-flex; align-items:center; gap:6px; padding:5px 12px; border-radius:20px; font-size:12px; font-weight:600; background:#fff3e0; color:#e65100; border:1px solid #ffe0b2; cursor:pointer; transition:all .15s; }
   .spr-prod-btn:hover { background:#ffe0b2; }
   .spr-status-y { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:20px; font-size:12px; font-weight:600; background:#e8f5e9; color:#2e7d32; }
   .spr-status-n { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:20px; font-size:12px; font-weight:600; background:#f5f5f5; color:#9a9a9a; }
   .spr-date-text { font-size:12px; color:var(--text-secondary); white-space:nowrap; }
 
-  /* ── Product remove / add-to-promo ── */
+  /* -- Product remove / add-to-promo -- */
   .spr-prod-remove-btn { width:22px; height:22px; border-radius:50%; border:1px solid #ffd0d0; background:#fff5f5; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#c0392b; font-size:11px; flex-shrink:0; transition:all .15s; margin-left:8px; }
   .spr-prod-remove-btn:hover { background:#ffe5e5; border-color:#c0392b; }
   .spr-move-select { width:100%; padding:9px 12px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:13.5px; font-family:'Sora',sans-serif; background:var(--bg); color:var(--text-primary); outline:none; margin-top:4px; cursor:pointer; }
   .spr-move-select:focus { border-color:var(--accent-dark); background:#fff; }
-  /* ── Max buy (Buy1Get1 limit) ── */
+  /* -- Max buy (Buy1Get1 limit) -- */
   .spr-maxbuy-row { display:flex; align-items:center; gap:5px; margin-top:5px; flex-wrap:wrap; }
   .spr-maxbuy-label { font-size:11px; color:var(--text-muted); white-space:nowrap; }
   .spr-maxbuy-input { width:58px; padding:2px 6px; border:1px solid var(--border); border-radius:6px; font-size:12px; font-family:'Sora',sans-serif; background:var(--bg); outline:none; text-align:center; }
@@ -175,8 +175,8 @@ const API = `${API_URL}/api/admin`;
 const ROWS_PER_PAGE = 10;
 const DISCOUNT_TYPES = [
   { value: "percent",  label: "Percent (%)" },
-  { value: "baht",     label: "Amount (฿)" },
-  { value: "buy_get",  label: "ซื้อ X แถม Y (Buy X Get Y)" },
+  { value: "baht",     label: "Amount (?)" },
+  { value: "buy_get",  label: "???? X ??? Y (Buy X Get Y)" },
 ];
 const EMPTY_FORM = { Promotion_name: "", DiscountType: "percent", Discount_value: "", condition: "", StartDate: "", EndDate: "", Status: "Y", buyQty: "1", getQty: "1" };
 
@@ -278,11 +278,11 @@ export default function AdminPromotions() {
     const { productId, selectedTypeId } = moveModal;
     setMoveModal(prev => ({ ...prev, open: false }));
     try {
-      // 1) ลบออกจาก pro_product
+      // 1) ???????? pro_product
       await fetch(`${API}/promotions/${promoProducts.promo.Promotion_id}/products/${productId}`, {
         method: 'DELETE', headers,
       });
-      // 2) เปลี่ยน Type_id ถ้าเลือก
+      // 2) ??????? Type_id ????????
       if (selectedTypeId) {
         await fetch(`${API}/products/${productId}/type`, {
           method: 'PATCH',
@@ -298,19 +298,19 @@ export default function AdminPromotions() {
   };
 
   const handleResetQuota = async (productId) => {
-    if (!window.confirm('รีเซ็ตโควต้าที่ใช้ไปกลับเป็น 0 ใช่ไหม?')) return;
+    if (!window.confirm('???????????????????????????? 0 ???????')) return;
     try {
       const res = await fetch(`${API}/promotions/${promoProducts.promo.Promotion_id}/products/${productId}/reset-quota`, {
         method: 'PUT',
         headers,
       });
       if (!res.ok) throw new Error('reset failed');
-      // re-fetch จาก DB เพื่อให้ค่าตรงจริง
+      // re-fetch ??? DB ??????????????????
       const r = await fetch(`${API}/promotions/${promoProducts.promo.Promotion_id}/products`, { headers });
       const data = await r.json();
       setPromoProducts(prev => ({ ...prev, products: data.products || [] }));
     } catch {
-      alert('รีเซ็ตไม่สำเร็จ — กรุณา restart backend แล้วลองใหม่');
+      alert('??????????????? � ????? restart backend ???????????');
     }
   };
 
@@ -437,7 +437,7 @@ export default function AdminPromotions() {
               className={`spr-nav-item ${location.pathname === item.path ? "active" : ""}`}
               onClick={() => navigate(item.path)}
             >
-              {item.iconSrc ? <img src={item.iconSrc} alt={item.label} className="spr-nav-icon" /> : <span style={{width:'20px',height:'20px',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'14px',flexShrink:0}}>🏷️</span>}
+              {item.iconSrc ? <img src={item.iconSrc} alt={item.label} className="spr-nav-icon" /> : <span style={{width:'20px',height:'20px',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'14px',flexShrink:0}}>???</span>}
               {item.label}
             </button>
           ))}
@@ -523,7 +523,7 @@ export default function AdminPromotions() {
                           <td>
                             <button className="spr-prod-btn" onClick={() => openPromoProducts(p)}>
                               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
-                              ดูสินค้า
+                              ????????
                             </button>
                           </td>
                           <td style={{ fontWeight: 600, color: "#e75480" }}>
@@ -537,14 +537,14 @@ export default function AdminPromotions() {
                           <td style={{ textAlign: 'center' }}>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', alignItems: 'center' }}>
                               <span className="spr-date-text">{fmtDateDisplay(p.StartDate)}</span>
-                              <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>ถึง</span>
+                              <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>???</span>
                               <span className="spr-date-text">{fmtDateDisplay(p.EndDate)}</span>
                             </div>
                           </td>
                           <td>
                             {p.Status === 'Y'
-                              ? <span className="spr-status-y">● Active</span>
-                              : <span className="spr-status-n">● Inactive</span>}
+                              ? <span className="spr-status-y">? Active</span>
+                              : <span className="spr-status-n">? Inactive</span>}
                           </td>
                           <td>
                             <div className="spr-action-btns">
@@ -565,11 +565,11 @@ export default function AdminPromotions() {
 
               {/* PAGINATION */}
               <div className="spr-pagination">
-                <button className="spr-page-arrow" onClick={() => changePage(activePage - 1)}>‹</button>
+                <button className="spr-page-arrow" onClick={() => changePage(activePage - 1)}>�</button>
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
                   <button key={p} className={`spr-page-btn ${activePage === p ? "active" : ""}`} onClick={() => changePage(p)}>{p}</button>
                 ))}
-                <button className="spr-page-arrow" onClick={() => changePage(activePage + 1)}>›</button>
+                <button className="spr-page-arrow" onClick={() => changePage(activePage + 1)}>�</button>
               </div>
             </div>
           </div>
@@ -580,7 +580,7 @@ export default function AdminPromotions() {
       {modal && (
         <div className="spr-modal-backdrop" onClick={() => setModal(false)}>
           <div className="spr-modal" onClick={e => e.stopPropagation()}>
-            <button className="spr-modal-close" onClick={() => setModal(false)}>✕</button>
+            <button className="spr-modal-close" onClick={() => setModal(false)}>?</button>
             <h3>{editId ? `Edit Promotion #${editId}` : "Add New Promotion"}</h3>
             <div className="spr-form-grid">
               <div className="full">
@@ -596,18 +596,18 @@ export default function AdminPromotions() {
               {form.DiscountType === "buy_get" ? (
                 <div style={{display:'flex', gap:'10px', alignItems:'flex-end'}}>
                   <div style={{flex:1}}>
-                    <label className="spr-form-label">ซื้อ (Buy)</label>
+                    <label className="spr-form-label">???? (Buy)</label>
                     <input className="spr-form-input" type="number" min="1" value={form.buyQty} onChange={e => setForm(f => ({...f, buyQty: e.target.value}))} />
                   </div>
-                  <div style={{paddingBottom:'9px', color:'var(--text-muted)', fontWeight:700, fontSize:'16px', flexShrink:0}}>แถม</div>
+                  <div style={{paddingBottom:'9px', color:'var(--text-muted)', fontWeight:700, fontSize:'16px', flexShrink:0}}>???</div>
                   <div style={{flex:1}}>
-                    <label className="spr-form-label">แถม (Get Free)</label>
+                    <label className="spr-form-label">??? (Get Free)</label>
                     <input className="spr-form-input" type="number" min="1" value={form.getQty} onChange={e => setForm(f => ({...f, getQty: e.target.value}))} />
                   </div>
                 </div>
               ) : (
                 <div>
-                  <label className="spr-form-label">Discount Value {form.DiscountType === "percent" ? "(%)" : "(฿)"}</label>
+                  <label className="spr-form-label">Discount Value {form.DiscountType === "percent" ? "(%)" : "(?)"}</label>
                   <input className="spr-form-input" type="number" min="0" placeholder={form.DiscountType === "percent" ? "e.g. 20" : "e.g. 100"} value={form.Discount_value} onChange={e => setForm(f => ({ ...f, Discount_value: e.target.value }))} />
                 </div>
               )}
@@ -622,13 +622,13 @@ export default function AdminPromotions() {
               <div>
                 <label className="spr-form-label">Status</label>
                 <select className="spr-form-select" value={form.Status} onChange={e => setForm(f => ({ ...f, Status: e.target.value }))}>
-                  <option value="Y">● Active (เปิดใช้งาน)</option>
-                  <option value="N">● Inactive (ปิดใช้งาน)</option>
+                  <option value="Y">? Active (??????????)</option>
+                  <option value="N">? Inactive (?????????)</option>
                 </select>
               </div>
               <div className="full">
                 <label className="spr-form-label">Condition</label>
-                <textarea className="spr-form-textarea" placeholder="e.g. Minimum order 500 ฿" value={form.condition} onChange={e => setForm(f => ({ ...f, condition: e.target.value }))} />
+                <textarea className="spr-form-textarea" placeholder="e.g. Minimum order 500 ?" value={form.condition} onChange={e => setForm(f => ({ ...f, condition: e.target.value }))} />
               </div>
             </div>
             <div className="spr-modal-actions">
@@ -643,8 +643,8 @@ export default function AdminPromotions() {
       {promoProducts && (
         <div className="spr-modal-backdrop" onClick={() => setPromoProducts(null)}>
           <div className="spr-modal spr-promo-modal" onClick={e => e.stopPropagation()}>
-            <button className="spr-modal-close" onClick={() => setPromoProducts(null)}>✕</button>
-            <div className="spr-promo-modal-title">🛍️ {promoProducts.promo.Promotion_name}</div>
+            <button className="spr-modal-close" onClick={() => setPromoProducts(null)}>?</button>
+            <div className="spr-promo-modal-title">??? {promoProducts.promo.Promotion_name}</div>
             <div className="spr-promo-modal-sub">{promoProducts.promo.condition}</div>
             <div className="spr-promo-info-row">
               <span className={`spr-promo-tag ${promoProducts.promo.DiscountType === 'percent' ? 'spr-promo-tag-percent' : 'spr-promo-tag-baht'}`}>
@@ -652,18 +652,18 @@ export default function AdminPromotions() {
               </span>
               <span className="spr-promo-discount-val">
                 {promoProducts.promo.Discount_value != null
-                  ? `${String(promoProducts.promo.Discount_value).replace('%','')}${promoProducts.promo.DiscountType === 'percent' ? '% off' : ' ฿ off'}`
+                  ? `${String(promoProducts.promo.Discount_value).replace('%','')}${promoProducts.promo.DiscountType === 'percent' ? '% off' : ' ? off'}`
                   : '-'}
               </span>
-              <span className="spr-promo-count">· {promoProducts.products.length} สินค้า</span>
+              <span className="spr-promo-count">� {promoProducts.products.length} ??????</span>
             </div>
             <div className="spr-product-list">
               {loadingProds ? (
-                <div className="spr-empty-products">กำลังโหลด...</div>
+                <div className="spr-empty-products">?????????...</div>
               ) : promoProducts.products.length === 0 ? (
                 <div className="spr-empty-products">
-                  <div style={{ fontSize: 32, marginBottom: 8 }}>📦</div>
-                  ยังไม่มีสินค้าในโปรโมชั่นนี้
+                  <div style={{ fontSize: 32, marginBottom: 8 }}>??</div>
+                  ????????????????????????????
                 </div>
               ) : (
                 promoProducts.products.map((prod, i) => {
@@ -676,7 +676,7 @@ export default function AdminPromotions() {
                           onError={e => { e.target.style.display='none'; }}
                         />
                       ) : (
-                        <div className="spr-product-img-ph">🧴</div>
+                        <div className="spr-product-img-ph">??</div>
                       )}
                       <div className="spr-product-info">
                         <div className="spr-product-name">{prod.Product_name}</div>
@@ -690,20 +690,20 @@ export default function AdminPromotions() {
                             <div>
                               {quota > 0 ? (
                                 <div className="spr-quota-bar-wrap">
-                                  <span className="spr-quota-text" style={remaining === 0 ? {color:'#c0392b'} : {}}>เหลือ {remaining} / {quota} ชิ้น</span>
+                                  <span className="spr-quota-text" style={remaining === 0 ? {color:'#c0392b'} : {}}>????? {remaining} / {quota} ????</span>
                                   {used > 0 && (
                                     <button
                                       className="spr-quota-reset-btn"
                                       onClick={() => handleResetQuota(prod.Product_id)}
-                                      title="รีเซ็ตโควต้าที่ใช้ไปกลับเป็น 0"
-                                    >รีเซ็ต</button>
+                                      title="???????????????????????????? 0"
+                                    >??????</button>
                                   )}
                                 </div>
                               ) : (
-                                <div className="spr-quota-unlimited">ไม่จำกัดโควต้า</div>
+                                <div className="spr-quota-unlimited">??????????????</div>
                               )}
                               <div className="spr-quota-bar-wrap">
-                                <span className="spr-quota-set">โควต้าทั้งหมด:</span>
+                                <span className="spr-quota-set">?????????????:</span>
                                 <input
                                   className="spr-quota-input"
                                   type="number"
@@ -713,7 +713,7 @@ export default function AdminPromotions() {
                                   onChange={e => setMaxBuyEdits(prev => ({ ...prev, [prod.Product_id]: e.target.value }))}
                                   onBlur={e => handleUpdateMaxBuy(prod.Product_id, e.target.value)}
                                 />
-                                <span className="spr-quota-set">ชิ้น (0=ไม่จำกัด)</span>
+                                <span className="spr-quota-set">???? (0=????????)</span>
                               </div>
                             </div>
                           );
@@ -721,13 +721,13 @@ export default function AdminPromotions() {
                       </div>
                       <div className="spr-product-price-wrap">
                         {finalPrice && finalPrice !== Number(prod.Product_price) && (
-                          <div className="spr-product-price-orig">฿{Number(prod.Product_price).toLocaleString()}</div>
+                          <div className="spr-product-price-orig">?{Number(prod.Product_price).toLocaleString()}</div>
                         )}
                         <div className="spr-product-price-new">
-                          ฿{(finalPrice ?? Number(prod.Product_price)).toLocaleString()}
+                          ?{(finalPrice ?? Number(prod.Product_price)).toLocaleString()}
                         </div>
                       </div>
-                      <button className="spr-prod-remove-btn" onClick={() => handleRemoveProduct(prod.Product_id)} title="นำออกจากโปรโมชั่น">✕</button>
+                      <button className="spr-prod-remove-btn" onClick={() => handleRemoveProduct(prod.Product_id)} title="?????????????????">?</button>
                     </div>
                   );
                 })
@@ -748,13 +748,13 @@ export default function AdminPromotions() {
                         ? <line x1="5" y1="12" x2="19" y2="12"/>
                         : <><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></>}
                     </svg>
-                    {addProdOpen ? 'ซ่อน' : 'เพิ่มสินค้าเข้าโปรโมชั่น'}
+                    {addProdOpen ? '????' : '????????????????????????'}
                   </button>
                   {addProdOpen && (
                     <>
                       <input
                         className="spr-add-search"
-                        placeholder="ค้นหาสินค้า..."
+                        placeholder="???????????..."
                         value={addSearch}
                         onChange={e => setAddSearch(e.target.value)}
                         autoFocus
@@ -762,14 +762,14 @@ export default function AdminPromotions() {
                       <div className="spr-avail-list">
                         {available.length === 0 ? (
                           <div style={{ padding: '12px 0', textAlign: 'center', fontSize: 13, color: 'var(--text-muted)' }}>
-                            {addSearch ? 'ไม่พบสินค้า' : 'สินค้าทั้งหมดอยู่ในโปรโมชั่นนี้แล้ว'}
+                            {addSearch ? '???????????' : '???????????????????????????????????'}
                           </div>
                         ) : available.map(p => (
                           <div className="spr-avail-item" key={p.Product_id}>
                             {p.Image ? (
                               <img className="spr-avail-img" src={`${API_URL}/uploads/${p.Image}`} alt={p.Product_name} onError={e => { e.target.style.display = 'none'; }} />
                             ) : (
-                              <div className="spr-avail-img-ph">🧴</div>
+                              <div className="spr-avail-img-ph">??</div>
                             )}
                             <div style={{ flex: 1, minWidth: 0 }}>
                               <div className="spr-avail-name">{p.Product_name}</div>
@@ -779,9 +779,9 @@ export default function AdminPromotions() {
                               className="spr-avail-add-btn"
                               disabled={addingProd === p.Product_id}
                               onClick={() => handleAddProduct(p)}
-                              title="เพิ่มเข้าโปรโมชั่น"
+                              title="??????????????????"
                             >
-                              {addingProd === p.Product_id ? '…' : '+'}
+                              {addingProd === p.Product_id ? '�' : '+'}
                             </button>
                           </div>
                         ))}
@@ -818,18 +818,18 @@ export default function AdminPromotions() {
       {moveModal.open && (
         <div className="spr-modal-backdrop" onClick={() => setMoveModal(prev => ({ ...prev, open: false }))}>
           <div className="spr-modal" style={{ width: 400 }} onClick={e => e.stopPropagation()}>
-            <button className="spr-modal-close" onClick={() => setMoveModal(prev => ({ ...prev, open: false }))}>✕</button>
-            <h3>นำสินค้าออกจากโปรโมชั่น</h3>
+            <button className="spr-modal-close" onClick={() => setMoveModal(prev => ({ ...prev, open: false }))}>?</button>
+            <h3>???????????????????????</h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: 13.5, lineHeight: 1.6, marginBottom: 16 }}>
-              <strong>{moveModal.productName}</strong> จะถูกนำออกจากโปรโมชั่น<br/>
-              เลือกหมวดหมู่ใหม่ที่ต้องการย้ายไป:
+              <strong>{moveModal.productName}</strong> ??????????????????????<br/>
+              ?????????????????????????????????:
             </p>
             <select
               className="spr-move-select"
               value={moveModal.selectedTypeId}
               onChange={e => setMoveModal(prev => ({ ...prev, selectedTypeId: e.target.value }))}
             >
-              <option value="">— ไม่เปลี่ยนหมวดหมู่ (ลบออกจากโปรโมชั่นเท่านั้น) —</option>
+              <option value="">� ?????????????????? (?????????????????????????) �</option>
               {allTypes
                 .filter(t => !['promotion', 'best'].includes(t.Type_name.toLowerCase()))
                 .map(t => (
@@ -838,8 +838,8 @@ export default function AdminPromotions() {
               }
             </select>
             <div className="spr-modal-actions" style={{ marginTop: 24 }}>
-              <button className="spr-modal-cancel" onClick={() => setMoveModal(prev => ({ ...prev, open: false }))}>ยกเลิก</button>
-              <button className="spr-modal-save spr-modal-del" onClick={confirmMoveProduct}>ยืนยัน</button>
+              <button className="spr-modal-cancel" onClick={() => setMoveModal(prev => ({ ...prev, open: false }))}>??????</button>
+              <button className="spr-modal-save spr-modal-del" onClick={confirmMoveProduct}>??????</button>
             </div>
           </div>
         </div>

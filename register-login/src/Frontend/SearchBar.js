@@ -1,4 +1,4 @@
-﻿import API_URL from '../config';
+import API_URL from '../config';
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -39,7 +39,7 @@ function SearchBar() {
       >
         <input
           type="text"
-          placeholder="ค้นหาสินค้า..."
+          placeholder="???????????..."
           className="search-input"
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
@@ -74,10 +74,10 @@ function SearchBar() {
       {searchOpen && searchQuery.trim() && (
         <div style={{ position: "absolute", top: "62px", right: 0, width: "320px", background: "#fff", borderRadius: "12px", boxShadow: "0 8px 32px rgba(0,0,0,0.13)", zIndex: 9999, maxHeight: "360px", overflowY: "auto", padding: "8px 0" }}>
           {searchLoading && (
-            <div style={{ padding: "16px", textAlign: "center", color: "#999", fontSize: 14 }}>กำลังค้นหา...</div>
+            <div style={{ padding: "16px", textAlign: "center", color: "#999", fontSize: 14 }}>??????????...</div>
           )}
           {!searchLoading && searchResults.length === 0 && (
-            <div style={{ padding: "16px", textAlign: "center", color: "#999", fontSize: 14 }}>ไม่พบสินค้า</div>
+            <div style={{ padding: "16px", textAlign: "center", color: "#999", fontSize: 14 }}>???????????</div>
           )}
           {!searchLoading && searchResults.map(p => (
             <div
@@ -94,7 +94,7 @@ function SearchBar() {
               />
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontSize: 13.5, fontWeight: 500, color: "#222", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.Product_name}</div>
-                <div style={{ fontSize: 12.5, color: "#e05c8a", marginTop: 2 }}>฿{Number(p.Product_price).toLocaleString()}</div>
+                <div style={{ fontSize: 12.5, color: "#e05c8a", marginTop: 2 }}>?{Number(p.Product_price).toLocaleString()}</div>
               </div>
             </div>
           ))}
