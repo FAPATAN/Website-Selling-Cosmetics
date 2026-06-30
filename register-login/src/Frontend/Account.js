@@ -2,7 +2,9 @@
 import { useNavigate } from "react-router-dom";
 import "./Account.css";
 import { fetchUserProfile, updateUserProfile, changePassword } from "./api";
-const API = process.env.REACT_APP_API_URL;
+import API_URL from '../config';
+
+const API = `${API_URL}/api`;
 
 /* ------------- PasswordField ------------- */
 function PasswordField({ label, value, onChange, placeholder }) {

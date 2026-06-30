@@ -2,7 +2,7 @@
 import { Mail, Lock, User, Phone, MapPin, Loader2, LogIn, UserPlus } from 'lucide-react';
 import API_URL from '../config';
 import './App.css';
-const API = process.env.REACT_APP_API_URL || API_URL;
+const API = `${API_URL}/api`;
 
 const MessageBox = ({ title, body, isError, onClose }) => {
     if (!body) return null;

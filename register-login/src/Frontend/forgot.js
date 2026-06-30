@@ -2,6 +2,8 @@ import API_URL from '../config';
 import React, { useState, useEffect, useRef } from 'react';
 import { Mail, ArrowLeft, Loader2, CheckCircle, Lock, KeyRound } from 'lucide-react';
 
+const API = `${API_URL}/api`;
+
 const styles = `
   * {
     margin: 0;
@@ -331,7 +333,7 @@ export default function ForgotPasswordSystem() {
   
   const otpRefs = useRef([]);
 
-  const API_URL = `${API_URL}/api`;
+  const apiBase = API;
 
   useEffect(() => {
     if (timer > 0) {
@@ -413,7 +415,7 @@ export default function ForgotPasswordSystem() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/verify-otp`, {
+      const response = await fetch(`${apiBase}/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp: otpCode, token: resetToken })
@@ -484,7 +486,7 @@ export default function ForgotPasswordSystem() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/reset-password`, {
+      const response = await fetch(`${apiBase}/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, newPassword, token: resetToken })

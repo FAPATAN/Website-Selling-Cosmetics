@@ -1,8 +1,9 @@
 import API_URL from '../config';
+const API = `${API_URL}/api`;
 // Simple API utility for ProfileSettings
 export async function fetchUserProfile({ email, memberId }) {
   const params = [];
-  let url = `${API_URL}/api/member`;
+  let url = `${API}/member`;
   if (memberId) {
     url += `?id=${encodeURIComponent(memberId)}`;
   } else if (email) {
@@ -17,7 +18,7 @@ export async function fetchUserProfile({ email, memberId }) {
 }
 
 export async function updateUserProfile(profile) {
-  const res = await fetch(`${API_URL}/api/update-member`, {
+  const res = await fetch(`${API}/update-member`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(profile)
@@ -27,7 +28,7 @@ export async function updateUserProfile(profile) {
 }
 
 export async function changePassword({ email, currentPassword, newPassword }) {
-  const res = await fetch(`${API_URL}/api/change-password`, {
+  const res = await fetch(`${API}/change-password`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, currentPassword, newPassword })
