@@ -228,18 +228,23 @@ const LoginForm = ({ onLoginSuccess, showMessage }) => {
 
         // Validate required fields
         if (!email || !password) {
-                const errorMessage = 'กรุณากรอกอีเมลและรหัสผ่าน';
-                setError(`? ${errorMessage}`);
-                showMessage('ข้อมูลไม่ครบ', errorMessage, true);
-                return;
-            }
+            const errorMessage = 'กรุณากรอกอีเมลและรหัสผ่าน';
+            setError(`? ${errorMessage}`);
+            showMessage('ข้อมูลไม่ครบ', errorMessage, true);
+            return;
+        }
 
-            // Validate email format
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                const errorMessage = 'รูปแบบอีเมลไม่ถูกต้อง';
-                setError(`? ${errorMessage}`);
-                showMessage('อีเมลไม่ถูกต้อง', 'โปรดใส่อีเมลในรูปแบบที่ถูกต้อง', true);
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            const errorMessage = 'รูปแบบอีเมลไม่ถูกต้อง';
+            setError(`? ${errorMessage}`);
+            showMessage('อีเมลไม่ถูกต้อง', 'โปรดใส่อีเมลในรูปแบบที่ถูกต้อง', true);
+            return;
+        }
+
+        setIsLoading(true);
+        const loginData = { Email: email, Password: password };
 
         try {
             const response = await fetch(`${API}/api/login`, {
