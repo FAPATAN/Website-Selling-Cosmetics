@@ -397,7 +397,7 @@ export default function Information() {
                     <div className="info-item-model">{item.model.replace(/\.(jpg|png|jpeg|webp)$/i, '')}</div>
                   )}
                 </div>
-                <div className="info-item-price">?{(item.price * item.qty).toLocaleString()}.00</div>
+                <div className="info-item-price">฿{(item.price * item.qty).toLocaleString()}.00</div>
               </div>
             ))}
           </div>

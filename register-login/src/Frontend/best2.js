@@ -317,15 +317,15 @@ const Best2 = () => {
             {product?.Description && <p style={{ fontSize: '15px', color: '#666', lineHeight: 1.7, margin: '4px 0 0 0' }}>{product.Description}</p>}
             <div className="product-price-row" style={{marginTop: '12px'}}>
               {product && /^buy\s+\d+\s+get\s+\d+/i.test(product.DiscountType || '') ? (
-                <span className="product-price" style={{color:'#1a1a1a'}}>{product.Product_price} ?</span>
+                <span className="product-price" style={{color:'#1a1a1a'}}>{product.Product_price} ฿</span>
               ) : (
                 <>
                   <span className="discount">{product ? `${Number(product.Discount_value)}%` : ''}</span>
                   <span className="product-price">
-                    {product ? `${(product.Product_price * (1 - Number(product.Discount_value) / 100)).toFixed(2)} ?` : error ? '' : ''}
+                    {product ? `${(product.Product_price * (1 - Number(product.Discount_value) / 100)).toFixed(2)} ฿` : error ? '' : ''}
                   </span>
                   <span className="old-price">
-                    {product ? `${product.Product_price} ?` : error ? '' : ''}
+                    {product ? `${product.Product_price} ฿` : error ? '' : ''}
                   </span>
                 </>
               )}

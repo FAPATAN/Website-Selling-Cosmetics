@@ -283,7 +283,7 @@ const Best1 = () => {
             )}
             
             <div className="product-price-row" style={{marginTop: '12px'}}>
-              <span className="product-price" style={{color:'#1a1a1a'}}>{product ? `${product.Product_price} ?` : error ? '' : ''}</span>
+              <span className="product-price" style={{color:'#1a1a1a'}}>{product ? `${product.Product_price} ฿` : error ? '' : ''}</span>
             </div>
 
             <div className="product-qty-row" style={{marginTop: '-22px'}}>

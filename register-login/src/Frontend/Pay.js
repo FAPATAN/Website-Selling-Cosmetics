@@ -463,7 +463,7 @@ export default function Pay() {
         {showSlipModal && (
           <div className="slip-modal-overlay" onClick={() => setShowSlipModal(false)}>
             <div className="slip-modal" onClick={(e) => e.stopPropagation()}>
-              <button className="slip-modal-close" onClick={() => setShowSlipModal(false)}>?</button>
+              <button className="slip-modal-close" onClick={() => setShowSlipModal(false)}>✕</button>
               <h3 className="slip-modal-title">Attach Transfer Slip</h3>
               <p className="slip-modal-sub">Please upload your transfer slip to confirm payment.</p>
               <label className="slip-upload-area">
@@ -542,7 +542,7 @@ export default function Pay() {
                     <div className="info-item-model">{item.model.replace(/\.(jpg|png|jpeg|webp)$/i, "")}</div>
                   )}
                 </div>
-                <div className="info-item-price">?{(item.price * item.qty).toLocaleString()}.00</div>
+                <div className="info-item-price">฿{(item.price * item.qty).toLocaleString()}.00</div>
               </div>
             ))}
           </div>

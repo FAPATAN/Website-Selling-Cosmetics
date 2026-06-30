@@ -597,7 +597,7 @@ export default function Orders2() {
                                                 <div className="pending-order-item-price">
                                                     {Number(price) === 0
                                                         ? <span style={{ color: '#e0006b', fontWeight: 'bold' }}>฿0</span>
-                                                        : `?${(Number(price) * Number(qty)).toLocaleString()}`
+                                                        : `฿${(Number(price) * Number(qty)).toLocaleString()}`
                                                     }
                                                 </div>
                                             </div>
@@ -607,7 +607,7 @@ export default function Orders2() {
 
                               
                                 <div className="pending-order-subtotal">
-                                    ??????: <strong>?{Number(order.Proprice).toLocaleString()}</strong>
+                                    ยอดรวม: <strong>฿{Number(order.Proprice).toLocaleString()}</strong>
                                 </div>
 
                                 <div className="pending-order-footer">

@@ -375,13 +375,13 @@ export default function Cart() {
                           )}
                         </div>
                       </div>
-                      <div className="price">{item.price === 0 ? <span style={{color:'#e0006b',fontWeight:'bold'}}>?0</span> : `${item.price}?`}</div>
+                      <div className="price">{item.price === 0 ? <span style={{color:'#e0006b',fontWeight:'bold'}}>฿0</span> : `${item.price}฿`}</div>
                       <div className="qty-ctrl">
                         <button className="qty-btn" onClick={() => updateQty(item.uid, -1)} disabled={item.price === 0} style={item.price === 0 ? {opacity:0.3,cursor:'default'} : {}}>-</button>
                         <span className="qty-num">{item.qty}</span>
                         <button className="qty-btn" onClick={() => updateQty(item.uid, 1)} disabled={item.price === 0} style={item.price === 0 ? {opacity:0.3,cursor:'default'} : {}}>+</button>
                       </div>
-                      <div className="price">{item.price === 0 ? <span style={{color:'#e0006b',fontWeight:'bold'}}>?0</span> : `${item.price * item.qty}?`}</div>
+                      <div className="price">{item.price === 0 ? <span style={{color:'#e0006b',fontWeight:'bold'}}>฿0</span> : `${item.price * item.qty}฿`}</div>
                       <div>
                         <button className="del-btn" onClick={() => removeItem(item.uid)}>
                           <img src="/trash.png" alt="delete" style={{ width: 20, height: 20 }} />
