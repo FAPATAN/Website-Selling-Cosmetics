@@ -492,7 +492,7 @@ export default function Cart() {
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   ) : (
-                    <span style={{ fontSize: 40, color: '#bbb' }}>{item.Product_name ? item.Product_name[0] : '?'}</span>
+                    <span style={{ fontSize: 40, color: '#bbb' }}>{item.Product_name ? item.Product_name[0] : '฿'}</span>
                   )}
                 </div>
                 <div className="rec-info">
