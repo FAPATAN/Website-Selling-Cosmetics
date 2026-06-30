@@ -163,6 +163,7 @@ export default function AdminOrders() {
   const navigate = useNavigate();
   const location = useLocation();
   const memberId = sessionStorage.getItem("admin_Member_id") || sessionStorage.getItem("Member_id");
+  const headers = memberId ? { "x-member-id": memberId } : {};
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
