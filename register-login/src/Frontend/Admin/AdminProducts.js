@@ -1,4 +1,4 @@
-import API_URL from '../../config';
+﻿import API_URL from '../../config';
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -223,11 +223,11 @@ export default function AdminProducts() {
   const handleSave = async () => {
     setSaveError("");
     // Validate required fields before sending to prevent wasted AUTO_INCREMENT IDs
-    if (!form.Type_id) return setSaveError("?????????? Category");
-    if (!form.Product_name.trim()) return setSaveError("???????????????????");
-    if (!form.Product_price || isNaN(Number(form.Product_price)) || Number(form.Product_price) <= 0) return setSaveError("???????????????????????");
-    if (!editId && !form.imageFile) return setSaveError("??????????????????????");
-    if (!memberId) return setSaveError("????? login ???????? (????? Member_id)");
+    if (!form.Type_id) return setSaveError("กรุณาเลือก Category");
+    if (!form.Product_name.trim()) return setSaveError("กรุณากรอกชื่อสินค้า");
+    if (!form.Product_price || isNaN(Number(form.Product_price)) || Number(form.Product_price) <= 0) return setSaveError("กรุณากรอกราคาให้ถูกต้อง");
+    if (!editId && !form.imageFile) return setSaveError("กรุณาเลือกรูปภาพสินค้า");
+    if (!memberId) return setSaveError("กรุณา login ใหม่ก่อน (ไม่พบ Member_id)");
     setSaving(true);
     try {
       const fd = new FormData();
@@ -243,9 +243,9 @@ export default function AdminProducts() {
       if (form.detailImageFile) fd.append("detailImage", form.detailImageFile);
       if (clearDetailImage) fd.append("clearDetail", "1");
       const url = editId ? `${API}/products/${editId}` : `${API}/products`;
-      const res = await fetch(url, { method: editId ? "PUT" : "POST", headers, body: fd }).catch(e => { throw new Error(`????????? server ?????? � ??????? backend ??????? (port 5000)\n[${e.name}: ${e.message}]`); });
+      const res = await fetch(url, { method: editId ? "PUT" : "POST", headers, body: fd }).catch(e => { throw new Error(`เชื่อมต่อ server ไม่ได้ — ตรวจว่า backend รันอยู่ (port 5000)\n[${e.name}: ${e.message}]`); });
       const data = await res.json().catch(() => ({}));
-      if (!res.ok || data.error) throw new Error(data.error || `??????????????? (${res.status})`);
+      if (!res.ok || data.error) throw new Error(data.error || `บันทึกไม่สำเร็จ (${res.status})`);
       setSaving(false); setModal(false); load();
     } catch (err) {
       setSaveError(err.message);
@@ -268,7 +268,7 @@ export default function AdminProducts() {
       const data = await res.json();
       setGalleryImages(data.images || []);
     } catch (err) {
-      setGalleryError(`????????????????: ${err.message}`);
+      setGalleryError(`โหลดรูปไม่สำเร็จ: ${err.message}`);
     }
   };
 
@@ -292,16 +292,16 @@ export default function AdminProducts() {
         const res = await fetch(`${API}/products/${galleryProductId}/images`, { method: 'POST', headers, body: fd });
         if (!res.ok) {
           const d = await res.json().catch(() => ({}));
-          throw new Error(d.error || `???????????????? (HTTP ${res.status})`);
+          throw new Error(d.error || `อัปโหลดไม่สำเร็จ (HTTP ${res.status})`);
         }
       }
       setGalleryFiles([]);
       await loadGallery(galleryProductId);
     } catch (err) {
       if (err.name === 'TypeError') {
-        setGalleryError('????????? server ?????? � ??????? backend ??????? (port 5000)');
+        setGalleryError('เชื่อมต่อ server ไม่ได้ — ตรวจว่า backend รันอยู่ (port 5000)');
       } else {
-        setGalleryError(`????????????????: ${err.message}`);
+        setGalleryError(`อัปโหลดไม่สำเร็จ: ${err.message}`);
       }
     } finally {
       setGalleryUploading(false);
@@ -348,7 +348,7 @@ export default function AdminProducts() {
 
   const filtered = products.filter(p => {
     const matchSearch = `${p.Product_id} ${p.Product_name} ${p.Type_name}`.toLowerCase().includes(search.toLowerCase());
-    // "BEST" pill: ????????????????? > 0 (??????????? Type_id)
+    // "BEST" pill: สินค้าที่มียอดขาย > 0 (ไม่กรองด้วย Type_id)
     const isBestPill = activeCategory === "best";
     const matchCat = isBestPill
       ? Number(p.total_sold) > 0
@@ -356,7 +356,7 @@ export default function AdminProducts() {
     return matchSearch && matchCat;
   });
 
-  // ???????? total_sold DESC, Product_id ASC ??????????? BEST tab
+  // เรียงตาม total_sold DESC, Product_id ASC เมื่ออยู่ใน BEST tab
   const sortedFiltered = activeCategory === "best"
     ? [...filtered].sort((a, b) => {
         const diff = Number(b.total_sold) - Number(a.total_sold);
@@ -401,7 +401,7 @@ export default function AdminProducts() {
               className={`sp-nav-item ${location.pathname === item.path ? "active" : ""}`}
               onClick={() => navigate(item.path)}
             >
-              {item.iconSrc ? <img src={item.iconSrc} alt={item.label} className="sp-nav-icon" /> : <span style={{width:'20px',height:'20px',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'14px',flexShrink:0}}>???</span>}
+              {item.iconSrc ? <img src={item.iconSrc} alt={item.label} className="sp-nav-icon" /> : <span style={{width:'20px',height:'20px',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'14px',flexShrink:0}}>🏷️</span>}
               {item.label}
             </button>
           ))}
@@ -456,7 +456,7 @@ export default function AdminProducts() {
                       />
                     )}
                   </div>
-                  <button className="sp-add-btn" onClick={openNew}>+ Add Product</button>
+                  <button className="sp-add-btn" onClick={openNew}>＋ Add Product</button>
                 </div>
               </div>
 
@@ -470,7 +470,7 @@ export default function AdminProducts() {
                     <span className="sp-cat-pill-label">All</span>
                     <span className="sp-cat-pill-count">{products.length}</span>
                   </button>
-                  {/* BEST pill: ????????????? bestseller ranking (total_sold > 0) */}
+                  {/* BEST pill: แสดงสินค้าตาม bestseller ranking (total_sold > 0) */}
                   <button
                     className={`sp-cat-pill ${activeCategory === "best" ? "active" : ""}`}
                     onClick={() => { setActiveCategory("best"); setActivePage(1); }}
@@ -519,7 +519,7 @@ export default function AdminProducts() {
                           <td>
                             {p.Image
                               ? <img src={`${API_URL}/uploads/${p.Image}`} alt={p.Product_name} className="sp-thumb" />
-                              : <div className="sp-thumb-ph">??</div>}
+                              : <div className="sp-thumb-ph">💄</div>}
                           </td>
                           <td>
                               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
@@ -527,14 +527,14 @@ export default function AdminProducts() {
 
                               </div>
                             </td>
-                          <td>{p.Type_name ? <span className={getCatClass(p.Type_name)}>{p.Type_name}</span> : <span style={{color:"var(--text-muted)"}}>�</span>}</td>
-                          <td style={{ color: "var(--text-muted)", fontSize: 12.5 }}>{p.Product_model || "�"}</td>
+                          <td>{p.Type_name ? <span className={getCatClass(p.Type_name)}>{p.Type_name}</span> : <span style={{color:"var(--text-muted)"}}>—</span>}</td>
+                          <td style={{ color: "var(--text-muted)", fontSize: 12.5 }}>{p.Product_model || "—"}</td>
                           <td>
                             {String(p.Type_id) !== "1" ? (
                               p.Color
                                 ? <span className="sp-color-swatch" style={{ backgroundColor: p.Color }} title={p.Color} onClick={() => openEdit(p)} />
-                                : <span className="sp-color-empty" title="???????" onClick={() => openEdit(p)}>+</span>
-                            ) : <span style={{ color: '#ddd' }}>�</span>}
+                                : <span className="sp-color-empty" title="เพิ่มสี" onClick={() => openEdit(p)}>+</span>
+                            ) : <span style={{ color: '#ddd' }}>—</span>}
                           </td>
                           <td>
                             <span style={{
@@ -545,11 +545,11 @@ export default function AdminProducts() {
                               {Number(p.Stock).toLocaleString()}
                             </span>
                           </td>
-                          <td><span style={{ fontWeight: 700, color: "#1a1a2e" }}>?{Number(p.Product_price).toLocaleString()}</span></td>
+                          <td><span style={{ fontWeight: 700, color: "#1a1a2e" }}>฿{Number(p.Product_price).toLocaleString()}</span></td>
                           <td>
                             <span
                               style={{ fontWeight: 600, fontSize: 13, color: Number(p.total_sold) > 0 ? '#c0607a' : 'var(--text-muted)', cursor: 'pointer' }}
-                              title="????????????????????"
+                              title="คลิกเพื่อแก้ไขยอดขาย"
                               onClick={() => setSoldModal({ open: true, productId: p.Product_id, productName: p.Product_name, value: String(p.total_sold) })}
                             >
                               {Number(p.total_sold).toLocaleString()}
@@ -577,11 +577,11 @@ export default function AdminProducts() {
 
               {/* PAGINATION */}
               <div className="sp-pagination">
-                <button className="sp-page-arrow" onClick={() => changePage(activePage - 1)}>�</button>
+                <button className="sp-page-arrow" onClick={() => changePage(activePage - 1)}>‹</button>
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
                   <button key={p} className={`sp-page-btn ${activePage === p ? "active" : ""}`} onClick={() => changePage(p)}>{p}</button>
                 ))}
-                <button className="sp-page-arrow" onClick={() => changePage(activePage + 1)}>�</button>
+                <button className="sp-page-arrow" onClick={() => changePage(activePage + 1)}>›</button>
               </div>
             </div>
           </div>
@@ -592,7 +592,7 @@ export default function AdminProducts() {
       {modal && (
         <div className="sp-modal-backdrop" onClick={() => setModal(false)}>
           <div className="sp-modal" onClick={e => e.stopPropagation()}>
-            <button className="sp-modal-close" onClick={() => setModal(false)}>?</button>
+            <button className="sp-modal-close" onClick={() => setModal(false)}>✕</button>
             <h3>{editId ? `Edit Product #${editId}` : "Add New Product"}</h3>
             <div className="sp-form-grid">
               <div className="full">
@@ -611,15 +611,15 @@ export default function AdminProducts() {
                 <input className="sp-form-input" value={form.Product_model} onChange={e => setForm(f => ({ ...f, Product_model: e.target.value }))} />
               </div>
               <div>
-                <label className="sp-form-label">Price (?)</label>
+                <label className="sp-form-label">Price (฿)</label>
                 <input className="sp-form-input" type="number" min="0" value={form.Product_price} onChange={e => setForm(f => ({ ...f, Product_price: e.target.value }))} />
               </div>
               <div>
-                <label className="sp-form-label">Stock (????????????)</label>
+                <label className="sp-form-label">Stock (จำนวนคงเหลือ)</label>
                 <input className="sp-form-input" type="number" min="0" placeholder="0" value={form.Stock} onChange={e => setForm(f => ({ ...f, Stock: e.target.value }))} />
               </div>
               <div>
-                <label className="sp-form-label">????????????? (Sale Date)</label>
+                <label className="sp-form-label">วันที่จำหน่าย (Sale Date)</label>
                 <input className="sp-form-input" type="date" value={form.Sale_date} onChange={e => setForm(f => ({ ...f, Sale_date: e.target.value }))} />
               </div>
               <div className="full">
@@ -628,7 +628,7 @@ export default function AdminProducts() {
               </div>
               {String(form.Type_id) !== "1" && (
                 <div className="full">
-                  <label className="sp-form-label">Color (???????)</label>
+                  <label className="sp-form-label">Color (วงกลมสี)</label>
                   <div className="sp-color-picker-wrap">
                     <input
                       type="color"
@@ -638,29 +638,29 @@ export default function AdminProducts() {
                     />
                     <input
                       className="sp-color-hex-input"
-                      placeholder="#hex ???? CSS color"
+                      placeholder="#hex หรือ CSS color"
                       value={form.Color}
                       onChange={e => setForm(f => ({ ...f, Color: e.target.value }))}
                     />
                     {form.Color && (
-                      <button className="sp-color-clear-btn" onClick={() => setForm(f => ({ ...f, Color: "" }))}>????</button>
+                      <button className="sp-color-clear-btn" onClick={() => setForm(f => ({ ...f, Color: "" }))}>ลบสี</button>
                     )}
                   </div>
                   {form.Color && (
                     <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
                       <span className="sp-color-swatch" style={{ backgroundColor: form.Color, width: 28, height: 28 }} />
-                      <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>?????????????</span>
+                      <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>ตัวอย่างวงกลม</span>
                     </div>
                   )}
                 </div>
               )}
               <div className="full">
-                <label className="sp-form-label">Product Image (???????)</label>
+                <label className="sp-form-label">Product Image (รูปหลัก)</label>
                 <input type="file" accept="image/*" onChange={handleImageChange} style={{ fontSize: 13 }} />
                 {preview && <img src={preview} alt="preview" style={{ marginTop: 10, width: 80, height: 80, objectFit: "cover", borderRadius: 8 }} />}
               </div>
               <div className="full">
-                <label className="sp-form-label">Detail Image (???????????????????)</label>
+                <label className="sp-form-label">Detail Image (รูปยาวแสดงใต้สินค้า)</label>
                 <input type="file" accept="image/*" onChange={handleDetailImageChange} style={{ fontSize: 13 }} />
                 {detailPreview && (
                   <div style={{ marginTop: 10, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
@@ -673,7 +673,7 @@ export default function AdminProducts() {
                         onClick={() => { setDetailPreview(null); setForm(f => ({ ...f, detailImageFile: null })); setClearDetailImage(true); }}
                         style={{ fontSize: 12, color: '#c0392b', background: 'none', border: '1px solid #e0b0b0', borderRadius: 6, padding: '4px 12px', cursor: 'pointer' }}
                       >
-                        ? ????? Detail ???
+                        ✕ ลบรูป Detail นี้
                       </button>
                     </div>
                   </div>
@@ -693,44 +693,44 @@ export default function AdminProducts() {
       {galleryModal && (
         <div className="sp-modal-backdrop" onClick={() => setGalleryModal(false)}>
           <div className="sp-modal" style={{width:520}} onClick={e => e.stopPropagation()}>
-            <button className="sp-modal-close" onClick={() => setGalleryModal(false)}>?</button>
-            <h3>Gallery � {galleryProductName}</h3>
-            <p style={{fontSize:12,color:'var(--text-muted)',marginBottom:16}}>???????? 1 = ??????????????????? ??? ?? ??????????????? ?????? Save Order</p>
+            <button className="sp-modal-close" onClick={() => setGalleryModal(false)}>✕</button>
+            <h3>Gallery — {galleryProductName}</h3>
+            <p style={{fontSize:12,color:'var(--text-muted)',marginBottom:16}}>ลำดับที่ 1 = รูปหลักในหน้าสินค้า ใช้ ▲▼ เพื่อเรียงลำดับ แล้วกด Save Order</p>
             {galleryError && (
               <div style={{color:'#c0392b',fontSize:13,marginBottom:12,padding:'8px 12px',background:'#fff0f0',borderRadius:6,border:'1px solid #f5c6cb'}}>
-                ?? {galleryError}
+                ⚠️ {galleryError}
               </div>
             )}
             {galleryImages.length === 0
-              ? <div className="sp-gallery-empty">????????????????????</div>
+              ? <div className="sp-gallery-empty">ยังไม่มีรูปเพิ่มเติม</div>
               : <>
                   <div className="sp-gallery-grid">
                     {galleryImages.map((img, i) => (
                       <div key={img.id} className="sp-gallery-item" style={{position:'relative',width:90,height:90}}>
                         <img src={`${API_URL}/uploads/${img.Image}`} alt="gallery" style={{width:'100%',height:'100%',objectFit:'cover'}} />
                         <span style={{position:'absolute',top:2,left:2,background:'rgba(0,0,0,0.55)',color:'#fff',fontSize:10,padding:'1px 5px',borderRadius:4,fontWeight:700}}>{i+1}</span>
-                        <button className="sp-gallery-del" title="??" onClick={() => handleGalleryDelete(img.id)}>?</button>
+                        <button className="sp-gallery-del" title="ลบ" onClick={() => handleGalleryDelete(img.id)}>✕</button>
                         <div style={{position:'absolute',bottom:2,left:2,display:'flex',flexDirection:'column',gap:1}}>
                           <button onClick={() => moveGalleryImage(i, -1)} disabled={i===0}
-                            style={{width:18,height:18,border:'none',borderRadius:3,background:'rgba(255,255,255,0.85)',cursor:'pointer',fontSize:10,padding:0,display:'flex',alignItems:'center',justifyContent:'center',opacity:i===0?0.3:1}}>?</button>
+                            style={{width:18,height:18,border:'none',borderRadius:3,background:'rgba(255,255,255,0.85)',cursor:'pointer',fontSize:10,padding:0,display:'flex',alignItems:'center',justifyContent:'center',opacity:i===0?0.3:1}}>▲</button>
                           <button onClick={() => moveGalleryImage(i, 1)} disabled={i===galleryImages.length-1}
-                            style={{width:18,height:18,border:'none',borderRadius:3,background:'rgba(255,255,255,0.85)',cursor:'pointer',fontSize:10,padding:0,display:'flex',alignItems:'center',justifyContent:'center',opacity:i===galleryImages.length-1?0.3:1}}>?</button>
+                            style={{width:18,height:18,border:'none',borderRadius:3,background:'rgba(255,255,255,0.85)',cursor:'pointer',fontSize:10,padding:0,display:'flex',alignItems:'center',justifyContent:'center',opacity:i===galleryImages.length-1?0.3:1}}>▼</button>
                         </div>
                       </div>
                     ))}
                   </div>
                   <div style={{marginBottom:16}}>
                     <button className="sp-modal-save" onClick={handleGallerySaveOrder} disabled={gallerySaving} style={{padding:'8px 20px'}}>
-                      {gallerySaving ? 'Saving...' : '?? Save Order'}
+                      {gallerySaving ? 'Saving...' : '💾 Save Order'}
                     </button>
                   </div>
                 </>
             }
-            <label className="sp-form-label">????????????</label>
+            <label className="sp-form-label">เพิ่มรูปใหม่</label>
             <div style={{display:'flex',gap:10,alignItems:'center',marginTop:6}}>
               <input type="file" accept="image/*" multiple style={{fontSize:13,flex:1}}
                 onChange={e => setGalleryFiles(Array.from(e.target.files))} />
-              {galleryFiles.length > 0 && <span style={{fontSize:12,color:'var(--text-muted)',whiteSpace:'nowrap'}}>{galleryFiles.length} ???</span>}
+              {galleryFiles.length > 0 && <span style={{fontSize:12,color:'var(--text-muted)',whiteSpace:'nowrap'}}>{galleryFiles.length} รูป</span>}
               <button className="sp-modal-save" style={{whiteSpace:'nowrap'}}
                 onClick={handleGalleryUpload} disabled={!galleryFiles.length || galleryUploading}>
                 {galleryUploading ? 'Uploading...' : 'Upload'}
@@ -744,10 +744,10 @@ export default function AdminProducts() {
       {soldModal.open && (
         <div className="sp-modal-backdrop" onClick={() => setSoldModal({ open: false, productId: null, productName: '', value: '' })}>
           <div className="sp-modal" style={{ width: 360 }} onClick={e => e.stopPropagation()}>
-            <button className="sp-modal-close" onClick={() => setSoldModal({ open: false, productId: null, productName: '', value: '' })}>?</button>
-            <h3>??????????? (total_sold)</h3>
+            <button className="sp-modal-close" onClick={() => setSoldModal({ open: false, productId: null, productName: '', value: '' })}>✕</button>
+            <h3>แก้ไขยอดขาย (total_sold)</h3>
             <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 16 }}>{soldModal.productName}</p>
-            <label className="sp-form-label">??????????????</label>
+            <label className="sp-form-label">จำนวนที่ขายได้</label>
             <input
               className="sp-form-input"
               type="number"
@@ -760,7 +760,7 @@ export default function AdminProducts() {
             />
             <div className="sp-modal-actions">
               <button className="sp-modal-cancel" onClick={() => setSoldModal({ open: false, productId: null, productName: '', value: '' })}>Cancel</button>
-              <button className="sp-modal-save" onClick={handleUpdateSold}>??????</button>
+              <button className="sp-modal-save" onClick={handleUpdateSold}>บันทึก</button>
             </div>
           </div>
         </div>

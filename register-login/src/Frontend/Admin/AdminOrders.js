@@ -1,4 +1,4 @@
-import API_URL from '../../config';
+﻿import API_URL from '../../config';
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -15,12 +15,12 @@ const navItems = [
 ];
 
 const STATUS_OPTIONS = [
-  { value: "O",  label: " ???????????????????" },
-  { value: "P",  label: " ????????????????????" },
-  { value: "A",  label: " ????????????????" },
-  { value: "S",  label: " ????????????????" },
+  { value: "O",  label: " สร้างรายการสั่งซื้อ" },
+  { value: "P",  label: " รอตรวจสอบการชำระเงิน" },
+  { value: "A",  label: " ยืนยันคำสั่งซื้อ" },
+  { value: "S",  label: " จัดส่งสินค้าแล้ว" },
 ];
-const STATUS_LABEL = { O: "???????????????????", P: "????????????????????", A: "????????????????", S: "????????????????", R: "?????????????", C: "??????????????", Ca: "????????????" };
+const STATUS_LABEL = { O: "สร้างรายการสั่งซื้อ", P: "รอตรวจสอบการชำระเงิน", A: "ยืนยันคำสั่งซื้อ", S: "จัดส่งสินค้าแล้ว", R: "ยกเลิก", C: "เสร็จสิ้น", Ca: "กำลังยกเลิก" };
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
@@ -181,8 +181,6 @@ export default function AdminOrders() {
   const [adminName, setAdminName] = useState("");
   const avatarLetter = adminName ? adminName.charAt(0).toUpperCase() : "A";
 
-  const headers = { "x-member-id": memberId };
-
   useEffect(() => {
     if (!memberId) return;
     fetch(`${API}/members/${memberId}`, { headers: { "x-member-id": memberId } })
@@ -289,10 +287,10 @@ export default function AdminOrders() {
             <div className="so-status-modal" onClick={e => e.stopPropagation()}>
               <div className="so-modal-header">
                 <div>
-                  <div className="so-modal-title">????????????</div>
-                  <div className="so-modal-sub">#{statusModal.Order_id} � {statusModal.Name} {statusModal.Surname}</div>
+                  <div className="so-modal-title">เปลี่ยนสถานะ</div>
+                  <div className="so-modal-sub">#{statusModal.Order_id} — {statusModal.Name} {statusModal.Surname}</div>
                 </div>
-                <button className="so-modal-close" onClick={() => setStatusModal(null)}>?</button>
+                <button className="so-modal-close" onClick={() => setStatusModal(null)}>✕</button>
               </div>
               <div className="so-modal-body">
                 {STATUS_OPTIONS.map(s => (
@@ -307,10 +305,10 @@ export default function AdminOrders() {
                 ))}
                 {statusForm.newStatus === 'S' && (
                   <div className="so-tracking-wrap">
-                    <label style={{ fontSize: 12, fontWeight: 600, color: '#27ae60', display: 'block', marginBottom: 6 }}> ????????????</label>
+                    <label style={{ fontSize: 12, fontWeight: 600, color: '#27ae60', display: 'block', marginBottom: 6 }}> หมายเลขพัสดุ</label>
                     <input
                       className="so-edit-input"
-                      placeholder="????????????????..."
+                      placeholder="กรอกหมายเลขพัสดุ..."
                       value={statusForm.trackingNo}
                       onChange={e => setStatusForm(f => ({ ...f, trackingNo: e.target.value }))}
                     />
@@ -318,9 +316,9 @@ export default function AdminOrders() {
                 )}
               </div>
               <div className="so-modal-footer" style={{ flexDirection: 'row', justifyContent: 'flex-end', gap: 8 }}>
-                <button className="so-modal-cancel-btn" onClick={() => setStatusModal(null)}>??????</button>
+                <button className="so-modal-cancel-btn" onClick={() => setStatusModal(null)}>ยกเลิก</button>
                 <button className="so-modal-save-btn" disabled={statusSaving} onClick={handleStatusSave}>
-                  {statusSaving ? '??????...' : '??????'}
+                  {statusSaving ? 'บันทึก...' : 'บันทึก'}
                 </button>
               </div>
             </div>
@@ -333,37 +331,37 @@ export default function AdminOrders() {
             <div className="so-modal" onClick={e => e.stopPropagation()}>
               <div className="so-modal-header">
                 <div>
-                  <div className="so-modal-title">???????????? � #{itemsModal.order.Order_id}</div>
+                  <div className="so-modal-title">รายการสินค้า — #{itemsModal.order.Order_id}</div>
                   <div className="so-modal-sub">{itemsModal.order.Name} {itemsModal.order.Surname}</div>
                 </div>
-                <button className="so-modal-close" onClick={() => setItemsModal(null)}>?</button>
+                <button className="so-modal-close" onClick={() => setItemsModal(null)}>✕</button>
               </div>
               <div className="so-modal-body">
                 {/* Customer Info */}
                 {!editInfo ? (
                   <div className="so-modal-info">
                     <div className="so-modal-info-row">
-                      <span className="so-modal-info-label">????-???????</span>
+                      <span className="so-modal-info-label">ชื่อ-นามสกุล</span>
                       <span className="so-modal-info-value">{itemsModal.order.Name} {itemsModal.order.Surname}</span>
                     </div>
                     <div className="so-modal-info-row">
-                      <span className="so-modal-info-label">?????</span>
+                      <span className="so-modal-info-label">อีเมล</span>
                       <span className="so-modal-info-value">{itemsModal.order.Email || '-'}</span>
                     </div>
                     <div className="so-modal-info-row">
-                      <span className="so-modal-info-label">????????</span>
+                      <span className="so-modal-info-label">เบอร์โทร</span>
                       <span className="so-modal-info-value">{itemsModal.order.Phone || '-'}</span>
                     </div>
                     <div className="so-modal-info-row">
-                      <span className="so-modal-info-label">??????????</span>
+                      <span className="so-modal-info-label">วันที่สั่ง</span>
                       <span className="so-modal-info-value">{itemsModal.order.Order_date ? new Date(itemsModal.order.Order_date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' }) : '-'}</span>
                     </div>
                     <div className="so-modal-info-row">
-                      <span className="so-modal-info-label">??????</span>
+                      <span className="so-modal-info-label">วันโอน</span>
                       <span className="so-modal-info-value">{itemsModal.order.Invoice_date ? new Date(itemsModal.order.Invoice_date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' }) : '-'}</span>
                     </div>
                     <div className="so-modal-info-row full">
-                      <span className="so-modal-info-label">?????????????</span>
+                      <span className="so-modal-info-label">ที่อยู่จัดส่ง</span>
                       <span className="so-modal-info-value">{itemsModal.order.Address || '-'}</span>
                     </div>
                   </div>
@@ -371,32 +369,32 @@ export default function AdminOrders() {
                   <div className="so-modal-info" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 14px' }}>
                       <div className="so-modal-info-row">
-                        <span className="so-modal-info-label">????</span>
+                        <span className="so-modal-info-label">ชื่อ</span>
                         <input className="so-edit-input" value={editForm.Name} onChange={e => setEditForm(f => ({ ...f, Name: e.target.value }))} />
                       </div>
                       <div className="so-modal-info-row">
-                        <span className="so-modal-info-label">???????</span>
+                        <span className="so-modal-info-label">นามสกุล</span>
                         <input className="so-edit-input" value={editForm.Surname} onChange={e => setEditForm(f => ({ ...f, Surname: e.target.value }))} />
                       </div>
                       <div className="so-modal-info-row">
-                        <span className="so-modal-info-label">?????</span>
+                        <span className="so-modal-info-label">อีเมล</span>
                         <input className="so-edit-input" value={editForm.Email} onChange={e => setEditForm(f => ({ ...f, Email: e.target.value }))} />
                       </div>
                       <div className="so-modal-info-row">
-                        <span className="so-modal-info-label">????????</span>
+                        <span className="so-modal-info-label">เบอร์โทร</span>
                         <input className="so-edit-input" value={editForm.Phone} onChange={e => setEditForm(f => ({ ...f, Phone: e.target.value }))} />
                       </div>
                     </div>
                     <div className="so-modal-info-row">
-                      <span className="so-modal-info-label">?????????????</span>
+                      <span className="so-modal-info-label">ที่อยู่จัดส่ง</span>
                       <input className="so-edit-input" value={editForm.Address} onChange={e => setEditForm(f => ({ ...f, Address: e.target.value }))} />
                     </div>
                   </div>
                 )}
                 {itemsLoading ? (
-                  <div className="so-modal-loading">?????????...</div>
+                  <div className="so-modal-loading">กำลังโหลด...</div>
                 ) : itemsModal.items.length === 0 ? (
-                  <div className="so-modal-loading">?????????????????</div>
+                  <div className="so-modal-loading">ไม่พบรายการสินค้า</div>
                 ) : (
                   itemsModal.items.map(item => (
                     <div key={item.Order_detail_id} className="so-modal-item">
@@ -407,7 +405,7 @@ export default function AdminOrders() {
                           alt={item.Product_name || item.Product_model}
                         />
                       ) : (
-                        <div className="so-modal-img-placeholder">??</div>
+                        <div className="so-modal-img-placeholder">🛍</div>
                       )}
                       <div className="so-modal-item-info">
                         <div className="so-modal-item-name">
@@ -425,7 +423,7 @@ export default function AdminOrders() {
                       </div>
                       <div style={{ textAlign: 'right' }}>
                         <div className="so-modal-item-qty">x{item.Quantity}</div>
-                        <div className="so-modal-item-price">?{Number(item.Total).toLocaleString()}</div>
+                        <div className="so-modal-item-price">฿{Number(item.Total).toLocaleString()}</div>
                       </div>
                     </div>
                   ))
@@ -435,18 +433,18 @@ export default function AdminOrders() {
                 {!editInfo ? (
                   <>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <span className="so-modal-total-label">?????????????</span>
-                      <span className="so-modal-total-value">?{Number(itemsModal.order.Proprice).toLocaleString()}</span>
+                      <span className="so-modal-total-label">ยอดรวมทั้งหมด</span>
+                      <span className="so-modal-total-value">฿{Number(itemsModal.order.Proprice).toLocaleString()}</span>
                     </div>
                     <button className="so-modal-edit-btn" style={{ alignSelf: 'flex-end' }} onClick={() => setEditInfo(true)}>
                       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                      ???????????
+                      แก้ไขข้อมูล
                     </button>
                   </>
                 ) : (
                   <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, width: '100%' }}>
-                    <button className="so-modal-cancel-btn" onClick={() => { setEditInfo(false); setEditForm({ Name: itemsModal.order.Name, Surname: itemsModal.order.Surname, Email: itemsModal.order.Email || '', Phone: itemsModal.order.Phone || '', Address: itemsModal.order.Address || '' }); }}>??????</button>
-                    <button className="so-modal-save-btn" disabled={editSaving} onClick={handleSaveInfo}>{editSaving ? '??????...' : '??????'}</button>
+                    <button className="so-modal-cancel-btn" onClick={() => { setEditInfo(false); setEditForm({ Name: itemsModal.order.Name, Surname: itemsModal.order.Surname, Email: itemsModal.order.Email || '', Phone: itemsModal.order.Phone || '', Address: itemsModal.order.Address || '' }); }}>ยกเลิก</button>
+                    <button className="so-modal-save-btn" disabled={editSaving} onClick={handleSaveInfo}>{editSaving ? 'บันทึก...' : 'บันทึก'}</button>
                   </div>
                 )}
               </div>
@@ -466,7 +464,7 @@ export default function AdminOrders() {
               className={`so-nav-item ${location.pathname === item.path ? "active" : ""}`}
               onClick={() => navigate(item.path)}
             >
-              {item.iconSrc ? <img src={item.iconSrc} alt={item.label} className="so-nav-icon" /> : <span style={{width:'20px',height:'20px',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'14px',flexShrink:0}}>???</span>}
+              {item.iconSrc ? <img src={item.iconSrc} alt={item.label} className="so-nav-icon" /> : <span style={{width:'20px',height:'20px',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'14px',flexShrink:0}}>🏷️</span>}
               {item.label}
             </button>
           ))}
@@ -514,7 +512,7 @@ export default function AdminOrders() {
                     {showSearch && (
                       <input
                         className="so-search-input"
-                        placeholder="????? ???? / ??????..."
+                        placeholder="ค้นหา ชื่อ / เลขที่..."
                         value={search}
                         autoFocus
                         onChange={e => { setSearch(e.target.value); setPage(1); }}
@@ -527,9 +525,9 @@ export default function AdminOrders() {
               {/* Table */}
               <div className="so-table-wrap">
                 {loading ? (
-                  <div className="so-loading">?????????...</div>
+                  <div className="so-loading">กำลังโหลด...</div>
                 ) : pageData.length === 0 ? (
-                  <div className="so-empty">???????????????</div>
+                  <div className="so-empty">ไม่พบคำสั่งซื้อ</div>
                 ) : (
                   <table>
                     <thead>
@@ -552,7 +550,7 @@ export default function AdminOrders() {
                           <td>
                             <button className="so-view-btn" onClick={() => openItemsModal(o)}>
                               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                              ????????
+                              ดูรายการ
                             </button>
                           </td>
                           <td className="so-col-items" style={{ fontWeight: 600 }}>
@@ -564,7 +562,7 @@ export default function AdminOrders() {
                               return totalQty > 0 ? <span style={{ fontWeight: 600 }}>{totalQty}</span> : <span style={{ color: '#bbb' }}>-</span>;
                             })()}
                           </td>
-                          <td style={{ fontWeight: 600 }}>?{Number(o.Proprice).toLocaleString()}</td>
+                          <td style={{ fontWeight: 600 }}>฿{Number(o.Proprice).toLocaleString()}</td>
                           <td style={{ whiteSpace: "nowrap", color: "var(--text-secondary)" }}>
                             {o.Order_date ? new Date(o.Order_date).toLocaleDateString("th-TH") : "-"}
                           </td>
@@ -572,7 +570,7 @@ export default function AdminOrders() {
                             {o.Invoice_pic ? (
                               <button className="so-slip-btn" onClick={() => setLightbox(`${API_URL}/uploads/${o.Invoice_pic}`)}>
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                                ??????
+                                ดูสลิป
                               </button>
                             ) : (
                               <span style={{ color: "#bbb", fontSize: "0.82rem" }}>-</span>
@@ -589,7 +587,7 @@ export default function AdminOrders() {
                                     className="so-status-badge-btn so-badge-Ca"
                                     onClick={() => openStatusModal(o)}
                                   >
-                                    ????????????
+                                    ยกเลิกสินค้า
                                   </button>
                                 );
                               }
@@ -615,7 +613,7 @@ export default function AdminOrders() {
               {/* Pagination */}
               {totalPages > 1 && (
                 <div className="so-pagination">
-                  <button className="so-page-arrow" onClick={() => setPage(p => Math.max(1, p - 1))}>�</button>
+                  <button className="so-page-arrow" onClick={() => setPage(p => Math.max(1, p - 1))}>‹</button>
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
                     <button
                       key={p}
@@ -625,7 +623,7 @@ export default function AdminOrders() {
                       {p}
                     </button>
                   ))}
-                  <button className="so-page-arrow" onClick={() => setPage(p => Math.min(totalPages, p + 1))}>�</button>
+                  <button className="so-page-arrow" onClick={() => setPage(p => Math.min(totalPages, p + 1))}>›</button>
                 </div>
               )}
             </div>

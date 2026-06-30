@@ -337,7 +337,7 @@ export default function Payment() {
             </div>
             <div className="info-summary-row info-summary-total">
               <span><strong>Total</strong></span>
-              <span><small>THB</small> <strong>?{subtotal.toLocaleString()}.00</strong></span>
+              <span><small>THB</small> <strong>฿{subtotal.toLocaleString()}.00</strong></span>
             </div>
           </div>
         </div>

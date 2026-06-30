@@ -418,7 +418,7 @@ export default function Pay() {
               </button>
             </div>
             <p className="pending-payment-desc">
-              Please pay <strong>?{subtotal.toLocaleString()}.00</strong> within 24 hours
+              Please pay <strong>฿{subtotal.toLocaleString()}.00</strong> within 24 hours
               to confirm your order.
             </p>
           </div>
