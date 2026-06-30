@@ -4,8 +4,9 @@ const nodemailer = require("nodemailer");
 const cors = require("cors");
 const path = require('path');
 const app = express();
-const port = 5000;
 require("dotenv").config();
+
+const port = Number(process.env.PORT) || 5000;
 
 // ─── Global error handlers — ป้องกัน backend crash จาก unhandled errors ────
 process.on('uncaughtException', (err) => {
@@ -34,7 +35,6 @@ console.log("🔧 DEBUG ENV:", {
   EMAIL: process.env.EMAIL, 
   PASSWORD: process.env.PASSWORD ? "***" : "MISSING" 
 });
-console.log("✅ bestRouter loaded:", typeof bestRouter);
 
 // ✉️ Create Nodemailer Transporter (reusable)
 const transporter = nodemailer.createTransport({
@@ -59,7 +59,7 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
 }));
 app.use(express.json({ limit: "25mb" }));
-app.use(express.urlencoded({ limit: "25mb", extended: false }));
+app.use(express.urlencoded({ limit: "25mb", extended: true })); // แก้เป็น true เพื่อให้อ่าน object ซ้อนได้แม่นยำขึ้น
 
 // 📁 Serve static files (images, etc.)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -72,12 +72,12 @@ app.use((req, res, next) => {
   next();
 });
 
-// MySQL Connection Setup — ใช้ Pool แทน createConnection เพื่อ auto-reconnect
+// MySQL Connection Setup
 const connection = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'fah',
+    password: process.env.DB_PASSWORD || 'Fapatan11',
+    database: process.env.DB_NAME || 'web_selling_cosmetics',
     port: process.env.DB_PORT || 3306,
     charset: 'utf8mb4',
     dateStrings: ['DATE'],
@@ -141,33 +141,30 @@ function sendEmail({ recipient_email, OTP }) {
   });
 }
 
-// --- API ENDPOINTS ---
+// --- API ENDPOINTS (ปรับเป็น Async/Await ทั้งหมดแล้ว) ---
 
 // 1. 📝 REGISTER Endpoint
-app.post('/api/insert', (req, res) => {
-    const {Username, Password, Name, Surname, Email, Phone, Address, Member_role, Status} = req.body;
+app.post('/api/insert', async (req, res) => {
+    try {
+        const {Username, Password, Name, Surname, Email, Phone, Address, Member_role, Status} = req.body;
 
-    // เช็ค email ซ้ำก่อน insert
-    connection.query('SELECT MemberID FROM member WHERE Email = ?', [Email], (checkErr, checkRows) => {
-        if (checkErr) {
-            console.error("Check email error: ", checkErr);
-            return res.status(500).json({error: "Internal Server Error"});
-        }
+        // เช็ค email ซ้ำก่อน insert
+        const [checkRows] = await connection.query('SELECT MemberID FROM member WHERE Email = ?', [Email]);
         if (checkRows.length > 0) {
             return res.status(400).json({error: "อีเมลนี้ถูกใช้งานแล้ว กรุณาใช้อีเมลอื่น"});
         }
+
         const query = "INSERT INTO member(Username, Password, Name, Surname, Email, Phone, Address, Member_role, Status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        connection.query(query, [Username, Password, Name, Surname, Email, Phone, Address, Member_role, Status], (err, results) => {
-            if (err) {
-                console.error("Error inserting data: ", err);
-                return res.status(500).json({error: "Internal Server Error"});
-            }
-            res.json({
-                msg: "Data inserted successfully",
-                insertedID: results.insertId
-            })
-        })
-    });
+        const [results] = await connection.query(query, [Username, Password, Name, Surname, Email, Phone, Address, Member_role, Status]);
+        
+        return res.json({
+            msg: "Data inserted successfully",
+            insertedID: results.insertId
+        });
+    } catch (err) {
+        console.error("Error inserting data: ", err);
+        return res.status(500).json({error: "Internal Server Error", details: err.message});
+    }
 });
 
 // 2. 🔑 LOGIN Endpoint
@@ -201,43 +198,33 @@ app.post('/api/login', async (req, res) => {
 });
 
 // 3. ✅ CHECK EMAIL & SEND OTP Endpoint
-app.post('/api/check-email', (req, res) => {
-    const { email } = req.body;
-
-    if (!email) {
-        return res.status(400).json({ error: "Email is required" });
-    }
-
-    const query = "SELECT Email FROM member WHERE Email = ?";
-    
-    connection.query(query, [email], (err, results) => {
-        if (err) {
-            console.error("Check Email Query Error: ", err);
-            return res.status(500).json({ error: "Internal Server Error" });
+app.post('/api/check-email', async (req, res) => {
+    try {
+        const { email } = req.body;
+        if (!email) {
+            return res.status(400).json({ error: "Email is required" });
         }
+
+        const query = "SELECT Email FROM member WHERE Email = ?";
+        const [results] = await connection.query(query, [email]);
 
         if (results.length === 0) {
             return res.status(404).json({ error: "Email not found in system" });
         }
 
-        // สร้าง OTP 6 หลัก
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
         tempStorage.set(email, otp, 1000 * 60 * 5); // 5 minutes
 
-        // ส่งเมล
-        sendEmail({ recipient_email: email, OTP: otp })
-            .then(response => {
-                console.log('✅ OTP sent to:', email);
-                res.json({
-                    message: "OTP sent to your email",
-                    email: email
-                });
-            })
-            .catch(error => {
-                console.error("Email Send Error: ", error);
-                return res.status(500).json({ error: "Failed to send OTP email" });
-            });
-    });
+        await sendEmail({ recipient_email: email, OTP: otp });
+        console.log('✅ OTP sent to:', email);
+        return res.json({
+            message: "OTP sent to your email",
+            email: email
+        });
+    } catch (error) {
+        console.error("Email/OTP Process Error: ", error);
+        return res.status(500).json({ error: "Failed to process OTP request" });
+    }
 });
 
 // 4. 🔐 VERIFY OTP Endpoint
@@ -248,138 +235,131 @@ app.post('/api/verify-otp', (req, res) => {
         return res.status(400).json({ error: "Email and OTP are required" });
     }
 
-    // ตรวจสอบ OTP โดยใช้ tempStorage
     if (tempStorage.verify(email, otp)) {
         tempStorage.delete(email);
-        res.json({
+        return res.json({
             message: "OTP verified successfully",
             email: email
         });
     } else {
-        res.status(401).json({ error: "Invalid or expired OTP" });
+        return res.status(401).json({ error: "Invalid or expired OTP" });
     }
 });
 
 // 5. 🔄 RESET PASSWORD Endpoint
-app.post('/api/reset-password', (req, res) => {
-    const { email, newPassword } = req.body;
-
-    if (!email || !newPassword) {
-        return res.status(400).json({ error: "Email and new password are required" });
-    }
-
-    const query = "UPDATE member SET Password = ? WHERE Email = ?";
-    
-    connection.query(query, [newPassword, email], (err, results) => {
-        if (err) {
-            console.error("Reset Password Query Error: ", err);
-            return res.status(500).json({ error: "Internal Server Error" });
+app.post('/api/reset-password', async (req, res) => {
+    try {
+        const { email, newPassword } = req.body;
+        if (!email || !newPassword) {
+            return res.status(400).json({ error: "Email and new password are required" });
         }
+
+        const query = "UPDATE member SET Password = ? WHERE Email = ?";
+        const [results] = await connection.query(query, [newPassword, email]);
 
         if (results.affectedRows === 0) {
             return res.status(404).json({ error: "Email not found" });
         }
 
-        res.json({
+        return res.json({
             message: "Password reset successfully",
             email: email
         });
-    });
+    } catch (err) {
+        console.error("Reset Password Query Error: ", err);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
 });
 
-// 6. 📋 GET ALL MEMBERS (สำหรับ debug)
-
 // 6.1 👤 GET MEMBER PROFILE BY EMAIL
-app.get('/api/member', (req, res) => {
-    const { email, id } = req.query;
-    if (!email && !id) {
-        return res.status(400).json({ error: "Email or Member ID is required" });
-    }
-
-    const query = id
-        ? "SELECT Name, Surname, Email, Phone, Address, Username FROM member WHERE MemberID = ?"
-        : "SELECT Name, Surname, Email, Phone, Address, Username FROM member WHERE Email = ?";
-    const params = id ? [id] : [email];
-
-    connection.query(query, params, (err, results) => {
-        if (err) {
-            console.error("Query Error: ", err);
-            return res.status(500).json({ error: "Internal Server Error" });
+app.get('/api/member', async (req, res) => {
+    try {
+        const { email, id } = req.query;
+        if (!email && !id) {
+            return res.status(400).json({ error: "Email or Member ID is required" });
         }
+
+        const query = id
+            ? "SELECT Name, Surname, Email, Phone, Address, Username FROM member WHERE MemberID = ?"
+            : "SELECT Name, Surname, Email, Phone, Address, Username FROM member WHERE Email = ?";
+        const params = id ? [id] : [email];
+
+        const [results] = await connection.query(query, params);
         if (results.length === 0) {
             return res.status(404).json({ error: "Member not found" });
         }
-        res.json(results[0]);
-    });
+        return res.json(results[0]);
+    } catch (err) {
+        console.error("Query Error: ", err);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
 });
 
 // 6.2 ✏️ UPDATE MEMBER PROFILE
-app.post('/api/update-member', (req, res) => {
-    const { email, name, surname, contact, username, address } = req.body;
-    if (!email) {
-        return res.status(400).json({ error: "Email is required" });
-    }
-    const query = `UPDATE member SET Name=?, Surname=?, Phone=?, Username=?, Address=? WHERE Email=?`;
-    connection.query(query, [name, surname, contact, username, address, email], (err, results) => {
-        if (err) {
-            console.error("Update Member Query Error: ", err);
-            return res.status(500).json({ error: "Internal Server Error" });
+app.post('/api/update-member', async (req, res) => {
+    try {
+        const { email, name, surname, contact, username, address } = req.body;
+        if (!email) {
+            return res.status(400).json({ error: "Email is required" });
         }
+        const query = `UPDATE member SET Name=?, Surname=?, Phone=?, Username=?, Address=? WHERE Email=?`;
+        const [results] = await connection.query(query, [name, surname, contact, username, address, email]);
+        
         if (results.affectedRows === 0) {
             return res.status(404).json({ error: "Member not found" });
         }
-        res.json({ message: "Profile updated successfully" });
-    });
+        return res.json({ message: "Profile updated successfully" });
+    } catch (err) {
+        console.error("Update Member Query Error: ", err);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
 });
 
 // 6.3 🔑 CHANGE PASSWORD
-app.post('/api/change-password', (req, res) => {
-    const { email, currentPassword, newPassword } = req.body;
-    if (!email || !currentPassword || !newPassword) {
-        return res.status(400).json({ error: "Email, current password, and new password are required" });
-    }
-    // ตรวจสอบ current password
-    const selectQuery = "SELECT Password FROM member WHERE Email = ?";
-    connection.query(selectQuery, [email], (err, results) => {
-        if (err) {
-            console.error("Change Password Query Error: ", err);
-            return res.status(500).json({ error: "Internal Server Error" });
+app.post('/api/change-password', async (req, res) => {
+    try {
+        const { email, currentPassword, newPassword } = req.body;
+        if (!email || !currentPassword || !newPassword) {
+            return res.status(400).json({ error: "Email, current password, and new password are required" });
         }
+
+        const selectQuery = "SELECT Password FROM member WHERE Email = ?";
+        const [results] = await connection.query(selectQuery, [email]);
+
         if (results.length === 0) {
             return res.status(404).json({ error: "Member not found" });
         }
         if (results[0].Password !== currentPassword) {
             return res.status(401).json({ error: "Current password is incorrect" });
         }
-        // อัปเดตรหัสผ่านใหม่
+
         const updateQuery = "UPDATE member SET Password = ? WHERE Email = ?";
-        connection.query(updateQuery, [newPassword, email], (err2, results2) => {
-            if (err2) {
-                console.error("Update Password Error: ", err2);
-                return res.status(500).json({ error: "Internal Server Error" });
-            }
-            res.json({ message: "Password changed successfully" });
-        });
-    });
-});
-
-
-// 🔍 Product Search (must be BEFORE newRouter to avoid /products/* wildcard conflict)
-app.get('/api/products/search', (req, res) => {
-  const q = (req.query.q || '').trim();
-  if (!q) return res.json([]);
-  const like = `%${q}%`;
-  connection.query(
-    'SELECT Product_id, Product_name, Product_price, Image AS Product_image, Product_model FROM product WHERE Product_name LIKE ? OR Product_model LIKE ? LIMIT 10',
-    [like, like],
-    (err, results) => {
-      if (err) return res.status(500).json({ error: err.message });
-      res.json(results);
+        await connection.query(updateQuery, [newPassword, email]);
+        return res.json({ message: "Password changed successfully" });
+    } catch (err) {
+        console.error("Change Password Error: ", err);
+        return res.status(500).json({ error: "Internal Server Error" });
     }
-  );
 });
 
-// 7. 🛍️ BEST SELLER Routes
+// 🔍 Product Search
+app.get('/api/products/search', async (req, res) => {
+  try {
+    const q = (req.query.q || '').trim();
+    if (!q) return res.json([]);
+    const like = `%${q}%`;
+    
+    const [results] = await connection.query(
+      'SELECT Product_id, Product_name, Product_price, Image AS Product_image, Product_model FROM product WHERE Product_name LIKE ? OR Product_model LIKE ? LIMIT 10',
+      [like, like]
+    );
+    return res.json(results);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// 7. 🛍️ ROUTERS
 app.use('/api', bestRouter);
 app.use('/api', typeRouter);
 app.use('/api', newRouter);
@@ -393,19 +373,18 @@ app.use('/api/orders', orderRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/reviews', reviewRouter);
 
-// Global error middleware (prevent crashes from unhandled route errors)
+// Global error middleware
 app.use((err, req, res, next) => {
     console.error("❌ Unhandled route error:", err.message, err.stack);
     if (!res.headersSent) res.status(500).json({ error: err.message || "Internal Server Error" });
 });
 
-// ── Auto-cancel orders ที่เกิน 24 ชั่วโมง (รันทุกครั้งที่ backend start) ──────
+// ── Auto-cancel orders ที่เกิน 24 ชั่วโมง ──────
 const dbPool = require('./db');
 async function autoCancelExpiredOrders() {
   try {
     const [expired] = await dbPool.query(
-      `SELECT Order_id FROM \`order\`
-       WHERE Status = 'O' AND Order_date <= NOW() - INTERVAL 24 HOUR`
+      `SELECT Order_id FROM \`order\` WHERE Status = 'O' AND Order_date <= NOW() - INTERVAL 24 HOUR`
     );
     if (!expired.length) {
       console.log('✅ Auto-cancel: ไม่มี order ที่หมดเวลา');
@@ -422,10 +401,7 @@ async function autoCancelExpiredOrders() {
         );
         for (const item of details) {
           if (!item.Product_id) continue;
-          await conn.query(
-            'UPDATE product SET Stock = Stock + ? WHERE Product_id = ?',
-            [item.Quantity, item.Product_id]
-          );
+          await conn.query('UPDATE product SET Stock = Stock + ? WHERE Product_id = ?', [item.Quantity, item.Product_id]);
           if (parseFloat(item.Product_price) > 0) {
             await conn.query(
               `UPDATE pro_product pp
