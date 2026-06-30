@@ -37,8 +37,8 @@ function InfoItem({ label, value, editMode, onChange }) {
 /* ------------- Sidebar ------------- */
 function AccountSidebar({ active, onSelect, username, onLogout }) {
     const menuItems = [
-        { id: "dashboard", label: "?????????????", icon: "/user.png", iconActive: "/user1.png" },
-        { id: "orders", label: "?????????????", icon: "/cart.png", iconActive: "/cart1.png" },
+        { id: "dashboard", label: "ข้อมูลส่วนตัว", icon: "/user.png", iconActive: "/user1.png" },
+        { id: "orders", label: "การซื้อของฉัน", icon: "/cart.png", iconActive: "/cart1.png" },
     ];
 
     return (
@@ -67,7 +67,7 @@ function AccountSidebar({ active, onSelect, username, onLogout }) {
                     <span className="sidebar-icon">
                         <img src="/logout.png" alt="logout" style={{ width: 24, height: 24, verticalAlign: "middle" }} />
                     </span>
-                    <span>??????????</span>
+                    <span>ออกจากระบบ</span>
                 </button>
             </nav>
         </div>
@@ -126,9 +126,9 @@ export default function ProfileSettings() {
     const [draft, setDraft] = useState({ ...profile });
 
     const announcements = [
-        "[NEW!] Glasting Color Gloss Mini ?????????????????????????????",
-        "[NEW!] 4in1 Han All Eyepot Liner ?????????????????????????? ???????????? ???????????",
-        "Free Shipping! ??????????? 500 ??? ???????????????????",
+        "[NEW!] Glasting Color Gloss Mini เปิดตัวพร้อมโปรโมชั่นสุดพิเศษ",
+        "[NEW!] 4in1 Han All Eyepot Liner จะเป็นยังไงถ้ารวมอายแชโดว์ อายไลน์เนอร์ เข้าด้วยกัน",
+        "Free Shipping! สั่งซื้อครบ 500 บาท จัดส่งฟรีทั่วประเทศ",
     ];
 
     useEffect(() => {
@@ -151,7 +151,7 @@ export default function ProfileSettings() {
             });
             if (passwords.current && passwords.newPw && passwords.confirm) {
                 if (passwords.newPw !== passwords.confirm) {
-                    alert("??????????????????????????????????????"); return;
+                    alert("รหัสผ่านใหม่และยืนยันรหัสผ่านไม่ตรงกัน"); return;
                 }
                 await changePassword({ email: draft.email, currentPassword: passwords.current, newPassword: passwords.newPw });
                 setPasswords({ current: "", newPw: "", confirm: "" });
@@ -161,7 +161,7 @@ export default function ProfileSettings() {
             setToast(true);
             setTimeout(() => setToast(false), 2500);
         } catch {
-            alert("??????????????????????????????????????????????????");
+            alert("เกิดข้อผิดพลาดในการอัปเดตข้อมูลหรือเปลี่ยนรหัสผ่าน");
         }
     };
 

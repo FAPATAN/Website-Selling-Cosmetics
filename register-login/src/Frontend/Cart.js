@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Cart.css";
 import SearchBar from "./SearchBar";
@@ -18,32 +18,32 @@ const ProductImage = ({ image, name }) => (
   </div>
 );
 
-// ========== Component ???? ==========
+
 export default function Cart() {
   console.log('Cart page loaded');
-  // --- State ?????? ---
+  
   const [cart, setCart] = useState([]);
   const navigate = useNavigate();
-  const memberId = sessionStorage.getItem('Member_id'); // ?????????? context/auth
+  const memberId = sessionStorage.getItem('Member_id'); 
   const isLoggedIn = !!memberId;
 
-  // --- State ??? Backend ---
+ 
   const [allProducts, setAllProducts] = useState([]);
   const [categories, setCategories] = useState([]);
 
-  // --- State ??????????? ---
+  
   const [randomProducts, setRandomProducts] = useState([]);
 
-  // --- State Edit Option ---
+  
   const [editingItemId, setEditingItemId] = useState(null);
   const [pendingVariant, setPendingVariant] = useState(null); // { key, color, label }
 
-  // --- State ???? ---
+ 
   const [sideMenuOpen, setSideMenuOpen] = useState(false);
   const [shopAllOpen, setShopAllOpen] = useState(false);
   const [promotionMap, setPromotionMap] = useState({}); // { promotion_id: discount_value }
 
-  // --- State ?????????????? ---
+  
   const [stockError, setStockError] = useState(null);
   const [checkingStock, setCheckingStock] = useState(false);
 
@@ -52,7 +52,7 @@ export default function Cart() {
     window.scrollTo(0, 0);
   }, []);
 
-  // --- Fetch ??? category ?????? Edit Option ---
+
   useEffect(() => {
     Promise.all([
       fetch(`${API}/api/face`).then(r => r.json()).catch(() => ({})),
@@ -80,7 +80,7 @@ export default function Cart() {
     });
   }, []);
 
-  // --- ??????????????? ---
+  
   useEffect(() => {
     fetch(`${API}/api/products/random?limit=4`)
       .then(res => res.json())
@@ -88,7 +88,7 @@ export default function Cart() {
       .catch(() => setRandomProducts([]));
   }, []);
 
-  // --- ???? cart ??? backend ???? login ---
+  
   useEffect(() => {
     if (!isLoggedIn) return;
     fetch(`${API}/api/cart/${memberId}`)
@@ -111,7 +111,7 @@ export default function Cart() {
       });
   }, [isLoggedIn, memberId]);
 
-  // --- Fetch ???????? ---
+ 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -125,7 +125,7 @@ export default function Cart() {
     fetchCategories();
   }, []);
 
-  // --- Auto-slide ????????? ---
+  
   useEffect(() => {
     const slides = document.querySelectorAll('.announcement-slide');
     let idx = 0;
@@ -136,7 +136,7 @@ export default function Cart() {
     return () => clearInterval(interval);
   }, []);
 
-  // --- ???????? sync cart ?? backend ---
+  
   const syncCartToBackend = (updatedCart) => {
     if (!isLoggedIn) return;
     const cart_items = updatedCart.map(item => ({
@@ -152,7 +152,7 @@ export default function Cart() {
     });
   };
 
-  // --- ??????? variant ?????? (???? cheek_2.1 <-> cheek_2.2) ---
+
   const changeVariant = (oldItemId, newKey) => {
     const newProduct = allProducts.find(p => p.Image && p.Image.startsWith(newKey));
     if (!newProduct) return;
@@ -167,7 +167,7 @@ export default function Cart() {
     setPendingVariant(null);
   };
 
-  // --- ?????????????? ---
+ 
   const updateQty = (uid, delta) => {
     const updated = cart.map(item =>
       item.uid === uid ? { ...item, qty: Math.max(1, Number(item.qty) + delta) } : item
@@ -176,7 +176,7 @@ export default function Cart() {
     syncCartToBackend(updated);
   };
 
-  // ?? cart item ?????? state ??? backend
+  
   const removeItem = (uid) => {
     const updated = cart.filter(i => i.uid !== uid);
     setCart(updated);
@@ -186,7 +186,7 @@ export default function Cart() {
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
   const total = subtotal;
 
-  // --- ????????????? checkout ---
+  
   const handleCheckout = async () => {
     if (cart.length === 0) return;
     setCheckingStock(true);
@@ -201,13 +201,13 @@ export default function Cart() {
       });
       if (!res.ok) {
         const data = await res.json();
-        const msgs = data.errors ? data.errors : [data.error || '????????????????????????'];
+        const msgs = data.errors ? data.errors : [data.error || 'ไม่สามารถตรวจสอบสต๊อกได้'];
         setStockError(msgs);
         return;
       }
       navigate('/information');
     } catch {
-      setStockError(['????????????????????????????????']);
+      setStockError(['ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้']);
     } finally {
       setCheckingStock(false);
     }
@@ -216,20 +216,20 @@ export default function Cart() {
   if (!isLoggedIn) {
     return (
       <div style={{padding: '48px', textAlign: 'center', color: '#d00', fontSize: '1.2rem'}}>
-        ????????????????????
+        กรุณาเข้าสู่ระบบก่อน
       </div>
     );
   }
 
   return (
     <>
-      {/* ===== ????????? ===== */}
+    
       <div className="announcement-bar">
         <div className="announcement-slide active">
-          <span>[NEW!] Rom&ndXZO&FRIENDS "?????????????????????????????????? ???????????????????????????????????????????????????????????"</span>
+          <span>[NEW!] Rom&ndXZO&FRIENDS "มากกว่าความน่ารักและเสน่ห์เหลือล้น เราหวังว่าคอลเลคชั่นนี้จะมอบความอบอุ่นและกล้าหาญให้กับทุกคน"</span>
         </div>
         <div className="announcement-slide">
-          <span>[NEW!] 4in1 Han All Eyepot Liner ?????????????????????????? ???????????? ??????????? </span>
+          <span>[NEW!] 4in1 Han All Eyepot Liner จะเป็นยังไงถ้ารวมอายแชโดว์ อายไลน์เนอร์ เข้าด้วยกัน </span>
         </div>
         <div className="announcement-slide">
           <span>Best Tint Edition Set Lip Tints 01&amp;02 Buy 1 Get 1 Free!!</span>
@@ -296,7 +296,7 @@ export default function Cart() {
         </div>
       </header>
 
-      {/* ===== ????????????? ===== */}
+
       <div className="cart-page">
         <div className="cart-wrapper">
 
@@ -388,7 +388,7 @@ export default function Cart() {
                         </button>
                       </div>
                     </div>
-                    {/* Dropdown panel � outside grid row so it doesn't affect column alignment */}
+                    {/* Dropdown panel � outside grid row so it doesn't affect column alignment */}
                     {showEdit && isOpen && (
                       <div style={{ padding: '0 12px 12px 94px' }}>
                         <div style={{
@@ -415,7 +415,7 @@ export default function Cart() {
                             <button onClick={() => { setEditingItemId(null); setPendingVariant(null); }}
                               style={{ fontSize: '13px', padding: '5px 18px', borderRadius: '6px', border: '1px solid #ccc', background: '#fff', cursor: 'pointer', color: '#555' }}>Cancel</button>
                             <button onClick={() => changeVariant(item.id, selected.key)}
-                              style={{ fontSize: '13px', padding: '5px 18px', borderRadius: '6px', border: 'none', background: '#FB6F92', cursor: 'pointer', color: '#fff', fontWeight: 'bold' }}>????</button>
+                              style={{ fontSize: '13px', padding: '5px 18px', borderRadius: '6px', border: 'none', background: '#FB6F92', cursor: 'pointer', color: '#fff', fontWeight: 'bold' }}>ตกลง</button>
                           </div>
                         </div>
                       </div>
@@ -440,7 +440,7 @@ export default function Cart() {
                     <circle cx="12" cy="16.5" r="1" fill="#e74c3c"/>
                   </svg>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 700, color: '#c0392b', fontSize: 13 }}>????????????????????????</div>
+                    <div style={{ fontWeight: 700, color: '#c0392b', fontSize: 13 }}>ไม่สามารถดำเนินการต่อได้</div>
                     {(Array.isArray(stockError) ? stockError : [stockError]).map((msg, i) => (
                       <div key={i} style={{ fontSize: 12, color: '#555', marginTop: 2 }}>{msg}</div>
                     ))}
@@ -453,7 +453,7 @@ export default function Cart() {
               )}
               <div className="summary-title">Order summary</div>
               <div className="summary-row">
-                <span>Syb total</span>
+                <span>Sub total</span>
                 <span>{subtotal}?</span>
               </div>
               {/* Discount removed */}
@@ -474,7 +474,7 @@ export default function Cart() {
                 onClick={handleCheckout}
                 disabled={cart.length === 0 || checkingStock}
                 style={cart.length === 0 || checkingStock ? { opacity: 0.4, cursor: 'not-allowed' } : {}}
-              >{checkingStock ? '????????????...' : 'Checkout'}</button>
+              >{checkingStock ? 'กำลังตรวจสอบ...' : 'Checkout'}</button>
               <button className="continue-btn" onClick={() => navigate('/')}>Continue Shopping</button>
             </div>
 
@@ -524,10 +524,10 @@ export default function Cart() {
           <div className="footer-column">
             <h3>Customer Service</h3>
             <ul>
-              <li><a href="#">?????????????????????</a></li>
-              <li><a href="#">?????? / ????????????</a></li>
-              <li><a href="#">????????????????????</a></li>
-              <li><a href="#">???????????????</a></li>
+              <li><a href="#">นโยบายความเป็นส่วนตัว</a></li>
+              <li><a href="#">การคืน / การขอเงินคืน</a></li>
+              <li><a href="#">เงื่อนไขการให้บริการ</a></li>
+              <li><a href="#">ข้อมูลการจัดส่ง</a></li>
               <li><a href="#">California Proposition 65</a></li>
               <li><a href="#">CCPA & US Privacy Laws</a></li>
               <li><a href="#">Accessibility Statement</a></li>
@@ -535,9 +535,7 @@ export default function Cart() {
           </div>
           <div className="footer-column">
             <h3>Newsletter</h3>
-            <p>??????????????? ???????????? ???????????????</p><br />
-            <p className="highlight">?? ????????????????? 20% ?????!</p>
-            <br />
+            <p>สมัครรับข่าวสาร ข้อเสนอพิเศษ และอัปเดตจากเรา</p><br />
             <form>
               <input type="email" placeholder="Enter email" className="email-input" />
               <button className="signup-btn">Sign up</button>

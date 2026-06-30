@@ -17,7 +17,7 @@ const Best1 = () => {
   const [selectedMainImg, setSelectedMainImg] = useState(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
 
-  // ????????????????????????? cart
+  
   const fetchCartCount = async () => {
     const memberId = sessionStorage.getItem('Member_id');
     if (!memberId) {
@@ -28,7 +28,7 @@ const Best1 = () => {
       const res = await fetch(`${API}/api/cart/${memberId}`);
       const data = await res.json();
       if (data.cart) {
-        // ?????????????? Quantity
+      
         const count = data.cart.filter(item => item.Product_id).reduce((sum, item) => sum + (Number(item.Quantity) || 0), 0);
         setCartCount(count);
       } else {
@@ -39,17 +39,17 @@ const Best1 = () => {
     }
   };
 
-  // ????????? cart ??? mount
+  
   useEffect(() => {
     fetchCartCount();
   }, []);
 
-  // ?????????????????? id ??????????? URL
+  
   React.useEffect(() => {
     if (!id) return;
     fetch(`${API}/api/best/${id}`)
       .then(res => {
-        if (!res.ok) throw new Error('?????????????????');
+        if (!res.ok) throw new Error('ไม่พบข้อมูลสินค้า');
         return res.json();
       })
       .then(data => {
@@ -59,11 +59,11 @@ const Best1 = () => {
       })
       .catch(err => {
         setProduct(null);
-        setError('????????????????? ???? server ??????????');
+        setError('ไม่พบข้อมูลสินค้า หรือ server ไม่ตอบสนอง');
       });
   }, [id]);
 
-  // ?????????????????????????????? ??????? variant ??? color swatches
+  
   React.useEffect(() => {
     if (!product?.Image) return;
     const fname = product.Image.split('/').pop().toLowerCase();
@@ -114,20 +114,20 @@ const Best1 = () => {
 
   return (
     <>
-      {/* ??????????????? */}
+      {/* Announcement Bar */}
       <div className="announcement-bar">
         <div className="announcement-slide active">
-          <span>[NEW!] Rom&ndXZO&FRIENDS "?????????????????????????????????? ???????????????????????????????????????????????????????????"</span>
+           <span>[NEW!] Rom&ndXZO&FRIENDS "มากกว่าความน่ารักและเสน่ห์เหลือล้น เราหวังว่าคอลเลคชั่นนี้จะมอบความอบอุ่นและกล้าหาญให้กับทุกคน"</span>
         </div>
         <div className="announcement-slide">
-          <span>[NEW!] 4in1 Han All Eyepot Liner ?????????????????????????? ???????????? ??????????? </span>
+         <span>[NEW!] 4in1 Han All Eyepot Liner จะเป็นยังไงถ้ารวมอายแชโดว์ อายไลน์เนอร์ เข้าด้วยกัน </span>
         </div>
         <div className="announcement-slide">
           <span>Best Tint Edition Set Lip Tints 01&amp;02 Buy 1 Get 1 Free!!</span>
         </div>
       </div>
 
-      {/* Header: ????? ????????? ????? */}
+     
       <header className="main-header">
         <div className="menu-icon" onClick={() => setSideMenuOpen(true)}>
           <div className="bar"></div>
@@ -138,9 +138,9 @@ const Best1 = () => {
           <h1 className="romand-logo">rom&amp;nd</h1>
         </div>
         <div className="header-icons">
-          {/* ???????? */}
+        
           <form action="" className="search-form">
-            <input type="text" placeholder="???????????????..." className="search-input" />
+            <input type="text" placeholder="พิมพ์เพื่อค้นหา..." className="search-input" />
             <button className="search-button icon-link" type="button">
               <svg className="search-icon svg-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#333" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="11" cy="11" r="8"></circle>
@@ -149,14 +149,14 @@ const Best1 = () => {
               <i className="fa-solid fa-xmark search-close"></i>
             </button>
           </form>
-          {/* ????? Account */}
+         
           <span className="icon-link" style={{cursor:'pointer'}} onClick={() => navigate('/account')}>
             			<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               			<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               			<circle cx="12" cy="7" r="4"></circle>
             			</svg>
           </span>
-          {/* ????? Cart */}
+
           <span className="icon-link cart-icon" style={{cursor:'pointer'}} onClick={() => navigate('/cart')}>
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                         <circle cx="9" cy="21" r="1"></circle>
@@ -301,7 +301,7 @@ const Best1 = () => {
                   setShowLoginModal(true);
                   return;
                 }
-                // ???? cart ??????? backend ???? (????? merge)
+                
                 let oldCart = [];
                 try {
                   console.log('Fetching old cart...');
@@ -319,7 +319,7 @@ const Best1 = () => {
                 } catch (e) {
                   console.log('Error fetching old cart:', e);
                 }
-                // merge ??????????????????????? ?????????????
+             
                 let found = false;
                 const newCart = oldCart.map(i => {
                   if (i.Product_id === product.Product_id) {
@@ -344,7 +344,7 @@ const Best1 = () => {
                   body: JSON.stringify({ Member_id: memberId, cart_items: newCart })
                 });
                 console.log('Navigate to cart');
-                // ?????? badge cart ??????????????? (navigate ?????????????????)
+                
                 console.log('before navigate');
                 try {
                   navigate('/cart');
@@ -353,7 +353,7 @@ const Best1 = () => {
                   console.log('navigate error', navErr);
                 }
               } catch (err) {
-                alert('??????????????: ' + err);
+                alert('เกิดข้อผิดพลาด: ' + err);
                 console.log('ERROR:', err);
               }
             }}>Add to Cart</button>
@@ -381,9 +381,9 @@ const Best1 = () => {
             {descOpen && (
               <div style={{padding:'16px 0 0 0'}}>
                 {product?.Sale_date && (() => {
-                  const THAI_MONTHS = ['?.?.','?.?.','??.?.','??.?.','?.?.','??.?.','?.?.','?.?.','?.?.','?.?.','?.?.','?.?.'];
+                  const THAI_MONTHS = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
                   const d = new Date(product.Sale_date);
-                  const txt = `?????????? ${d.getUTCDate()} ${THAI_MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()+543}`;
+                  const txt = `วางจำหน่าย ${d.getUTCDate()} ${THAI_MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()+543}`;
                   return <div style={{fontSize:'16px',color:'#b06070',fontWeight:'500',marginBottom:'10px'}}>{txt}</div>;
                 })()}
                 {product?.Product_detail ? (
@@ -393,7 +393,7 @@ const Best1 = () => {
                     style={{width:'100%',borderRadius:8,display:'block'}}
                   />
                 ) : (
-                  <p style={{color:'#aaa',fontSize:13}}>??????????????????</p>
+                  <p style={{color:'#aaa',fontSize:13}}>ยังไม่มีรายละเอียด</p>
                 )}
               </div>
             )}
@@ -441,10 +441,10 @@ const Best1 = () => {
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.45)',zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center'}} onClick={() => setShowLoginModal(false)}>
           <div style={{background:'#fff',borderRadius:16,padding:'36px 40px',maxWidth:340,width:'90%',textAlign:'center',boxShadow:'0 8px 32px rgba(0,0,0,0.18)'}} onClick={e => e.stopPropagation()}>
             <div style={{fontSize:40,marginBottom:12}}><img src="/lock.png" alt="lock" style={{width:40,height:40}} /></div>
-            <div style={{fontWeight:700,fontSize:18,marginBottom:8,color:'#1a1a1a'}}>????????????????????</div>
-            <div style={{color:'#888',fontSize:14,marginBottom:24}}>??????? login ????????????????????????</div>
+            <div style={{fontWeight:700,fontSize:18,marginBottom:8,color:'#1a1a1a'}}>กรุณาเข้าสู่ระบบ</div>
+            <div style={{color:'#888',fontSize:14,marginBottom:24}}>คุณต้อง login เพื่อเพิ่มสินค้าลงตะกร้า</div>
             <div style={{display:'flex',gap:10,justifyContent:'center'}}>
-              <button onClick={() => setShowLoginModal(false)} style={{padding:'10px 22px',borderRadius:8,border:'1px solid #ddd',background:'#f5f5f5',cursor:'pointer',fontWeight:600}}>??????</button>
+              <button onClick={() => setShowLoginModal(false)} style={{padding:'10px 22px',borderRadius:8,border:'1px solid #ddd',background:'#f5f5f5',cursor:'pointer',fontWeight:600}}>ยกเลิก</button>
               <button onClick={() => navigate('/auth')} style={{padding:'10px 22px',borderRadius:8,border:'none',background:'#1a1a1a',color:'#fff',cursor:'pointer',fontWeight:600}}>Login</button>
             </div>
           </div>

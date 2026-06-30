@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Promotion.css";
 import SearchBar from "./SearchBar";
@@ -62,7 +62,7 @@ const Promotionform = ({ setIsRegisterView }) => {
         fetchCategories();
     }, []);
     useEffect(() => {
-        // --- ????????? auto-slide ---
+        
         const slides = document.querySelectorAll('.announcement-slide');
         let idx = 0;
         const interval = setInterval(() => {
@@ -84,7 +84,7 @@ const Promotionform = ({ setIsRegisterView }) => {
         if (shopAllHeader && submenu && toggleIcon) {
             shopAllHeader.addEventListener('click', toggleSubmenu);
         }
-        // --- ????????? auto-slide ---
+      
         const slides = document.querySelectorAll('.announcement-slide');
         let idx = 0;
         const interval = setInterval(() => {
@@ -92,14 +92,14 @@ const Promotionform = ({ setIsRegisterView }) => {
             idx = (idx + 1) % slides.length;
         }, 3500);
 
-        // --- ????????????? (hamburger) ---
+ 
         return () => {
             clearInterval(interval);
             if (shopAllHeader) shopAllHeader.removeEventListener('click', toggleSubmenu);
         };
     }, []);
 
-    // ??? min/max price ??? backend (price_range id=2)
+    
     useEffect(() => {
         fetch(`${API}/api/price-range/3`)
             .then(res => res.json())
@@ -110,18 +110,18 @@ const Promotionform = ({ setIsRegisterView }) => {
             });
     }, []);
 
-    // helper: match image path ???? "pro_1.1.jpg" ??? "products/pro_1.1.jpg"
+  
     const imgMatch = (img, key) => img === key || img.split('/').pop() === key || img.startsWith(key) || img.split('/').pop().startsWith(key);
 
     return (
         <>
-            {/* ??????????????? */}
+           
             <div className="announcement-bar">
                 <div className="announcement-slide active">
-                    <span>[NEW!] Rom&ndXZO&FRIENDS "?????????????????????????????????? ???????????????????????????????????????????????????????????"</span>
+                    <span>[NEW!] Rom&ndXZO&FRIENDS "มากกว่าความน่ารักและเสน่ห์เหลือล้น เราหวังว่าคอลเลคชั่นนี้จะมอบความอบอุ่นและกล้าหาญให้กับทุกคน"</span>
                 </div>
                 <div className="announcement-slide">
-                    <span>[NEW!] 4in1 Han All Eyepot Liner ?????????????????????????? ???????????? ??????????? </span>
+                    <span>[NEW!] 4in1 Han All Eyepot Liner จะเป็นยังไงถ้ารวมอายแชโดว์ อายไลน์เนอร์ เข้าด้วยกัน </span>
                 </div>
                 <div className="announcement-slide">
                     <span>Best Tint Edition Set Lip Tints 01&amp;02 Buy 1 Get 1 Free!!</span>
@@ -159,7 +159,7 @@ const Promotionform = ({ setIsRegisterView }) => {
                 </ul>
             </div>
 
-            {/* Header: ????? ????????? ????? */}
+      
             <header className="main-header">
                 <div className="menu-icon" onClick={() => setSideMenuOpen(true)}>
                     <div className="bar"></div>
@@ -170,16 +170,16 @@ const Promotionform = ({ setIsRegisterView }) => {
                     <h1 className="romand-logo">rom&amp;nd</h1>
                 </div>
                 <div className="header-icons">
-                    {/* ???????? */}
+                   
                     <SearchBar />
-                    {/* ????? Account */}
+                 
                     <span className="icon-link" style={{cursor:'pointer'}} onClick={() => navigate('/account')}>
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                         </svg>
                     </span>
-                    {/* ????? Cart */}
+                  
                    <span className="icon-link cart-icon" style={{cursor:'pointer'}} onClick={() => navigate('/cart')}>
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                         <circle cx="9" cy="21" r="1"></circle>
@@ -191,8 +191,7 @@ const Promotionform = ({ setIsRegisterView }) => {
                 </div>
             </header>
 
-            {/* ???????? 7 ????? (dynamic) ???????????? */}
-            {/* Product Categories Section */}
+            
       	<section className="product-categories-section">
         	<div className="category-grid" id="categoryGrid">
           		{categories.length > 0 ? (
@@ -221,7 +220,7 @@ const Promotionform = ({ setIsRegisterView }) => {
               );
             })
           ) : (
-            <p>???????????????????????????????</p>
+            <p>โหลดข้อมูลประเภทสินค้าไม่สำเร็จ</p>
           )}
         	</div>
       	</section>
@@ -248,12 +247,12 @@ const Promotionform = ({ setIsRegisterView }) => {
                                 <input type="range" min={minPrice} max={maxPrice} value={priceRange[1]} className="filter-price-slider" onChange={e => setPriceRange([priceRange[0], Number(e.target.value)])} />
                                 <div className="filter-price-inputs">
                                     <div className="filter-price-box">
-                                        <span className="filter-currency">?</span>
+                                        <span className="filter-currency">฿</span>
                                         <input type="number" value={priceRange[0]} min={minPrice} max={priceRange[1]} onChange={e => setPriceRange([Number(e.target.value), priceRange[1]])} />
                                     </div>
                                     <span className="filter-price-to">to</span>
                                     <div className="filter-price-box">
-                                        <span className="filter-currency">?</span>
+                                        <span className="filter-currency">฿</span>
                                         <input type="number" value={priceRange[1]} min={priceRange[0]} max={maxPrice} onChange={e => setPriceRange([priceRange[0], Number(e.target.value)])} />
                                     </div>
                                 </div>
@@ -261,7 +260,7 @@ const Promotionform = ({ setIsRegisterView }) => {
                         )}
                     </div>
                 </aside>
-                                {/* ????????????: flex column */}
+                               
                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '32px', margin: '0 0 64px 0' }}>
                                     {[...promotions].sort((a, b) => {
                                         const aIsBuyGet = /^buy\s+\d+\s+get\s+\d+/i.test(a.DiscountType || '');
@@ -286,8 +285,8 @@ const Promotionform = ({ setIsRegisterView }) => {
                                                                     <div className="promo-b3-buy1">1<sup style={{fontSize:'18px'}}>+</sup>1</div>
                                                                     <div className="promo-b3-divider-green"></div>
                                                                     <div>
-                                                                        <div className="promo-b3-title" style={{color:'#222'}}>{promo.condition}</div>
-                                                                        <div className="promo-b3-desc" style={{color:'#222'}}>???? {buyQty} ??? {getQty} ????????????????????????!</div>
+                                                                       <div className="promo-b3-title" style={{color:'#222'}}>{promo.condition}</div>
+                                                                        <div className="promo-b3-desc" style={{color:'#222'}}>ซื้อ {buyQty} แถม {getQty} เฉพาะสินค้าที่ร่วมรายการ!</div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -303,7 +302,7 @@ const Promotionform = ({ setIsRegisterView }) => {
                                                                     <div className="promo-b3-divider"></div>
                                                                     <div>
                                                                         <div className="promo-b3-title">{promo.condition.replace(/\d+(\.\d+)?%/, promo.Discount_value + '%')}</div>
-                                                                        <div className="promo-b3-desc">????????????????????????????????????</div>
+                                                                        <div className="promo-b3-desc">เลือกซื้อสินค้าที่ร่วมรายการด้านล่าง</div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -314,7 +313,7 @@ const Promotionform = ({ setIsRegisterView }) => {
                                                 {/* Product grid */}
                                                 <div className="promotion-grid">
                                                     {isBuy1Get1 ? (
-                                                        // Buy 1 Get 1: ???????? ??????????
+                                                       
                                                         promoProducts
                                                             .filter(p => Number(p.Product_price) <= priceRange[1])
                                                             .map(product => {
@@ -329,7 +328,7 @@ const Promotionform = ({ setIsRegisterView }) => {
                                                                                 <div style={{ backgroundColor: '#FF6347', color: '#fff', fontWeight: 'bold', borderRadius: '4px', padding: '4px 14px', fontSize: '13px', boxShadow: '0 2px 6px rgba(0,0,0,0.08)' }}>Buy {buyQty} Get {getQty}</div>
                                                                             </div>
                                                                             {product.Stock != null && Number(product.Stock) === 0 && (
-                                                                                <div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',width:'86px',height:'86px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(30,30,30,0.85)',color:'#fff',fontSize:'13px',fontWeight:'bold',zIndex:2,textAlign:'center',lineHeight:'1.4'}}>?????????</div>
+                                                                                <div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',width:'86px',height:'86px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(30,30,30,0.85)',color:'#fff',fontSize:'13px',fontWeight:'bold',zIndex:2,textAlign:'center',lineHeight:'1.4'}}>สินค้าหมด</div>
                                                                             )}
                                                                             {imgSrc ? (
                                                                                 <div className="card-image" style={{ backgroundImage: `url(${imgSrc})`, width: '180px', height: '180px', backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '16px', border: '1px solid #eee', marginBottom: '12px' }}></div>
@@ -344,15 +343,15 @@ const Promotionform = ({ setIsRegisterView }) => {
                                                                             {product.Product_model && <div className="card-model">{product.Product_model}</div>}
                                                                         </a>
                                                                         <div className="card-price">
-                                                                            <span style={{color:'#e53322', fontWeight:'bold'}}>{Number(product.Product_price).toFixed(2)}?</span>
-                                                                            <span style={{color:'#212121', fontWeight:'bold', fontSize:'12px', marginLeft:'8px'}}>+ ??? {getQty} ????!</span>
+                                                                            <span style={{color:'#e53322', fontWeight:'bold'}}>{Number(product.Product_price).toFixed(2)}฿</span>
+                                                                            <span style={{color:'#212121', fontWeight:'bold', fontSize:'12px', marginLeft:'8px'}}>+ ฟรี {getQty} ชิ้น!</span>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             );
                                                         })
                                                     ) : (
-                                                        // % ??????: group ??? image prefix
+                                                        
                                                         (() => {
                                                             const seenPrefixes = new Set();
                                                             const groups = [];
@@ -386,7 +385,7 @@ const Promotionform = ({ setIsRegisterView }) => {
                                                                                 <div style={{position:'relative', display:'inline-block'}}>
                                                                                     <div className="card-image" style={{ backgroundImage: `url(${imgSrc})`, width: '180px', height: '180px', backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '16px', border: '1px solid #eee', marginBottom: '12px' }}></div>
                                                                                     {product.Stock != null && Number(product.Stock) === 0 && (
-                                                                                        <div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',width:'86px',height:'86px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(30,30,30,0.85)',color:'#fff',fontSize:'13px',fontWeight:'bold',zIndex:2,textAlign:'center',lineHeight:'1.4'}}>?????????</div>
+                                                                                        <div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',width:'86px',height:'86px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(30,30,30,0.85)',color:'#fff',fontSize:'13px',fontWeight:'bold',zIndex:2,textAlign:'center',lineHeight:'1.4'}}>สินค้าหมด</div>
                                                                                     )}
                                                                                 </div>
                                                                             </div>
@@ -410,8 +409,8 @@ const Promotionform = ({ setIsRegisterView }) => {
                                                                                 </div>
                                                                             )}
                                                                             <div className="card-price">
-                                                                                <span style={{textDecoration:'line-through', color:'#aaa', fontSize:'13px', marginRight:'6px'}}>{Number(product.Product_price).toFixed(2)}?</span>
-                                                                                <span style={{color:'#e53322', fontWeight:'bold'}}>{(Number(product.Product_price) * (1 - (Number(product.Discount_value) || 0) / 100)).toFixed(2)}?</span>
+                                                                                <span style={{textDecoration:'line-through', color:'#aaa', fontSize:'13px', marginRight:'6px'}}>{Number(product.Product_price).toFixed(2)}฿</span>
+                                                                                <span style={{color:'#e53322', fontWeight:'bold'}}>{(Number(product.Product_price) * (1 - (Number(product.Discount_value) || 0) / 100)).toFixed(2)}฿</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -426,7 +425,7 @@ const Promotionform = ({ setIsRegisterView }) => {
                                 </div>
             </div>
 
-            <footer className="footer">
+           <footer className="footer">
         <div className="footer-container">
           <div className="footer-column">
             <h3>Contact Us</h3>
@@ -435,10 +434,10 @@ const Promotionform = ({ setIsRegisterView }) => {
           <div className="footer-column">
             <h3>Customer Service</h3>
             <ul>
-              <li><a href="#">?????????????????????</a></li>
-              <li><a href="#">?????? / ????????????</a></li>
-              <li><a href="#">????????????????????</a></li>
-              <li><a href="#">???????????????</a></li>
+              <li><a href="#">นโยบายความเป็นส่วนตัว</a></li>
+              <li><a href="#">การคืน / การขอเงินคืน</a></li>
+              <li><a href="#">เงื่อนไขการให้บริการ</a></li>
+              <li><a href="#">ข้อมูลการจัดส่ง</a></li>
               <li><a href="#">California Proposition 65</a></li>
               <li><a href="#">CCPA & US Privacy Laws</a></li>
               <li><a href="#">Accessibility Statement</a></li>
@@ -446,9 +445,7 @@ const Promotionform = ({ setIsRegisterView }) => {
           </div>
           <div className="footer-column">
             <h3>Newsletter</h3>
-            <p>??????????????? ???????????? ???????????????</p><br />
-            <p className="highlight">?? ????????????????? 20% ?????!</p>
-            <br />
+            <p>สมัครรับข่าวสาร ข้อเสนอพิเศษ และอัปเดตจากเรา</p><br />
             <form>
               <input type="email" placeholder="Enter email" className="email-input" />
               <button className="signup-btn">Sign up</button>
@@ -460,10 +457,10 @@ const Promotionform = ({ setIsRegisterView }) => {
           </div>
         </div>
       </footer>
-           </>
-           
-       );
-    }
+		   </>
+		   
+	   );
+	}
 
     
     export default Promotionform;

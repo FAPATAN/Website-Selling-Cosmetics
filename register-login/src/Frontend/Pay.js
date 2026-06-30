@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Pay.css";
 const API = process.env.REACT_APP_API_URL;
@@ -21,7 +21,7 @@ export default function Pay() {
   const [slipFile, setSlipFile] = useState(null);
   const [slipPreview, setSlipPreview] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [dbOrderId, setDbOrderId] = useState(null); // Order_id ????????? DB
+  const [dbOrderId, setDbOrderId] = useState(null); 
   const [slipSubmitting, setSlipSubmitting] = useState(false);
   const [orderError, setOrderError] = useState(null); // null = no error, string = error message
   const [promotionMap, setPromotionMap] = useState({});
@@ -45,7 +45,7 @@ export default function Pay() {
     if (!slipFile) return;
     setSlipSubmitting(true);
 
-    // 1. ?????? localStorage (??????????????????????????? Orders page)
+    
     const existing = JSON.parse(localStorage.getItem("pendingOrders") || "[]");
     const updated = existing.map((o) => {
       const isTarget = targetOrderId
@@ -58,7 +58,7 @@ export default function Pay() {
     });
     localStorage.setItem("pendingOrders", JSON.stringify(updated));
 
-    // 2. ???????????????? Backend
+    
     try {
       const orderId = dbOrderId;
       if (orderId) {
@@ -73,7 +73,7 @@ export default function Pay() {
         if (!result.success) {
           console.error("submit-slip failed:", result);
         } else {
-          // ?????? dbStatus = 'P' ?? localStorage (????????????)
+        
           const allOrders = JSON.parse(localStorage.getItem("pendingOrders") || "[]");
           const withStatus = allOrders.map(o => {
             const isTarget = targetOrderId
@@ -97,7 +97,7 @@ export default function Pay() {
     setShowSuccess(true);
   };
 
-  // ???? dbOrderId ??? localStorage ?????????? Orders2 (cart ??????????????)
+
   useEffect(() => {
     fetch(`${API}/api/promotion`)
       .then(r => r.json())
@@ -118,12 +118,12 @@ export default function Pay() {
     if (found?.dbOrderId) {
       setDbOrderId(found.dbOrderId);
     } else {
-      // ????? Orders2 ?????? � targetOrderId ??? DB Order_id ????????
+      
       setDbOrderId(Number(targetOrderId));
     }
   }, [targetOrderId]);
 
-  // ?????????? Orders2 (targetOrderId ?????) ? ???? items ??? order DB ??? cart
+  
   useEffect(() => {
     if (!targetOrderId || !memberId) return;
     fetch(`${API}/api/orders/${memberId}`)
@@ -148,10 +148,10 @@ export default function Pay() {
       .catch(() => {});
   }, [targetOrderId, memberId]);
 
-  // ???? cart ??? backend
+ 
   useEffect(() => {
     if (!memberId) return;
-    if (targetOrderId) return; // ????? Orders2 � ??? useEffect ?????????
+    if (targetOrderId) return; 
     fetch(`${API}/api/cart/${memberId}`)
       .then((res) => res.json())
       .then((data) => {
@@ -166,23 +166,22 @@ export default function Pay() {
             promotion_id: i.Promotion_id || i.promotion_id,
           }));
           setCart(items);
-          setCartCount(0); // ???? cart badge ?? header ?????????????? Pay (??????????????? backend)
+          setCartCount(0); 
 
-          // ???? backend cart ????? ???????????????????? Pay (???? logic ????)
-          // cart state ??? set ???????????? Pay page ????????????????????
+         
           fetch(`${API}/api/cart`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ Member_id: memberId, cart_items: [] }),
           }).catch(() => {});
 
-          // ?????? pending order ?? localStorage ????? user ?????? Pay
+          
           if (items.length > 0) {
             const existing = JSON.parse(localStorage.getItem("pendingOrders") || "[]");
             const activeOrders = existing.filter(
               (o) => o.memberId === memberId && o.deadline > Date.now()
             );
-            // ????????? order ??????????????????????????????????????? (???????????????? refresh)
+          
             const itemIds = items.map(i => i.id).sort().join(",");
             const alreadySameCart = activeOrders.find(
               (o) => o.items?.map(i => i.id).sort().join(",") === itemIds
@@ -193,14 +192,14 @@ export default function Pay() {
                 id: newLocalId,
                 memberId,
                 status: "placed",
-                statusLabel: "??????????",
+                statusLabel: "รอชำระเงิน",
                 items: items,
                 total: items.reduce((s, i) => s + i.price * i.qty, 0),
                 createdAt: Date.now(),
                 deadline: Date.now() + 24 * 60 * 60 * 1000,
               };
 
-              // ????? order ?? DB
+             
               const shippingInfo = (() => {
                 try { return JSON.parse(localStorage.getItem(`shippingInfo_${memberId}`) || "{}"); }
                 catch { return {}; }
@@ -239,7 +238,7 @@ export default function Pay() {
                   if (!dbData.Order_id) throw new Error('No Order_id returned');
                   const dbOId = dbData.Order_id;
                   setDbOrderId(dbOId);
-                  // ?????? dbOrderId ?? localStorage
+                  
                   const saved = JSON.parse(localStorage.getItem("pendingOrders") || "[]");
                   const withDb = saved.map(o =>
                     o.id === newLocalId ? { ...o, dbOrderId: dbOId } : o
@@ -248,11 +247,11 @@ export default function Pay() {
                 })
                 .catch(err => {
                   console.error("create order error:", err);
-                  setOrderError(err.message || '???????????????????????????');
+                  setOrderError(err.message || 'ไม่สามารถสร้างคำสั่งซื้อได้');
                 });
 
             } else if (alreadySameCart?.dbOrderId) {
-              // order ?????????????? ??? dbOrderId ??? localStorage
+            
               setDbOrderId(alreadySameCart.dbOrderId);
             }
           }
@@ -261,7 +260,7 @@ export default function Pay() {
       .catch(() => {});
   }, [memberId]);
 
-  // Auto-slide ?????????
+ 
   useEffect(() => {
     const slides = document.querySelectorAll(".announcement-slide");
     let idx = 0;
@@ -286,20 +285,20 @@ export default function Pay() {
   if (!isLoggedIn) {
     return (
       <div style={{ padding: "48px", textAlign: "center", color: "#d00", fontSize: "1.2rem" }}>
-        ????????????????????
+        กรุณาเข้าสู่ระบบก่อน
       </div>
     );
   }
 
   return (
     <>
-      {/* ===== ????????? ===== */}
+    
       <div className="announcement-bar">
         <div className="announcement-slide active">
-          <span>[NEW!] Rom&ndXZO&FRIENDS "?????????????????????????????????? ???????????????????????????????????????????????????????????"</span>
+          <span>[NEW!] Rom&ndXZO&FRIENDS "มากกว่าความน่ารักและเสน่ห์เหลือล้น เราหวังว่าคอลเลคชั่นนี้จะมอบความอบอุ่นและกล้าหาญให้กับทุกคน"</span>
         </div>
         <div className="announcement-slide">
-          <span>[NEW!] 4in1 Han All Eyepot Liner ?????????????????????????? ???????????? ??????????? </span>
+          <span>[NEW!] 4in1 Han All Eyepot Liner จะเป็นยังไงถ้ารวมอายแชโดว์ อายไลน์เนอร์ เข้าด้วยกัน </span>
         </div>
         <div className="announcement-slide">
           <span>Best Tint Edition Set Lip Tints 01&amp;02 Buy 1 Get 1 Free!!</span>
@@ -349,7 +348,7 @@ export default function Pay() {
         </div>
         <div className="header-icons">
           <form action="" className="search-form">
-            <input type="text" placeholder="???????????????..." className="search-input" />
+            <input type="text" placeholder="พิมพ์เพื่อค้นหา..." className="search-input" />
             <button className="search-button icon-link" type="button">
               <svg className="search-icon svg-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#333" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="11" cy="11" r="8"></circle>
@@ -395,19 +394,19 @@ export default function Pay() {
                 <circle cx="12" cy="16.5" r="1" fill="#e74c3c"/>
               </svg>
               <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 700, color: '#c0392b', fontSize: 14 }}>???????????????????????????</div>
+                <div style={{ fontWeight: 700, color: '#c0392b', fontSize: 14 }}>ไม่สามารถสร้างคำสั่งซื้อได้</div>
                 <div style={{ fontSize: 13, color: '#555', marginTop: 2 }}>{orderError}</div>
               </div>
               <button
                 onClick={() => window.location.href = '/'}
                 style={{ background: '#e74c3c', color: '#fff', border: 'none', borderRadius: 7, padding: '6px 14px', cursor: 'pointer', fontWeight: 600, fontSize: 13 }}
               >
-                ???????????
+                กลับหน้าแรก
               </button>
             </div>
           )}
 
-          {/* ===== ?????????? Box ===== */}
+          
           <div className="pending-payment-box">
             <div className="pending-payment-header">
               <span className="pending-payment-title">Awaiting Payment</span>
@@ -437,18 +436,18 @@ export default function Pay() {
                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                   </svg>
-                  {copied ? "??????????!" : "COPY"}
+                  {copied ? "คัดลอกแล้ว!" : "COPY"}
                 </button>
               </div>
               <img src="/bank-logo.jpg" alt="bank" className="payslip-bank-logo" />
             </div>
             <div className="payslip-card-info">
-              <span>?????? ?????????????? ?????</span>
-              <span>????? ?.????????</span>
+             <span>บริษัท แอ็นดับเบิ้ลยู จำกัด</span>
+              <span>บัญชี ธ.กสิกรไทย</span>
             </div>
           </div>
 
-          {/* ???????????? button */}
+
           <div className="payslip-actions">
             <button className="ship-back-btn" onClick={() => navigate("/payment")}>
               &larr; Return to payment
@@ -504,10 +503,10 @@ export default function Pay() {
                   <polyline points="9 12 11.5 14.5 15 10"></polyline>
                 </svg>
               </div>
-              <h3 className="slip-modal-title">?????????????????</h3>
-              <p className="slip-modal-sub">???????????????????????<br/>????????????????????????????</p>
+             <h3 className="slip-modal-title">ชำระเงินเสร็จสิ้น</h3>
+              <p className="slip-modal-sub">เราได้รับสลิปของคุณแล้ว<br/>และจะดำเนินการตรวจสอบโดยเร็ว</p>
               <button className="slip-submit-btn" onClick={() => { setShowSuccess(false); navigate("/"); }}>
-                ????????????
+                กลับหน้าหลัก
               </button>
             </div>
           </div>
@@ -553,8 +552,8 @@ export default function Pay() {
           {/* Subtotal / Shipping / Total */}
           <div className="info-summary">
             <div className="info-summary-row">
-              <span>Subtotal � {cart.length} item{cart.length !== 1 ? "s" : ""}</span>
-              <span>?{subtotal.toLocaleString()}.00</span>
+             <span>Subtotal · {cart.length} item{cart.length !== 1 ? "s" : ""}</span>
+              <span>฿{subtotal.toLocaleString()}.00</span>
             </div>
             <div className="info-summary-row">
               <span>Shipping</span>
@@ -562,7 +561,7 @@ export default function Pay() {
             </div>
             <div className="info-summary-row info-summary-total">
               <span><strong>Total</strong></span>
-              <span><small>THB</small> <strong>?{subtotal.toLocaleString()}.00</strong></span>
+              <span><small>THB</small> <strong>฿{subtotal.toLocaleString()}.00</strong></span>
             </div>
           </div>
         </div>
@@ -570,7 +569,7 @@ export default function Pay() {
       </div>
 
       {/* ===== Footer ===== */}
-      <footer className="footer">
+     <footer className="footer">
         <div className="footer-container">
           <div className="footer-column">
             <h3>Contact Us</h3>
@@ -579,10 +578,10 @@ export default function Pay() {
           <div className="footer-column">
             <h3>Customer Service</h3>
             <ul>
-              <li><a href="#">?????????????????????</a></li>
-              <li><a href="#">?????? / ????????????</a></li>
-              <li><a href="#">????????????????????</a></li>
-              <li><a href="#">???????????????</a></li>
+              <li><a href="#">นโยบายความเป็นส่วนตัว</a></li>
+              <li><a href="#">การคืน / การขอเงินคืน</a></li>
+              <li><a href="#">เงื่อนไขการให้บริการ</a></li>
+              <li><a href="#">ข้อมูลการจัดส่ง</a></li>
               <li><a href="#">California Proposition 65</a></li>
               <li><a href="#">CCPA & US Privacy Laws</a></li>
               <li><a href="#">Accessibility Statement</a></li>
@@ -590,9 +589,7 @@ export default function Pay() {
           </div>
           <div className="footer-column">
             <h3>Newsletter</h3>
-            <p>??????????????? ???????????? ???????????????</p><br />
-            <p className="highlight">?? ????????????????? 20% ?????!</p>
-            <br />
+            <p>สมัครรับข่าวสาร ข้อเสนอพิเศษ และอัปเดตจากเรา</p><br />
             <form>
               <input type="email" placeholder="Enter email" className="email-input" />
               <button className="signup-btn">Sign up</button>
@@ -604,6 +601,7 @@ export default function Pay() {
           </div>
         </div>
       </footer>
-    </>
-  );
-}
+		   </>
+		   
+	   );
+	}

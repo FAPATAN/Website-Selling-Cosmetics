@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './best2.css';
 
@@ -17,7 +17,7 @@ const Best2 = () => {
   const [allProducts, setAllProducts] = useState([]);
   const API = process.env.REACT_APP_API_URL;
 
-  // ????????????????? cart
+ 
   React.useEffect(() => {
     const memberId = sessionStorage.getItem('Member_id');
     if (!memberId) return;
@@ -37,7 +37,7 @@ const Best2 = () => {
     if (!id) return;
     fetch(`${API}/api/best/${id}`)
       .then(res => {
-        if (!res.ok) throw new Error('?????????????????');
+        if (!res.ok) throw new Error('ไม่พบข้อมูลสินค้า');
         return res.json();
       })
       .then(data => {
@@ -47,7 +47,7 @@ const Best2 = () => {
       })
       .catch(err => {
         setProduct(null);
-        setError('????????????????? ???? server ??????????');
+        setError('ไม่พบข้อมูลสินค้า หรือ server ไม่ตอบสนอง');
       });
   }, [id]);
 
@@ -151,7 +151,7 @@ const Best2 = () => {
       });
       window.location.href = '/cart';
     } catch (err) {
-      alert('??????????????????????????????');
+      alert('เกิดข้อผิดพลาดในการเพิ่มสินค้า');
     }
   };
 
@@ -160,10 +160,10 @@ const Best2 = () => {
       {/* ??????????????? */}
       <div className="announcement-bar">
         <div className="announcement-slide active">
-          <span>[NEW!] Rom&ndXZO&FRIENDS "?????????????????????????????????? ???????????????????????????????????????????????????????????"</span>
+          <span>[NEW!] Rom&ndXZO&FRIENDS "มากกว่าความน่ารักและเสน่ห์เหลือล้น เราหวังว่าคอลเลคชั่นนี้จะมอบความอบอุ่นและกล้าหาญให้กับทุกคน"</span>
         </div>
         <div className="announcement-slide">
-          <span>[NEW!] 4in1 Han All Eyepot Liner ?????????????????????????? ???????????? ??????????? </span>
+          <span>[NEW!] 4in1 Han All Eyepot Liner จะเป็นยังไงถ้ารวมอายแชโดว์ อายไลน์เนอร์ เข้าด้วยกัน </span>
         </div>
         <div className="announcement-slide">
           <span>Best Tint Edition Set Lip Tints 01&amp;02 Buy 1 Get 1 Free!!</span>
@@ -183,7 +183,7 @@ const Best2 = () => {
         <div className="header-icons">
           {/* ???????? */}
           <form action="" className="search-form">
-            <input type="text" placeholder="???????????????..." className="search-input" />
+            <input type="text" placeholder="พิมพ์เพื่อค้นหา..." className="search-input" />
             <button className="search-button icon-link" type="button">
               <svg className="search-icon svg-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#333" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="11" cy="11" r="8"></circle>
@@ -360,10 +360,10 @@ const Best2 = () => {
             {descOpen && (
               <div style={{padding:'16px 0 0 0'}}>
                 {product?.Sale_date && (() => {
-                  const THAI_MONTHS = ['?.?.','?.?.','??.?.','??.?.','?.?.','??.?.','?.?.','?.?.','?.?.','?.?.','?.?.','?.?.'];
-                  const d = new Date(product.Sale_date);
-                  const txt = `?????????? ${d.getUTCDate()} ${THAI_MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()+543}`;
-                  return <div style={{fontSize:'16px',color:'#b06070',fontWeight:'500',marginBottom:'10px'}}>{txt}</div>;
+                 const THAI_MONTHS = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+                 const d = new Date(product.Sale_date);
+                 const txt = `วางจำหน่าย ${d.getUTCDate()} ${THAI_MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()+543}`;
+                 return <div style={{fontSize:'16px',color:'#b06070',fontWeight:'500',marginBottom:'10px'}}>{txt}</div>;
                 })()}
                 {product?.Product_detail ? (
                   <img
@@ -372,7 +372,7 @@ const Best2 = () => {
                     style={{width:'100%',borderRadius:8,display:'block'}}
                   />
                 ) : (
-                  <p style={{color:'#aaa',fontSize:13}}>??????????????????</p>
+                  <p style={{color:'#aaa',fontSize:13}}>ยังไม่มีรายละเอียด</p>
                 )}
               </div>
             )}
@@ -393,10 +393,10 @@ const Best2 = () => {
           <div className="footer-column">
             <h3>Customer Service</h3>
             <ul>
-              <li><a href="#">?????????????????????</a></li>
-              <li><a href="#">?????? / ????????????</a></li>
-              <li><a href="#">????????????????????</a></li>
-              <li><a href="#">???????????????</a></li>
+              <li><a href="#">นโยบายความเป็นส่วนตัว</a></li>
+              <li><a href="#">การคืน / การขอเงินคืน</a></li>
+              <li><a href="#">เงื่อนไขการให้บริการ</a></li>
+              <li><a href="#">ข้อมูลการจัดส่ง</a></li>
               <li><a href="#">California Proposition 65</a></li>
               <li><a href="#">CCPA & US Privacy Laws</a></li>
               <li><a href="#">Accessibility Statement</a></li>
@@ -405,9 +405,7 @@ const Best2 = () => {
           {/* Newsletter */}
           <div className="footer-column">
             <h3>Newsletter</h3>
-            <p>??????????????? ???????????? ???????????????</p><br />
-            <p className="highlight">?? ????????????????? 20% ?????!</p>
-            <br />
+            <p>สมัครรับข่าวสาร ข้อเสนอพิเศษ และอัปเดตจากเรา</p><br />
             <form>
               <input type="email" placeholder="Enter email" className="email-input" />
               <button className="signup-btn">Sign up</button>
@@ -425,10 +423,10 @@ const Best2 = () => {
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.45)',zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center'}} onClick={() => setShowLoginModal(false)}>
           <div style={{background:'#fff',borderRadius:16,padding:'36px 40px',maxWidth:340,width:'90%',textAlign:'center',boxShadow:'0 8px 32px rgba(0,0,0,0.18)'}} onClick={e => e.stopPropagation()}>
             <div style={{fontSize:40,marginBottom:12}}><img src="/lock.png" alt="lock" style={{width:40,height:40}} /></div>
-            <div style={{fontWeight:700,fontSize:18,marginBottom:8,color:'#1a1a1a'}}>????????????????????</div>
-            <div style={{color:'#888',fontSize:14,marginBottom:24}}>??????? login ????????????????????????</div>
+            <div style={{fontWeight:700,fontSize:18,marginBottom:8,color:'#1a1a1a'}}>กรุณาเข้าสู่ระบบก่อน</div>
+            <div style={{color:'#888',fontSize:14,marginBottom:24}}>คุณต้อง login เพื่อเพิ่มสินค้าลงตะกร้า</div>
             <div style={{display:'flex',gap:10,justifyContent:'center'}}>
-              <button onClick={() => setShowLoginModal(false)} style={{padding:'10px 22px',borderRadius:8,border:'1px solid #ddd',background:'#f5f5f5',cursor:'pointer',fontWeight:600}}>??????</button>
+              <button onClick={() => setShowLoginModal(false)} style={{padding:'10px 22px',borderRadius:8,border:'1px solid #ddd',background:'#f5f5f5',cursor:'pointer',fontWeight:600}}>ยกเลิก</button>
               <button onClick={() => navigate('/auth')} style={{padding:'10px 22px',borderRadius:8,border:'none',background:'#1a1a1a',color:'#fff',cursor:'pointer',fontWeight:600}}>Login</button>
             </div>
           </div>

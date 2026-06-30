@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Information.css";
 const API = process.env.REACT_APP_API_URL;
@@ -46,7 +46,7 @@ export default function Information() {
       .catch(() => {});
   }, []);
 
-  // ???? cart ??? backend
+ 
   useEffect(() => {
     if (!memberId) return;
     fetch(`${API}/api/cart/${memberId}`)
@@ -70,7 +70,7 @@ export default function Information() {
       .catch(() => {});
   }, [memberId]);
 
-  // Auto-slide ?????????
+ 
   useEffect(() => {
     const slides = document.querySelectorAll('.announcement-slide');
     let idx = 0;
@@ -109,20 +109,20 @@ export default function Information() {
   if (!isLoggedIn) {
     return (
       <div style={{ padding: '48px', textAlign: 'center', color: '#d00', fontSize: '1.2rem' }}>
-        ????????????????????
+        กรุณาเข้าสู่ระบบก่อน
       </div>
     );
   }
 
   return (
     <>
-      {/* ===== ????????? ===== */}
-      <div className="announcement-bar">
+      
+     <div className="announcement-bar">
         <div className="announcement-slide active">
-          <span>[NEW!] Rom&ndXZO&FRIENDS "?????????????????????????????????? ???????????????????????????????????????????????????????????"</span>
+          <span>[NEW!] Rom&ndXZO&FRIENDS "มากกว่าความน่ารักและเสน่ห์เหลือล้น เราหวังว่าคอลเลคชั่นนี้จะมอบความอบอุ่นและกล้าหาญให้กับทุกคน"</span>
         </div>
         <div className="announcement-slide">
-          <span>[NEW!] 4in1 Han All Eyepot Liner ?????????????????????????? ???????????? ??????????? </span>
+          <span>[NEW!] 4in1 Han All Eyepot Liner จะเป็นยังไงถ้ารวมอายแชโดว์ อายไลน์เนอร์ เข้าด้วยกัน </span>
         </div>
         <div className="announcement-slide">
           <span>Best Tint Edition Set Lip Tints 01&amp;02 Buy 1 Get 1 Free!!</span>
@@ -172,7 +172,7 @@ export default function Information() {
         </div>
         <div className="header-icons">
           <form action="" className="search-form">
-            <input type="text" placeholder="???????????????..." className="search-input" />
+            <input type="text" placeholder="พิมพ์เพื่อค้นหา..." className="search-input" />
             <button className="search-button icon-link" type="button">
               <svg className="search-icon svg-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#333" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="11" cy="11" r="8"></circle>
@@ -272,79 +272,79 @@ export default function Information() {
               <div className="info-row info-row-3">
                 <input type="text" name="city" value={form.city} onChange={handleChange} placeholder="City" required />
                 <select name="province" value={form.province} onChange={handleChange} className="info-select">
-                  <option value="Pathum Thani">????????</option>
-                  <option value="Bangkok">?????????????</option>
-                  <option value="Chiang Mai">?????????</option>
-                  <option value="Phuket">??????</option>
-                  <option value="Khon Kaen">???????</option>
-                  <option value="Nonthaburi">???????</option>
-                  <option value="Samut Prakan">???????????</option>
-                  <option value="Chiang Rai">????????</option>
-                  <option value="Nakhon Ratchasima">??????????</option>
-                  <option value="Udon Thani">????????</option>
-                  <option value="Songkhla">?????</option>
-                  <option value="Surat Thani">????????????</option>
-                  <option value="Rayong">?????</option>
-                  <option value="Chonburi">??????</option>
-                  <option value="Ayutthaya">???????????????</option>
-                  <option value="Saraburi">???????</option>
-                  <option value="Lopburi">??????</option>
-                  <option value="Nakhon Pathom">??????</option>
-                  <option value="Samut Sakhon">?????????</option>
-                  <option value="Kanchanaburi">?????????</option>
-                  <option value="Ratchaburi">???????</option>
-                  <option value="Prachuap Khiri Khan">???????????????</option>
-                  <option value="Phetchaburi">????????</option>
-                  <option value="Chumphon">?????</option>
-                  <option value="Nakhon Si Thammarat">?????????????</option>
-                  <option value="Trang">????</option>
-                  <option value="Krabi">??????</option>
-                  <option value="Phang Nga">?????</option>
-                  <option value="Satun">????</option>
-                  <option value="Pattani">???????</option>
-                  <option value="Yala">????</option>
-                  <option value="Narathiwat">????????</option>
-                  <option value="Loei">???</option>
-                  <option value="Nong Khai">???????</option>
-                  <option value="Sakon Nakhon">??????</option>
-                  <option value="Nakhon Phanom">??????</option>
-                  <option value="Mukdahan">????????</option>
-                  <option value="Ubon Ratchathani">???????????</option>
-                  <option value="Roi Et">????????</option>
-                  <option value="Kalasin">?????????</option>
-                  <option value="Maha Sarakham">?????????</option>
-                  <option value="Buriram">?????????</option>
-                  <option value="Surin">????????</option>
-                  <option value="Si Sa Ket">????????</option>
-                  <option value="Chaiyaphum">???????</option>
-                  <option value="Lampang">?????</option>
-                  <option value="Lamphun">?????</option>
-                  <option value="Phrae">????</option>
-                  <option value="Nan">????</option>
-                  <option value="Phayao">?????</option>
-                  <option value="Mae Hong Son">??????????</option>
-                  <option value="Tak">???</option>
-                  <option value="Sukhothai">???????</option>
-                  <option value="Phitsanulok">????????</option>
-                  <option value="Phichit">??????</option>
-                  <option value="Kamphaeng Phet">?????????</option>
-                  <option value="Nakhon Sawan">?????????</option>
-                  <option value="Uthai Thani">?????????</option>
-                  <option value="Chainat">??????</option>
-                  <option value="Sing Buri">?????????</option>
-                  <option value="Ang Thong">???????</option>
-                  <option value="Suphan Buri">??????????</option>
-                  <option value="Nakhon Nayok">???????</option>
-                  <option value="Prachin Buri">??????????</option>
-                  <option value="Sa Kaeo">???????</option>
-                  <option value="Chanthaburi">????????</option>
-                  <option value="Trat">????</option>
-                  <option value="Phetchabun">?????????</option>
-                  <option value="Uttaradit">?????????</option>
-                  <option value="Nong Bua Lamphu">???????????</option>
-                  <option value="Amnat Charoen">??????????</option>
-                  <option value="Yasothon">?????</option>
-                  <option value="Bueng Kan">??????</option>
+                  <option value="Pathum Thani">ปทุมธานี</option>
+                  <option value="Bangkok">กรุงเทพมหานคร</option>
+                  <option value="Chiang Mai">เชียงใหม่</option>
+                  <option value="Phuket">ภูเก็ต</option>
+                  <option value="Khon Kaen">ขอนแก่น</option>
+                  <option value="Nonthaburi">นนทบุรี</option>
+                  <option value="Samut Prakan">สมุทรปราการ</option>
+                  <option value="Chiang Rai">เชียงราย</option>
+                  <option value="Nakhon Ratchasima">นครราชสีมา</option>
+                  <option value="Udon Thani">อุดรธานี</option>
+                  <option value="Songkhla">สงขลา</option>
+                  <option value="Surat Thani">สุราษฎร์ธานี</option>
+                  <option value="Rayong">ระยอง</option>
+                  <option value="Chonburi">ชลบุรี</option>
+                  <option value="Ayutthaya">พระนครศรีอยุธยา</option>
+                  <option value="Saraburi">สระบุรี</option>
+                  <option value="Lopburi">ลพบุรี</option>
+                  <option value="Nakhon Pathom">นครปฐม</option>
+                  <option value="Samut Sakhon">สมุทรสาคร</option>
+                  <option value="Kanchanaburi">กาญจนบุรี</option>
+                  <option value="Ratchaburi">ราชบุรี</option>
+                  <option value="Prachuap Khiri Khan">ประจวบคีรีขันธ์</option>
+                  <option value="Phetchaburi">เพชรบุรี</option>
+                  <option value="Chumphon">ชุมพร</option>
+                  <option value="Nakhon Si Thammarat">นครศรีธรรมราช</option>
+                  <option value="Trang">ตรัง</option>
+                  <option value="Krabi">กระบี่</option>
+                  <option value="Phang Nga">พังงา</option>
+                  <option value="Satun">สตูล</option>
+                  <option value="Pattani">ปัตตานี</option>
+                  <option value="Yala">ยะลา</option>
+                  <option value="Narathiwat">นราธิวาส</option>
+                  <option value="Loei">เลย</option>
+                  <option value="Nong Khai">หนองคาย</option>
+                  <option value="Sakon Nakhon">สกลนคร</option>
+                  <option value="Nakhon Phanom">นครพนม</option>
+                  <option value="Mukdahan">มุกดาหาร</option>
+                  <option value="Ubon Ratchathani">อุบลราชธานี</option>
+                  <option value="Roi Et">ร้อยเอ็ด</option>
+                  <option value="Kalasin">กาฬสินธุ์</option>
+                  <option value="Maha Sarakham">มหาสารคาม</option>
+                  <option value="Buriram">บุรีรัมย์</option>
+                  <option value="Surin">สุรินทร์</option>
+                  <option value="Si Sa Ket">ศรีสะเกษ</option>
+                  <option value="Chaiyaphum">ชัยภูมิ</option>
+                  <option value="Lampang">ลำปาง</option>
+                  <option value="Lamphun">ลำพูน</option>
+                  <option value="Phrae">แพร่</option>
+                  <option value="Nan">น่าน</option>
+                  <option value="Phayao">พะเยา</option>
+                  <option value="Mae Hong Son">แม่ฮ่องสอน</option>
+                  <option value="Tak">ตาก</option>
+                  <option value="Sukhothai">สุโขทัย</option>
+                  <option value="Phitsanulok">พิษณุโลก</option>
+                  <option value="Phichit">พิจิตร</option>
+                  <option value="Kamphaeng Phet">กำแพงเพชร</option>
+                  <option value="Nakhon Sawan">นครสวรรค์</option>
+                  <option value="Uthai Thani">อุทัยธานี</option>
+                  <option value="Chainat">ชัยนาท</option>
+                  <option value="Sing Buri">สิงห์บุรี</option>
+                  <option value="Ang Thong">อ่างทอง</option>
+                  <option value="Suphan Buri">สุพรรณบุรี</option>
+                  <option value="Nakhon Nayok">นครนายก</option>
+                  <option value="Prachin Buri">ปราจีนบุรี</option>
+                  <option value="Sa Kaeo">สระแก้ว</option>
+                  <option value="Chanthaburi">จันทบุรี</option>
+                  <option value="Trat">ตราด</option>
+                  <option value="Phetchabun">เพชรบูรณ์</option>
+                  <option value="Uttaradit">อุตรดิตถ์</option>
+                  <option value="Nong Bua Lamphu">หนองบัวลำภู</option>
+                  <option value="Amnat Charoen">อำนาจเจริญ</option>
+                  <option value="Yasothon">ยโสธร</option>
+                  <option value="Bueng Kan">บึงกาฬ</option>
                 </select>
                 <input type="text" name="postalCode" value={form.postalCode} onChange={handleChange} placeholder="Postal code" required />
               </div>
@@ -368,7 +368,7 @@ export default function Information() {
 
         {/* ===== RIGHT: Cart Summary ===== */}
         <div className="info-right">
-          {/* ?????????????? */}
+          
           <div className="info-cart-items">
             {cart.map(item => (
               <div className="info-cart-item" key={item.id}>
@@ -402,21 +402,20 @@ export default function Information() {
             ))}
           </div>
 
-          {/* Discount Code ????? ???????????? */}
 
           {/* Subtotal / Shipping / Total */}
           <div className="info-summary">
             <div className="info-summary-row">
-              <span>Subtotal � {cart.length} item{cart.length !== 1 ? 's' : ''}</span>
-              <span>?{subtotal.toLocaleString()}.00</span>
+              <span>Subtotal · {cart.length} item{cart.length !== 1 ? 's' : ''}</span>
+              <span>฿{subtotal.toLocaleString()}.00</span>
             </div>
             <div className="info-summary-row">
-              <span>Shipping <span className="info-shipping-icon">?</span></span>
+              <span>Shipping <span className="info-shipping-icon">ⓘ</span></span>
               <span className="info-shipping-calc">Calculated at next step</span>
             </div>
             <div className="info-summary-row info-summary-total">
               <span><strong>Total</strong></span>
-              <span><small>THB</small> <strong>?{subtotal.toLocaleString()}.00</strong></span>
+              <span><small>THB</small> <strong>฿{subtotal.toLocaleString()}.00</strong></span>
             </div>
           </div>
         </div>
@@ -433,10 +432,10 @@ export default function Information() {
           <div className="footer-column">
             <h3>Customer Service</h3>
             <ul>
-              <li><a href="#">?????????????????????</a></li>
-              <li><a href="#">?????? / ????????????</a></li>
-              <li><a href="#">????????????????????</a></li>
-              <li><a href="#">???????????????</a></li>
+              <li><a href="#">นโยบายความเป็นส่วนตัว</a></li>
+              <li><a href="#">การคืน / การขอเงินคืน</a></li>
+              <li><a href="#">เงื่อนไขการให้บริการ</a></li>
+              <li><a href="#">ข้อมูลการจัดส่ง</a></li>
               <li><a href="#">California Proposition 65</a></li>
               <li><a href="#">CCPA & US Privacy Laws</a></li>
               <li><a href="#">Accessibility Statement</a></li>
@@ -444,9 +443,7 @@ export default function Information() {
           </div>
           <div className="footer-column">
             <h3>Newsletter</h3>
-            <p>??????????????? ???????????? ???????????????</p><br />
-            <p className="highlight">?? ????????????????? 20% ?????!</p>
-            <br />
+            <p>สมัครรับข่าวสาร ข้อเสนอพิเศษ และอัปเดตจากเรา</p><br />
             <form>
               <input type="email" placeholder="Enter email" className="email-input" />
               <button className="signup-btn">Sign up</button>
@@ -458,6 +455,7 @@ export default function Information() {
           </div>
         </div>
       </footer>
-    </>
-  );
-}
+		   </>
+		   
+	   );
+	}
