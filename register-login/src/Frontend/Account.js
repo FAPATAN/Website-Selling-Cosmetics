@@ -101,37 +101,53 @@ export default function ProfileSettings() {
     const [editMode, setEditMode] = useState(false);
     const [passwords, setPasswords] = useState({ current: "", newPw: "", confirm: "" });
     const storedEmail = sessionStorage.getItem("userEmail") || "";
-    const storedUsername = sessionStorage.getItem("username") || "";
     const storedMemberId = sessionStorage.getItem("Member_id") || "";
     const [toast, setToast] = useState(false);
 
     const [profile, setProfile] = useState({
-        name: "", surname: "", email: storedEmail, contact: "", username: storedUsername, address: "",
+        name: "", surname: "", email: storedEmail, contact: "", username: "", address: "",
     });
 
     const [draft, setDraft] = useState({ ...profile });
 
     useEffect(() => {
-        if (!storedEmail && !storedMemberId) {
-            setIsLoggedIn(false);
-            return;
-        }
+        if (!storedEmail && !storedMemberId) { setIsLoggedIn(false); return; }
         setIsLoggedIn(true);
-        fetchUserProfile({ email: storedEmail, memberId: storedMemberId })
+
+        const loadProfile = async () => {
+            try {
+                if (storedMemberId) {
+                    return await fetchUserProfile({ memberId: storedMemberId });
+                }
+                return await fetchUserProfile({ email: storedEmail });
+            } catch (firstError) {
+                if (storedEmail && storedMemberId) {
+                    try {
+                        return await fetchUserProfile({ email: storedEmail });
+                    } catch (secondError) {
+                        throw secondError;
+                    }
+                }
+                throw firstError;
+            }
+        };
+
+        loadProfile()
             .then(data => {
                 const p = {
                     name: data.Name || "", surname: data.Surname || "",
                     email: data.Email || storedEmail, contact: data.Phone || "",
-                    username: data.Username || storedUsername, address: data.Address || "",
+                    username: data.Username || "", address: data.Address || "",
                 };
                 setProfile(p);
                 setDraft(p);
             })
-            .catch(() => {
-                setProfile(prev => ({ ...prev, username: prev.username || storedUsername, email: prev.email || storedEmail }));
-                setDraft(prev => ({ ...prev, username: prev.username || storedUsername, email: prev.email || storedEmail }));
+            .catch((err) => {
+                console.error('Profile load failed:', err);
+                setProfile(prev => ({ ...prev, username: prev.username || "", email: prev.email || storedEmail }));
+                setDraft(prev => ({ ...prev, username: prev.username || "", email: prev.email || storedEmail }));
             });
-    }, []);
+    }, [storedEmail, storedMemberId]);
 
     const announcements = [
         "[NEW!] Glasting Color Gloss Mini เปิดตัวพร้อมโปรโมชั่นสุดพิเศษ",
