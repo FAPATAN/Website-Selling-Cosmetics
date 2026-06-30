@@ -113,7 +113,7 @@ const RegisterForm = ({ onRegisterSuccess, showMessage }) => {
         };
 
         try {
-            const response = await fetch(`${API}/api/insert`, {
+            const response = await fetch(`${API}/insert`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(registrationData),
@@ -248,7 +248,7 @@ const LoginForm = ({ onLoginSuccess, showMessage }) => {
         const loginData = { Email: email, Password: password };
 
         try {
-            const response = await fetch(`${API}/api/login`, {
+            const response = await fetch(`${API}/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(loginData),

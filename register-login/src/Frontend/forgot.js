@@ -362,7 +362,7 @@ export default function ForgotPasswordSystem() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/check-email`, {
+      const response = await fetch(`${apiBase}/check-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
@@ -443,7 +443,7 @@ export default function ForgotPasswordSystem() {
     setError('');
 
     try {
-      const response = await fetch(`${API_URL}/check-email`, {
+      const response = await fetch(`${apiBase}/check-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, token: resetToken })
