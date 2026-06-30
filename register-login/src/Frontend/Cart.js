@@ -454,16 +454,16 @@ export default function Cart() {
               <div className="summary-title">Order summary</div>
               <div className="summary-row">
                 <span>Sub total</span>
-                <span>{subtotal}?</span>
+                <span>{subtotal}฿</span>
               </div>
               {/* Discount removed */}
               <div className="summary-row">
                 <span>Delivery free</span>
-                <span>0?</span>
+                <span>0฿</span>
               </div>
               <div className="summary-row total">
                 <span>Total</span>
-                <span>{total}?</span>
+                <span>{total}฿</span>
               </div>
               <div className="guarantee">
                 90-day quality guarantee on all items<br />
@@ -499,7 +499,7 @@ export default function Cart() {
                   <div className="rec-footer">
                     <div>
                       <div className="rec-name">
-                        {item.Product_name} <span className="rec-price">{item.Product_price}?</span>
+                        {item.Product_name} <span className="rec-price">{item.Product_price}฿</span>
                       </div>
                     </div>
                   </div>

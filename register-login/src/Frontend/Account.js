@@ -100,30 +100,38 @@ export default function ProfileSettings() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [passwords, setPasswords] = useState({ current: "", newPw: "", confirm: "" });
+    const storedEmail = sessionStorage.getItem("userEmail") || "";
+    const storedUsername = sessionStorage.getItem("username") || "";
+    const storedMemberId = sessionStorage.getItem("Member_id") || "";
     const [toast, setToast] = useState(false);
 
     const [profile, setProfile] = useState({
-        name: "", surname: "", email: "", contact: "", username: "", address: "",
+        name: "", surname: "", email: storedEmail, contact: "", username: storedUsername, address: "",
     });
 
+    const [draft, setDraft] = useState({ ...profile });
+
     useEffect(() => {
-        const email = sessionStorage.getItem("userEmail");
-        if (!email) { setIsLoggedIn(false); return; }
+        if (!storedEmail && !storedMemberId) {
+            setIsLoggedIn(false);
+            return;
+        }
         setIsLoggedIn(true);
-        fetchUserProfile(email)
+        fetchUserProfile({ email: storedEmail, memberId: storedMemberId })
             .then(data => {
                 const p = {
                     name: data.Name || "", surname: data.Surname || "",
-                    email: data.Email || "", contact: data.Phone || "",
-                    username: data.Username || "", address: data.Address || "",
+                    email: data.Email || storedEmail, contact: data.Phone || "",
+                    username: data.Username || storedUsername, address: data.Address || "",
                 };
                 setProfile(p);
                 setDraft(p);
             })
-            .catch(() => {});
+            .catch(() => {
+                setProfile(prev => ({ ...prev, username: prev.username || storedUsername, email: prev.email || storedEmail }));
+                setDraft(prev => ({ ...prev, username: prev.username || storedUsername, email: prev.email || storedEmail }));
+            });
     }, []);
-
-    const [draft, setDraft] = useState({ ...profile });
 
     const announcements = [
         "[NEW!] Glasting Color Gloss Mini เปิดตัวพร้อมโปรโมชั่นสุดพิเศษ",

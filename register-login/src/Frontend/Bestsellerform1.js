@@ -270,7 +270,7 @@ const Bestsellerform1 = ({ setIsRegisterView }) => {
 								/>
 								<div className="filter-price-inputs">
 									<div className="filter-price-box">
-										<span className="filter-currency">?</span>
+										<span className="filter-currency">฿</span>
 										<input
 											type="number"
 											value={priceRange[0]}
@@ -281,7 +281,7 @@ const Bestsellerform1 = ({ setIsRegisterView }) => {
 									</div>
 									<span className="filter-price-to">to</span>
 									<div className="filter-price-box">
-										<span className="filter-currency">?</span>
+										<span className="filter-currency">฿</span>
 										<input
 											type="number"
 											value={priceRange[1]}
@@ -387,11 +387,11 @@ const Bestsellerform1 = ({ setIsRegisterView }) => {
 										)}
 														{discountedPrice ? (
 															<div className="card-price">
-																<span style={{textDecoration:'line-through', color:'#aaa', fontSize:'13px', marginRight:'6px'}}>{originalPrice}?</span>
-																<span style={{color:'#e53322', fontWeight:'bold'}}>{discountedPrice}?</span>
+																<span style={{textDecoration:'line-through', color:'#aaa', fontSize:'13px', marginRight:'6px'}}>{originalPrice}฿</span>
+																<span style={{color:'#e53322', fontWeight:'bold'}}>{discountedPrice}฿</span>
 															</div>
 														) : (
-															<div className="card-price">{originalPrice}?</div>
+															<div className="card-price">{originalPrice}฿</div>
 														)}
 													</div>
 												</div>
@@ -439,11 +439,11 @@ const Bestsellerform1 = ({ setIsRegisterView }) => {
 										)}
 														{discountedPrice ? (
 															<div className="card-price">
-																<span style={{textDecoration:'line-through', color:'#aaa', fontSize:'13px', marginRight:'6px'}}>{originalPrice}?</span>
-																<span style={{color:'#e53322', fontWeight:'bold'}}>{discountedPrice}?</span>
+																<span style={{textDecoration:'line-through', color:'#aaa', fontSize:'13px', marginRight:'6px'}}>{originalPrice}฿</span>
+																<span style={{color:'#e53322', fontWeight:'bold'}}>{discountedPrice}฿</span>
 															</div>
 														) : (
-															<div className="card-price">{originalPrice}?</div>
+															<div className="card-price">{originalPrice}฿</div>
 														)}
 													</div>
 												</div>

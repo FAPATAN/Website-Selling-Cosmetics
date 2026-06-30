@@ -248,12 +248,12 @@ const CheekSection = ({ setIsRegisterView }) => {
 								<input type="range" min={minPrice} max={maxPrice} value={priceRange[1]} className="filter-price-slider" onChange={e => setPriceRange([priceRange[0], Number(e.target.value)])} />
 								<div className="filter-price-inputs">
 									<div className="filter-price-box">
-										<span className="filter-currency">?</span>
+										<span className="filter-currency">฿</span>
 										<input type="number" value={priceRange[0]} min={minPrice} max={priceRange[1]} onChange={e => setPriceRange([Number(e.target.value), priceRange[1]])} />
 									</div>
 									<span className="filter-price-to">to</span>
 									<div className="filter-price-box">
-										<span className="filter-currency">?</span>
+										<span className="filter-currency">฿</span>
 										<input type="number" value={priceRange[1]} min={priceRange[0]} max={maxPrice} onChange={e => setPriceRange([priceRange[0], Number(e.target.value)])} />
 									</div>
 								</div>
@@ -341,7 +341,7 @@ const CheekSection = ({ setIsRegisterView }) => {
 														</div>
 														)}
 															<div className="card-desc">{detail && !String(detail).match(/\.(jpg|jpeg|png|gif|webp)$/i) ? detail : ''}</div>
-														<div className="card-price">{price}?</div>
+														<div className="card-price">{price}฿</div>
 													</div>
 												</div>
 											);
@@ -383,7 +383,7 @@ const CheekSection = ({ setIsRegisterView }) => {
 														</div>
 														)}
 															<div className="card-desc">{product.Product_detail && !String(product.Product_detail).match(/\.(jpg|jpeg|png|gif|webp)$/i) ? product.Product_detail : ''}</div>
-														<div className="card-price">{product.Product_price}?</div>
+														<div className="card-price">{product.Product_price}฿</div>
 													</div>
 												</div>
 											);

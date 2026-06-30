@@ -1,7 +1,17 @@
 import API_URL from '../config';
 // Simple API utility for ProfileSettings
-export async function fetchUserProfile(email) {
-  const res = await fetch(`${API_URL}/api/member?email=${encodeURIComponent(email)}`);
+export async function fetchUserProfile({ email, memberId }) {
+  const params = [];
+  let url = `${API_URL}/api/member`;
+  if (memberId) {
+    url += `?id=${encodeURIComponent(memberId)}`;
+  } else if (email) {
+    url += `?email=${encodeURIComponent(email)}`;
+  } else {
+    throw new Error('Email or Member ID is required');
+  }
+
+  const res = await fetch(url);
   if (!res.ok) throw new Error('Failed to fetch user profile');
   return await res.json();
 }

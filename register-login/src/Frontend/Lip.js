@@ -246,12 +246,12 @@ const LipSection = ({ setIsRegisterView }) => {
                                 <input type="range" min={minPrice} max={maxPrice} value={priceRange[1]} className="filter-price-slider" onChange={e => setPriceRange([priceRange[0], Number(e.target.value)])} />
                                 <div className="filter-price-inputs">
                                     <div className="filter-price-box">
-                                        <span className="filter-currency">?</span>
+                                        <span className="filter-currency">฿</span>
                                         <input type="number" value={priceRange[0]} min={minPrice} max={priceRange[1]} onChange={e => setPriceRange([Number(e.target.value), priceRange[1]])} />
                                     </div>
                                     <span className="filter-price-to">to</span>
                                     <div className="filter-price-box">
-                                        <span className="filter-currency">?</span>
+                                        <span className="filter-currency">฿</span>
                                         <input type="number" value={priceRange[1]} min={priceRange[0]} max={maxPrice} onChange={e => setPriceRange([priceRange[0], Number(e.target.value)])} />
                                     </div>
                                 </div>
@@ -352,7 +352,7 @@ const LipSection = ({ setIsRegisterView }) => {
                                                         </div>
                                                         )}
                                                         {detail && !/\.(jpg|jpeg|png|gif|webp|jfif|avif)$/i.test(detail) && <div className="card-desc">{detail}</div>}
-                                                        <div className="card-price">{price}?</div>
+                                                        <div className="card-price">{price}฿</div>
                                                     </div>
                                                 </div>
                                             );
@@ -407,7 +407,7 @@ const LipSection = ({ setIsRegisterView }) => {
                                                         </div>
                                                         )}
                                                         {product.Product_detail && !/\.(jpg|jpeg|png|gif|webp|jfif|avif)$/i.test(product.Product_detail) && <div className="card-desc">{product.Product_detail}</div>}
-                                                        <div className="card-price">{product.Product_price}?</div>
+                                                        <div className="card-price">{product.Product_price}฿</div>
                                                     </div>
                                                 </div>
                                             );

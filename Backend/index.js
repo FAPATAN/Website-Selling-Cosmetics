@@ -291,12 +291,17 @@ app.post('/api/reset-password', (req, res) => {
 
 // 6.1 👤 GET MEMBER PROFILE BY EMAIL
 app.get('/api/member', (req, res) => {
-    const { email } = req.query;
-    if (!email) {
-        return res.status(400).json({ error: "Email is required" });
+    const { email, id } = req.query;
+    if (!email && !id) {
+        return res.status(400).json({ error: "Email or Member ID is required" });
     }
-    const query = "SELECT Name, Surname, Email, Phone, Address, Username FROM member WHERE Email = ?";
-    connection.query(query, [email], (err, results) => {
+
+    const query = id
+        ? "SELECT Name, Surname, Email, Phone, Address, Username FROM member WHERE MemberID = ?"
+        : "SELECT Name, Surname, Email, Phone, Address, Username FROM member WHERE Email = ?";
+    const params = id ? [id] : [email];
+
+    connection.query(query, params, (err, results) => {
         if (err) {
             console.error("Query Error: ", err);
             return res.status(500).json({ error: "Internal Server Error" });
