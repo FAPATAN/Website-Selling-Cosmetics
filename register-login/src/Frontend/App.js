@@ -1,7 +1,8 @@
 ﻿import React, { useState } from 'react';
 import { Mail, Lock, User, Phone, MapPin, Loader2, LogIn, UserPlus } from 'lucide-react';
+import API_URL from '../config';
 import './App.css';
-const API = process.env.REACT_APP_API_URL;
+const API = process.env.REACT_APP_API_URL || API_URL;
 
 const MessageBox = ({ title, body, isError, onClose }) => {
     if (!body) return null;
@@ -66,7 +67,7 @@ const RegisterForm = ({ onRegisterSuccess, showMessage }) => {
 
         // Validate required fields
         if (!name || !surname || !email || !phone || !username || !password || !confirmPassword) {
-            setMessage('? กรุณากรอกข้อมูลให้ครบถ้วน');
+            setMessage('❌ กรุณากรอกข้อมูลให้ครบถ้วน');
             showMessage('ข้อมูลไม่ครบ', 'โปรดกรอกข้อมูลทั้งหมดก่อนส่งแบบฟอร์ม', true);
             return;
         }
@@ -74,14 +75,14 @@ const RegisterForm = ({ onRegisterSuccess, showMessage }) => {
         // Validate email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            setMessage('? กรุณาใส่อีเมลให้ถูกต้อง');
+            setMessage('❌ กรุณาใส่อีเมลให้ถูกต้อง');
             showMessage('อีเมลไม่ถูกต้อง', 'โปรดใส่อีเมลในรูปแบบที่ถูกต้อง', true);
             return;
         }
 
         // Validate password match
         if (password !== confirmPassword) {
-            setMessage('? รหัสผ่านและยืนยันรหัสผ่านไม่ตรงกัน');
+            setMessage('❌ รหัสผ่านและยืนยันรหัสผ่านไม่ตรงกัน');
             showMessage('รหัสผ่านไม่ตรงกัน', 'กรุณาตรวจสอบรหัสผ่านและยืนยันรหัสผ่านให้ตรงกัน', true);
             return;
         }
@@ -127,12 +128,12 @@ const RegisterForm = ({ onRegisterSuccess, showMessage }) => {
                 setTimeout(onRegisterSuccess, 1000);
             } else {
                 const errorMsg = data.error || data.msg || 'เกิดข้อผิดพลาดในการสมัครสมาชิก';
-                setMessage(`? เกิดข้อผิดพลาด: ${errorMsg}`);
+                setMessage(`❌ เกิดข้อผิดพลาด: ${errorMsg}`);
                 showMessage('เกิดข้อผิดพลาด', errorMsg, true);
             }
         } catch (error) {
             console.error('Registration failed:', error);
-            setMessage('? เกิดข้อผิดพลาดในการเชื่อมต่อกับเซิร์ฟเวอร์');
+            setMessage('❌ เกิดข้อผิดพลาดในการเชื่อมต่อกับเซิร์ฟเวอร์');
             showMessage('เกิดข้อผิดพลาด', 'ไม่สามารถเชื่อมต่อกับ backend ได้ โปรดลองอีกครั้ง', true);
         } finally {
             setIsLoading(false);
@@ -141,10 +142,10 @@ const RegisterForm = ({ onRegisterSuccess, showMessage }) => {
 
     return (
         <form className="form-container" onSubmit={handleRegister}>
-            <h2 className="form-title">สมัครสมาชิก</h2>
+            <h2 className="form-title">Sign Up Here</h2>
             
             {message && (
-                <p className={`alert-message ${message.startsWith('?') ? 'error' : 'success'}`}>
+                <p className={`alert-message ${message.startsWith('❌') ? 'error' : 'success'}`}>
                     {message}
                 </p>
             )}
@@ -171,7 +172,7 @@ const RegisterForm = ({ onRegisterSuccess, showMessage }) => {
                 />
             </div>
 
-            <InputField label="ชื่อผู้ใช้" id="username" value={username} onChange={(e) => setUsername(e.target.value)} required icon={User} />
+            <InputField label="ชื่อผู้ใช้งาน" id="username" value={username} onChange={(e) => setUsername(e.target.value)} required icon={User} />
 
             <div
                 className="pw-field-wrapper"
@@ -204,10 +205,10 @@ const RegisterForm = ({ onRegisterSuccess, showMessage }) => {
                 {isLoading ? (
                     <>
                         <Loader2 className="btn-icon spinning" /> 
-                        กำลังสมัครสมาชิก...
+                      Registering...
                     </>
                 ) : (
-                    'สมัครสมาชิก'
+                    'Register'
                 )}
             </button>
 
@@ -236,10 +237,10 @@ const LoginForm = ({ onLoginSuccess, showMessage }) => {
 
         // Validate email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
+         if (!emailRegex.test(email)) {
             const errorMessage = 'รูปแบบอีเมลไม่ถูกต้อง';
-            setError(`? ${errorMessage}`);
-            showMessage('อีเมลไม่ถูกต้อง', 'โปรดใส่อีเมลในรูปแบบที่ถูกต้อง', true);
+            setError(`❌ ${errorMessage}`);
+            showMessage('อีเมลไม่ถูกต้อง', 'กรุณากรอกอีเมลในรูปแบบที่ถูกต้อง', true);
             return;
         }
 
@@ -266,7 +267,7 @@ const LoginForm = ({ onLoginSuccess, showMessage }) => {
                     sessionStorage.setItem("username",  data.username  || "");
                     sessionStorage.setItem("userRole",  data.userRole  || "U");
                 }
-                showMessage('ยินดีต้อนรับ', `เข้าสู่ระบบสำเร็จ! ยินดีต้อนรับ ${data.username || email}`, false);
+                showMessage('สำเร็จ', `เข้าสู่ระบบสำเร็จ! ยินดีต้อนรับ ${data.username || email}`, false);
                 if (onLoginSuccess) {
                     onLoginSuccess({ email, role: data.userRole });
                 }
@@ -274,15 +275,15 @@ const LoginForm = ({ onLoginSuccess, showMessage }) => {
                     window.location.href = data.userRole === "A" ? "/admin" : "/";
                 }, 1000);
             } else {
-                const errorMessage = data.message || 'ไม่สามารถเข้าสู่ระบบได้';
-                setError(`? ${errorMessage}`);
-                showMessage('เกิดข้อผิดพลาด', errorMessage, true);
+             const errorMessage = data.message || 'อีเมลหรือรหัสผ่านไม่ถูกต้อง';
+                setError(`❌ ${errorMessage}`);
+                showMessage('เข้าสู่ระบบไม่สำเร็จ', errorMessage, true);
             }
         } catch (error) {
             console.error('Login failed:', error);
-            const connectionError = 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้';
-            setError(`? ${connectionError}`);
-            showMessage('เกิดข้อผิดพลาด', connectionError, true);
+            const connectionError = 'ข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์';
+            setError(`❌ ${connectionError}`);
+            showMessage('ข้อผิดพลาด', connectionError, true);
         } finally {
             setIsLoading(false);
         }
@@ -290,7 +291,7 @@ const LoginForm = ({ onLoginSuccess, showMessage }) => {
 
     return (
         <form className="login-form-container" onSubmit={handleLogin}>
-            <h2 className="form-title login-form-title">เข้าสู่ระบบ</h2>
+            <h2 className="form-title login-form-title">Log In Here</h2>
             
             {error && (
                 <p className="alert-message error login-alert">
@@ -306,7 +307,7 @@ const LoginForm = ({ onLoginSuccess, showMessage }) => {
                 onChange={(e) => setEmail(e.target.value)} 
                 required 
                 icon={Mail} 
-                placeholder="กรุณากรอกอีเมลของคุณ" 
+                placeholder="your.email@example.com" 
             />
 
             <div style={{ marginBottom: '20px' }}>
@@ -318,7 +319,7 @@ const LoginForm = ({ onLoginSuccess, showMessage }) => {
                     onChange={(e) => setPassword(e.target.value)} 
                     required 
                     icon={Lock} 
-                    placeholder="กรุณากรอกรหัสผ่าน" 
+                    placeholder="รหัสผ่าน" 
                 />
 
             </div>
@@ -331,10 +332,10 @@ const LoginForm = ({ onLoginSuccess, showMessage }) => {
                 {isLoading ? (
                     <>
                         <Loader2 className="btn-icon login spinning" /> 
-                        กำลังเข้าสู่ระบบ...
+                        Logging In...
                     </>
                 ) : (
-                    'เข้าสู่ระบบ'
+                    'Log In'
                 )}
             </button>
 
