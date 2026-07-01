@@ -280,7 +280,7 @@ const Best2 = () => {
                     style={product.Stock != null && Number(product.Stock) === 0 ? {opacity:0.55} : {}}
                   />
                   {product.Stock != null && Number(product.Stock) === 0 && (
-                    <div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',width:'110px',height:'110px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(30,30,30,0.85)',color:'#fff',fontSize:'16px',fontWeight:'bold',zIndex:2,textAlign:'center',lineHeight:'1.4',pointerEvents:'none'}}>?????????</div>
+                    <div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',width:'110px',height:'110px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(30,30,30,0.85)',color:'#fff',fontSize:'16px',fontWeight:'bold',zIndex:2,textAlign:'center',lineHeight:'1.4',pointerEvents:'none'}}>สินค้าหมด</div>
                   )}
                 </div>
               ) : (

@@ -411,11 +411,11 @@ export default function App() {
                         >
                             {isRegisterView ? (
                                 <>
-                                    <LogIn size={18} /> เข้าสู่ระบบ
+                                    <LogIn size={18} /> Login
                                 </>
                             ) : (
                                 <>
-                                    สมัครสมาชิก <UserPlus size={18} />
+                                    Register <UserPlus size={18} />
                                 </>
                             )}
                         </button>
